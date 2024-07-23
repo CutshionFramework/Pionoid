@@ -88,7 +88,7 @@ export default function Nav({ openNav, onCloseNav }) {
         </Box>
 
         <Button
-          href="https://material-ui.com/store/items/minimal-dashboard/"
+          href="mailto:cutshion@cutshion.com"
           target="_blank"
           variant="contained"
           color="inherit"

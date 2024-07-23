@@ -6,15 +6,15 @@ import Link from '@mui/material/Link';
 
 import { RouterLink } from 'src/routes/components';
 
-// Assuming the logo is placed in the public/assets folder and accessible via the static path
-const logoImagePath = '/assets/logo.svg'; // Update the path if necessary
+
+const logoImagePath = '/assets/logo.svg'; 
 
 const Logo = forwardRef(({ disabledLink = false, sx, ...other }, ref) => {
   const logo = (
     <Box
       ref={ref}
-      component="img" // Changed from div to img
-      src={logoImagePath} // Set the source to the logo image path
+      component="img" 
+      src={logoImagePath} 
       sx={{
         width: 90,
         height: 40,
