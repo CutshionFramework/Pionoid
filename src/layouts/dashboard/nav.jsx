@@ -80,10 +80,10 @@ export default function Nav({ openNav, onCloseNav }) {
         />
 
         <Box sx={{ textAlign: 'center' }}>
-          <Typography variant="h6">Get more?</Typography>
+          <Typography variant="h6">Need help?</Typography>
 
           <Typography variant="body2" sx={{ color: 'text.secondary', mt: 1 }}>
-            From only $69
+            Email us at
           </Typography>
         </Box>
 
@@ -93,7 +93,7 @@ export default function Nav({ openNav, onCloseNav }) {
           variant="contained"
           color="inherit"
         >
-          Upgrade to Pro
+          cutshion@cutshion.com
         </Button>
       </Stack>
     </Box>
