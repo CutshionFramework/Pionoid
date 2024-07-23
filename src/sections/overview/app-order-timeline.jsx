@@ -10,8 +10,6 @@ import TimelineSeparator from '@mui/lab/TimelineSeparator';
 import TimelineConnector from '@mui/lab/TimelineConnector';
 import TimelineItem, { timelineItemClasses } from '@mui/lab/TimelineItem';
 
-
-
 // ----------------------------------------------------------------------
 
 export default function AnalyticsOrderTimeline({ title, subheader, list, ...other }) {
@@ -46,9 +44,9 @@ AnalyticsOrderTimeline.propTypes = {
 // ----------------------------------------------------------------------
 
 function OrderItem({ item, lastTimeline }) {
-  const { type, title, time } = item;
-  // Extract the year from the time
-  const year = new Date(time).getFullYear();
+  const { type, title, text } = item;
+
+  const timeText = text.join('-'); 
   return (
     <TimelineItem>
       <TimelineSeparator>
@@ -68,7 +66,7 @@ function OrderItem({ item, lastTimeline }) {
         <Typography variant="subtitle2">{title}</Typography>
 
         <Typography variant="caption" sx={{ color: 'text.disabled' }}>
-          {year}
+          {timeText}
         </Typography>
       </TimelineContent>
     </TimelineItem>

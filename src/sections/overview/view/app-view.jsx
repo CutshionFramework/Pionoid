@@ -63,14 +63,14 @@ export default function AppView() {
 
         <Grid xs={11} sm={6} md={4}>
           <AppWidgetSummary
-            title="Tool 2"
-            total={4}
+            title="Stop"
+            total={5}
             color="Run Project"
             icon={<img alt="icon" src="/assets/icons/glass/ic_glass_message.png" />}
           />
         </Grid>
 
-        <Grid xs={11} md={5} lg={7}>
+        <Grid xs={10} md={4} lg={6}>
           <AppTasks
             title="Tasks"
             list={[
@@ -84,23 +84,23 @@ export default function AppView() {
         </Grid>
 
 
-        <Grid xs={12} md={6} lg={4}>
+        <Grid xs={13} md={7} lg={6}>
           <AppOrderTimeline
-            title="Co. Timeline"
+            title="Process"
             list={[...Array(3)].map((_, index) => ({
               id: faker.string.uuid(),
               title: [
-                'Vietnam HTG MOU, India robot cooking contract,capital increase4x, Hyundai PNS welding robot contract',
-                'R&D center estblished, capital increase2x, venture business recognition',
-                'Establishment of Cutshion Co., Ltd.',
+                'Connect to robot arm',
+                'Move and Save different positions',
+                'Execute your robot automation project',
               ][index],
               type: `order${index + 1}`,
-              time: [
-                '2024', 
-                '2023', 
-                '2022', 
+              text: [
+                ['2 min aprox'],
+                ['4 min aprox'],
+                ['1 sec'],
               ][index],
-            }))}
+            }))}  
           />
         </Grid>
 
