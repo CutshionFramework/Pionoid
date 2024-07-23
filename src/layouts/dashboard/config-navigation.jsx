@@ -8,9 +8,9 @@ const icon = (name) => (
 
 const navConfig = [
   {
-    title: 'dashboard',
+    title: 'Jaka robotics',
     path: '/',
-    icon: icon('ic_analytics'),
+    icon: icon('ic_blog'),
   },
   /*
   {

@@ -8,7 +8,7 @@ export default function AppPage() {
   return (
     <>
       <Helmet>
-        <title> Dashboard | Minimal UI </title>
+        <title> Pionoid | Web I/F </title>
       </Helmet>
 
       <AppView />
