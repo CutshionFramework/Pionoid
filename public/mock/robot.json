@@ -1,0 +1,8 @@
+{
+  "robot_login": "robot login success",
+  "robot_logout": "robot logout success",
+  "robot_power_on": "robot power on success",
+  "robot_power_off": "robot power off success",
+  "robot_enable": "robot enable success",
+  "robot_disable": "robot disable success"
+}

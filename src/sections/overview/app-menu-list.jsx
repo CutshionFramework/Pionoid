@@ -1,4 +1,6 @@
+/** @jsxImportSource @emotion/react */
 import * as React from 'react';
+import { css } from '@emotion/react';
 
 import Grow from '@mui/material/Grow';
 import Stack from '@mui/material/Stack';
@@ -8,6 +10,32 @@ import Popper from '@mui/material/Popper';
 import MenuItem from '@mui/material/MenuItem';
 import MenuList from '@mui/material/MenuList';
 import ClickAwayListener from '@mui/material/ClickAwayListener';
+
+import {
+  robotLogin,
+  robotLogout,
+  robotEnable,
+  robotDisable,
+  robotPowerOn,
+  robotPowerOff,
+} from 'src/apis/apis';
+
+const buttonStyles = css`
+  font-size: 1.25rem;
+  padding: 23px;
+  color: rgba(131, 169, 190);
+  background-color: white;
+  box-shadow: 0 0 10px rgba(131, 169, 190, 0.6);
+`;
+
+const menuListStyles = css`
+  font-size: 1.25rem;
+`;
+
+const menuItemStyles = css`
+  font-size: 1.25rem;
+  font-weight: 600;
+`;
 
 export default function MenuListComposition() {
   const [open, setOpen] = React.useState(false);
@@ -44,10 +72,71 @@ export default function MenuListComposition() {
     prevOpen.current = open;
   }, [open]);
 
+  const robotLoginClicked = async () => {
+    setOpen(false);
+    try {
+      const response = await robotLogin();
+      console.log(response);
+    } catch (error) {
+      console.error('Failed to load data. : ', error);
+    }
+  };
+
+  const robotLogoutClicked = async () => {
+    setOpen(false);
+    try {
+      const response = await robotLogout();
+      console.log(response);
+    } catch (error) {
+      console.error('Failed to load data. : ', error);
+    }
+  };
+
+  const robotPowerOnClicked = async () => {
+    setOpen(false);
+    try {
+      const response = await robotPowerOn();
+      console.log(response);
+    } catch (error) {
+      console.error('Failed to load data. : ', error);
+    }
+  };
+
+  const robotPowerOffClicked = async () => {
+    setOpen(false);
+    try {
+      const response = await robotPowerOff();
+      console.log(response);
+    } catch (error) {
+      console.error('Failed to load data. : ', error);
+    }
+  };
+
+  const robotEnableClicked = async () => {
+    setOpen(false);
+    try {
+      const response = await robotEnable();
+      console.log(response);
+    } catch (error) {
+      console.error('Failed to load data. : ', error);
+    }
+  };
+
+  const robotDisableClicked = async () => {
+    setOpen(false);
+    try {
+      const response = await robotDisable();
+      console.log(response);
+    } catch (error) {
+      console.error('Failed to load data. : ', error);
+    }
+  };
+
   return (
     <Stack direction="row" spacing={2}>
       <div>
         <Button
+          css={buttonStyles}
           ref={anchorRef}
           id="composition-button"
           aria-controls={open ? 'composition-menu' : undefined}
@@ -64,6 +153,7 @@ export default function MenuListComposition() {
           placement="bottom-start"
           transition
           disablePortal={false}
+          style={{ width: anchorRef.current ? anchorRef.current.offsetWidth : undefined }}
         >
           {({ TransitionProps, placement }) => (
             <Grow
@@ -75,17 +165,30 @@ export default function MenuListComposition() {
               <Paper>
                 <ClickAwayListener onClickAway={handleClose}>
                   <MenuList
+                    css={menuListStyles}
                     autoFocusItem={open}
                     id="composition-menu"
                     aria-labelledby="composition-button"
                     onKeyDown={handleListKeyDown}
                   >
-                    <MenuItem onClick={handleClose}>robot login</MenuItem>
-                    <MenuItem onClick={handleClose}>robot logout</MenuItem>
-                    <MenuItem onClick={handleClose}>robot power on</MenuItem>
-                    <MenuItem onClick={handleClose}>robot power off</MenuItem>
-                    <MenuItem onClick={handleClose}>robot enable</MenuItem>
-                    <MenuItem onClick={handleClose}>robot disable</MenuItem>
+                    <MenuItem css={menuItemStyles} onClick={robotLoginClicked}>
+                      robot login
+                    </MenuItem>
+                    <MenuItem css={menuItemStyles} onClick={robotLogoutClicked}>
+                      robot logout
+                    </MenuItem>
+                    <MenuItem css={menuItemStyles} onClick={robotPowerOnClicked}>
+                      robot power on
+                    </MenuItem>
+                    <MenuItem css={menuItemStyles} onClick={robotPowerOffClicked}>
+                      robot power off
+                    </MenuItem>
+                    <MenuItem css={menuItemStyles} onClick={robotEnableClicked}>
+                      robot enable
+                    </MenuItem>
+                    <MenuItem css={menuItemStyles} onClick={robotDisableClicked}>
+                      robot disable
+                    </MenuItem>
                   </MenuList>
                 </ClickAwayListener>
               </Paper>

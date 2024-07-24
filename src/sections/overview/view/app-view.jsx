@@ -15,6 +15,7 @@ import AppWidgetSummary from '../app-widget-summary';
 const appMenuGridStyles = css`
   display: flex;
   justify-content: center;
+  margin: 40px 0;
 `;
 
 export default function AppView() {
