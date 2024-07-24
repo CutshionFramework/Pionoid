@@ -5,6 +5,7 @@ import { faker } from '@faker-js/faker';
 
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Unstable_Grid2';
+import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import ButtonBase from '@mui/material/ButtonBase';
 
@@ -46,6 +47,25 @@ const buttonStyles = (active) => css`
   }
 `;
 
+const inputGridStyles = css`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+`;
+
+const textFieldStyles = css`
+  border-radius: 10px;
+  background-color: white;
+  padding: 24px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.03);
+  transition:
+    background-color 0.3s,
+    box-shadow 0.3s;
+
+  font-size: 1.25rem;
+`;
+
 export default function AppView() {
   const [tool1Active, setTool1Active] = useState(false);
   const [tool2Active, setTool2Active] = useState(false);
@@ -74,16 +94,22 @@ export default function AppView() {
       </Grid>
 
       <Grid container spacing={3}>
-        <Grid xs={14} sm={8} md={6}>
-          <ButtonBase style={{ width: '100%' }}>
-            <AppWidgetSummary
-              style={{ width: '100%' }}
-              title="IP Address"
-              total={1}
-              color="primary"
-              icon={<img alt="icon" src="/assets/icons/glass/ic_glass_bag.png" />}
-            />
-          </ButtonBase>
+        <Grid css={inputGridStyles} xs={14} sm={8} md={6}>
+          <TextField
+            css={textFieldStyles}
+            label="IP Address"
+            variant="outlined"
+            fullWidth
+            InputProps={{
+              startAdornment: (
+                <img
+                  alt="icon"
+                  src="/assets/icons/glass/ic_glass_bag.png"
+                  style={{ marginRight: '8px' }}
+                />
+              ),
+            }}
+          />
         </Grid>
 
         <Grid xs={14} sm={8} md={6}>
