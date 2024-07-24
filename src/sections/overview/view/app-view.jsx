@@ -1,10 +1,12 @@
 /** @jsxImportSource @emotion/react */
+import { useState } from 'react';
 import { css } from '@emotion/react';
 import { faker } from '@faker-js/faker';
 
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Unstable_Grid2';
 import Typography from '@mui/material/Typography';
+import ButtonBase from '@mui/material/ButtonBase';
 
 import AppTasks from '../app-tasks';
 import AppMenuList from '../app-menu-list';
@@ -35,7 +37,29 @@ const menuListStyles = css`
   }
 `;
 
+const buttonStyles = (active) => css`
+  background-color: ${active ? 'lightblue' : 'white'};
+  transition: background-color 0.3s;
+
+  &:hover {
+    background-color: ${active ? 'lightblue' : '#f0f0f0'};
+  }
+`;
+
 export default function AppView() {
+  const [tool1Active, setTool1Active] = useState(false);
+  const [tool2Active, setTool2Active] = useState(false);
+
+  const handleToolClick = (tool) => {
+    if (tool === 'tool1') {
+      setTool1Active(!tool1Active);
+      console.log(tool1Active ? 'Tool 1 deactivated' : 'Tool 1 activated');
+    } else if (tool === 'tool2') {
+      setTool2Active(!tool2Active);
+      console.log(tool2Active ? 'Tool 2 deactivated' : 'Tool 2 activated');
+    }
+  };
+
   return (
     <Container maxWidth="sm">
       <Typography variant="h4" sx={{ mb: 5 }}>
@@ -51,48 +75,67 @@ export default function AppView() {
 
       <Grid container spacing={3}>
         <Grid xs={14} sm={8} md={6}>
-          <AppWidgetSummary
-            title="IP Address"
-            total={1}
-            color="success"
-            icon={<img alt="icon" src="/assets/icons/glass/ic_glass_bag.png" />}
-          />
+          <ButtonBase style={{ width: '100%' }}>
+            <AppWidgetSummary
+              style={{ width: '100%' }}
+              title="IP Address"
+              total={1}
+              color="primary"
+              icon={<img alt="icon" src="/assets/icons/glass/ic_glass_bag.png" />}
+            />
+          </ButtonBase>
         </Grid>
 
         <Grid xs={14} sm={8} md={6}>
-          <AppWidgetSummary
-            title="Save Position"
-            total={2}
-            color="info"
-            icon={<img alt="icon" src="/assets/icons/glass/ic_glass_users.png" />}
-          />
+          <ButtonBase style={{ width: '100%' }}>
+            <AppWidgetSummary
+              style={{ width: '100%' }}
+              title="Save Position"
+              total={2}
+              color="primary"
+              icon={<img alt="icon" src="/assets/icons/glass/ic_glass_users.png" />}
+            />
+          </ButtonBase>
         </Grid>
 
         <Grid xs={11} sm={6} md={4}>
-          <AppWidgetSummary
-            title="Tool 1"
-            total={3}
-            color="warning"
-            icon={<img alt="icon" src="/assets/icons/glass/ic_glass_buy.png" />}
-          />
+          <ButtonBase style={{ width: '100%' }}>
+            <AppWidgetSummary
+              onClick={() => handleToolClick('tool1')}
+              css={buttonStyles(tool1Active)}
+              style={{ width: '100%' }}
+              title="Tool 1"
+              total={3}
+              color="primary"
+              icon={<img alt="icon" src="/assets/icons/glass/ic_glass_buy.png" />}
+            />
+          </ButtonBase>
         </Grid>
 
         <Grid xs={11} sm={6} md={4}>
-          <AppWidgetSummary
-            title="Tool 2"
-            total={4}
-            color="error"
-            icon={<img alt="icon" src="/assets/icons/glass/ic_glass_message.png" />}
-          />
+          <ButtonBase style={{ width: '100%' }}>
+            <AppWidgetSummary
+              onClick={() => handleToolClick('tool2')}
+              css={buttonStyles(tool2Active)}
+              style={{ width: '100%' }}
+              title="Tool 2"
+              total={4}
+              color="primary"
+              icon={<img alt="icon" src="/assets/icons/glass/ic_glass_message.png" />}
+            />
+          </ButtonBase>
         </Grid>
 
         <Grid xs={11} sm={6} md={4}>
-          <AppWidgetSummary
-            title="Stop"
-            total={5}
-            color="Run Project"
-            icon={<img alt="icon" src="/assets/icons/glass/ic_glass_message.png" />}
-          />
+          <ButtonBase style={{ width: '100%' }}>
+            <AppWidgetSummary
+              style={{ width: '100%' }}
+              title="Stop"
+              total={5}
+              color="primary"
+              icon={<img alt="icon" src="/assets/icons/glass/ic_glass_message.png" />}
+            />
+          </ButtonBase>
         </Grid>
 
         <Grid xs={10} md={4} lg={6}>
