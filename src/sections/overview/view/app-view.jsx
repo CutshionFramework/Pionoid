@@ -1,3 +1,5 @@
+/** @jsxImportSource @emotion/react */
+import { css } from '@emotion/react';
 import { faker } from '@faker-js/faker';
 
 import Container from '@mui/material/Container';
@@ -5,11 +7,15 @@ import Grid from '@mui/material/Unstable_Grid2';
 import Typography from '@mui/material/Typography';
 
 import AppTasks from '../app-tasks';
+import AppMenuList from '../app-menu-list';
 import AppOrderTimeline from '../app-order-timeline';
 import AppWidgetSummary from '../app-widget-summary';
 
-
 // ----------------------------------------------------------------------
+const appMenuGridStyles = css`
+  display: flex;
+  justify-content: center;
+`;
 
 export default function AppView() {
   return (
@@ -18,12 +24,15 @@ export default function AppView() {
         Hi, Welcome back 👋
       </Typography>
 
-      
-        <Grid xs={12} md={6} lg={8}>
-          <img src="/assets/images/jaka%20robot%20arm.png" alt="JAKA robot arm" />
-        </Grid>
+      <Grid xs={12} md={6} lg={8}>
+        <img src="/assets/images/jaka%20robot%20arm.png" alt="JAKA robot arm" />
+      </Grid>
 
-        <Grid container spacing={3}>
+      <Grid xs={12} css={appMenuGridStyles}>
+        <AppMenuList />
+      </Grid>
+
+      <Grid container spacing={3}>
         <Grid xs={14} sm={8} md={6}>
           <AppWidgetSummary
             title="IP Address"
@@ -51,7 +60,6 @@ export default function AppView() {
           />
         </Grid>
 
-        
         <Grid xs={11} sm={6} md={4}>
           <AppWidgetSummary
             title="Tool 2"
@@ -83,7 +91,6 @@ export default function AppView() {
           />
         </Grid>
 
-
         <Grid xs={13} md={7} lg={6}>
           <AppOrderTimeline
             title="Process"
@@ -95,18 +102,11 @@ export default function AppView() {
                 'Execute your robot automation project',
               ][index],
               type: `order${index + 1}`,
-              text: [
-                ['2 min aprox'],
-                ['4 min aprox'],
-                ['1 sec'],
-              ][index],
-            }))}  
+              text: [['2 min aprox'], ['4 min aprox'], ['1 sec']][index],
+            }))}
           />
         </Grid>
-
-
-
-        </Grid>
+      </Grid>
     </Container>
   );
 }
