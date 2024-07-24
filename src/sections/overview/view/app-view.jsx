@@ -31,7 +31,7 @@ const menuListStyles = css`
   }
 
   @media (max-width: 767px) {
-    margin-top: 100px;
+    margin-top: 120px;
   }
 `;
 
