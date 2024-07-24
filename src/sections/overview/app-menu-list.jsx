@@ -22,7 +22,7 @@ import {
 
 const buttonStyles = css`
   font-size: 1.25rem;
-  padding: 23px;
+  padding: 12px;
   color: rgba(131, 169, 190);
   background-color: white;
   box-shadow: 0 0 10px rgba(131, 169, 190, 0.6);
@@ -35,6 +35,7 @@ const menuListStyles = css`
 const menuItemStyles = css`
   font-size: 1.25rem;
   font-weight: 600;
+  color: rgb(135, 140, 146);
 `;
 
 export default function MenuListComposition() {
@@ -144,7 +145,7 @@ export default function MenuListComposition() {
           aria-haspopup="true"
           onClick={handleToggle}
         >
-          Robot manipulation
+          Robot Operation
         </Button>
         <Popper
           open={open}

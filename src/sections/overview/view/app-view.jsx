@@ -12,10 +12,27 @@ import AppOrderTimeline from '../app-order-timeline';
 import AppWidgetSummary from '../app-widget-summary';
 
 // ----------------------------------------------------------------------
-const appMenuGridStyles = css`
+const imgGridStyles = css`
   display: flex;
   justify-content: center;
-  margin: 40px 0;
+  align-items: center;
+`;
+
+const menuListStyles = css`
+  position: absolute;
+  z-index: 10;
+
+  @media (min-width: 1024px) {
+    margin-top: 260px;
+  }
+
+  @media (max-width: 1023px) {
+    margin-top: 210px;
+  }
+
+  @media (max-width: 767px) {
+    margin-top: 100px;
+  }
 `;
 
 export default function AppView() {
@@ -25,12 +42,11 @@ export default function AppView() {
         Hi, Welcome back 👋
       </Typography>
 
-      <Grid xs={12} md={6} lg={8}>
+      <Grid xs={12} md={6} lg={8} css={imgGridStyles}>
         <img src="/assets/images/jaka%20robot%20arm.png" alt="JAKA robot arm" />
-      </Grid>
-
-      <Grid xs={12} css={appMenuGridStyles}>
-        <AppMenuList />
+        <Grid xs={12} md={6} lg={8} css={menuListStyles}>
+          <AppMenuList />
+        </Grid>
       </Grid>
 
       <Grid container spacing={3}>
