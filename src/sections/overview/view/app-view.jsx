@@ -3,13 +3,14 @@ import { useState } from 'react';
 import { css } from '@emotion/react';
 import { faker } from '@faker-js/faker';
 
+import { Button } from '@mui/material';
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Unstable_Grid2';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import ButtonBase from '@mui/material/ButtonBase';
 
-import { savePosition } from 'src/apis/apis';
+import { shutDown, savePosition, saveIpAddress } from 'src/apis/apis';
 
 import AppTasks from '../app-tasks';
 import AppMenuList from '../app-menu-list';
@@ -41,13 +42,24 @@ const menuListStyles = css`
   }
 `;
 
-const savePositionButtonStyles = css`
+const buttonStyles = css`
   &:hover {
     background-color: #f0f0f0;
   }
 `;
 
-const buttonStyles = (active) => css`
+const saveButtonStyles = css`
+  align-self: center;
+  height: 100%;
+  background-color: white;
+  color: #919eab;
+  font-size: 20px;
+  &:hover {
+    background-color: #f0f0f0;
+  }
+`;
+
+const activeButtonStyles = (active) => css`
   background-color: ${active ? 'lightblue' : 'white'};
   transition: background-color 0.3s;
 
@@ -79,8 +91,22 @@ const textFieldStyles = css`
 `;
 
 export default function AppView() {
+  const [ipAddress, setIpAddress] = useState('');
   const [tool1Active, setTool1Active] = useState(false);
   const [tool2Active, setTool2Active] = useState(false);
+
+  const handleInputChange = (event) => {
+    setIpAddress(event.target.value);
+  };
+
+  const handleSaveIpAddress = async () => {
+    try {
+      const response = await saveIpAddress();
+      console.log(`${response}: ${ipAddress}`);
+    } catch (error) {
+      console.error('Failed to load data. : ', error);
+    }
+  };
 
   const handleToolClick = (tool) => {
     if (tool === 'tool1') {
@@ -101,6 +127,15 @@ export default function AppView() {
     }
   };
 
+  const shutDownClicked = async () => {
+    try {
+      const response = await shutDown();
+      console.log(response);
+    } catch (error) {
+      console.error('Failed to load data. : ', error);
+    }
+  };
+
   return (
     <Container maxWidth="sm">
       <Typography variant="h4" sx={{ mb: 5 }}>
@@ -115,12 +150,14 @@ export default function AppView() {
       </Grid>
 
       <Grid container spacing={3}>
-        <Grid css={inputGridStyles} xs={14} sm={8} md={6}>
+        <Grid css={inputGridStyles} xs={8} sm={9} md={8}>
           <TextField
             css={textFieldStyles}
             label="IP Address"
             variant="outlined"
             fullWidth
+            value={ipAddress}
+            onChange={handleInputChange}
             InputProps={{
               startAdornment: (
                 <img
@@ -132,11 +169,22 @@ export default function AppView() {
             }}
           />
         </Grid>
+        <Grid css={inputGridStyles} xs={4} sm={3} md={4}>
+          <Button
+            css={saveButtonStyles}
+            variant="contained"
+            color="primary"
+            onClick={handleSaveIpAddress}
+            fullWidth
+          >
+            Save IP Address
+          </Button>
+        </Grid>
 
         <Grid xs={14} sm={8} md={6}>
           <ButtonBase style={{ width: '100%' }} onClick={savePositionClicked}>
             <AppWidgetSummary
-              css={savePositionButtonStyles}
+              css={buttonStyles}
               style={{ width: '100%' }}
               title="Save Position"
               total={2}
@@ -146,11 +194,11 @@ export default function AppView() {
           </ButtonBase>
         </Grid>
 
-        <Grid xs={11} sm={6} md={4}>
+        <Grid xs={14} sm={8} md={6}>
           <ButtonBase style={{ width: '100%' }}>
             <AppWidgetSummary
               onClick={() => handleToolClick('tool1')}
-              css={buttonStyles(tool1Active)}
+              css={activeButtonStyles(tool1Active)}
               style={{ width: '100%' }}
               title="Tool 1"
               total={3}
@@ -160,11 +208,11 @@ export default function AppView() {
           </ButtonBase>
         </Grid>
 
-        <Grid xs={11} sm={6} md={4}>
+        <Grid xs={14} sm={8} md={6}>
           <ButtonBase style={{ width: '100%' }}>
             <AppWidgetSummary
               onClick={() => handleToolClick('tool2')}
-              css={buttonStyles(tool2Active)}
+              css={activeButtonStyles(tool2Active)}
               style={{ width: '100%' }}
               title="Tool 2"
               total={4}
@@ -174,21 +222,9 @@ export default function AppView() {
           </ButtonBase>
         </Grid>
 
-        <Grid xs={11} sm={6} md={4}>
+        <Grid xs={14} sm={8} md={6}>
           <FormDialog />
         </Grid>
-
-        {/* <Grid xs={11} sm={6} md={4}>
-          <ButtonBase style={{ width: '100%' }}>
-            <AppWidgetSummary
-              style={{ width: '100%' }}
-              title="Stop"
-              total={5}
-              color="primary"
-              icon={<img alt="icon" src="/assets/icons/glass/ic_glass_message.png" />}
-            />
-          </ButtonBase>
-        </Grid> */}
 
         <Grid xs={10} md={4} lg={6}>
           <AppTasks
@@ -217,6 +253,19 @@ export default function AppView() {
               text: [['2 min aprox'], ['4 min aprox'], ['1 sec']][index],
             }))}
           />
+        </Grid>
+
+        <Grid xs={28} sm={1} md={12}>
+          <ButtonBase style={{ width: '100%' }} onClick={shutDownClicked}>
+            <AppWidgetSummary
+              css={buttonStyles}
+              style={{ width: '100%' }}
+              title="Shut Down"
+              total={6}
+              color="primary"
+              icon={<img alt="icon" src="/assets/icons/glass/ic_glass_users.png" />}
+            />
+          </ButtonBase>
         </Grid>
       </Grid>
     </Container>

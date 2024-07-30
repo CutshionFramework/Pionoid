@@ -6,5 +6,7 @@
   "robot_enable": "robot enable success",
   "robot_disable": "robot disable success",
   "robot_run_save_movements": "robot run save movements success",
-  "save_position": "save position success"
+  "save_position": "save position success",
+  "shut_down": "shot down success",
+  "save_ip_address": "save ip address success"
 }

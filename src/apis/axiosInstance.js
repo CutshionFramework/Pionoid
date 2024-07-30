@@ -17,6 +17,8 @@ class AxiosInstance {
   }
 }
 
-const httpClient = new AxiosInstance('/mock');
+const httpClient = new AxiosInstance('http://localhost:8080');
+export const robotAPI = httpClient.instance('');
 
-export const robotAPI = httpClient.instance('/robot.json');
+//const httpClient = new AxiosInstance('/mock');
+//export const robotAPI = httpClient.instance('/robot.json');
