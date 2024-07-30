@@ -41,6 +41,12 @@ const menuListStyles = css`
   }
 `;
 
+const savePositionButtonStyles = css`
+  &:hover {
+    background-color: #f0f0f0;
+  }
+`;
+
 const buttonStyles = (active) => css`
   background-color: ${active ? 'lightblue' : 'white'};
   transition: background-color 0.3s;
@@ -130,6 +136,7 @@ export default function AppView() {
         <Grid xs={14} sm={8} md={6}>
           <ButtonBase style={{ width: '100%' }} onClick={savePositionClicked}>
             <AppWidgetSummary
+              css={savePositionButtonStyles}
               style={{ width: '100%' }}
               title="Save Position"
               total={2}
