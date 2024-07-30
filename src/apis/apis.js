@@ -29,3 +29,13 @@ export const robotDisable = async () => {
   const res = await robotAPI.get(``);
   return res.data.robot_disable;
 };
+
+export const robotRunSaveMovements = async () => {
+  const res = await robotAPI.get(``);
+  return res.data.robot_run_save_movements;
+};
+
+export const savePosition = async () => {
+  const res = await robotAPI.get(``);
+  return res.data.save_position;
+};

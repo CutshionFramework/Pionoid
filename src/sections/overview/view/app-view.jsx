@@ -9,8 +9,11 @@ import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import ButtonBase from '@mui/material/ButtonBase';
 
+import { savePosition } from 'src/apis/apis';
+
 import AppTasks from '../app-tasks';
 import AppMenuList from '../app-menu-list';
+import FormDialog from '../app-form-dialogs';
 import AppOrderTimeline from '../app-order-timeline';
 import AppWidgetSummary from '../app-widget-summary';
 
@@ -55,15 +58,18 @@ const inputGridStyles = css`
 `;
 
 const textFieldStyles = css`
-  border-radius: 10px;
+  border-radius: 15px;
   background-color: white;
   padding: 24px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.03);
+  box-shadow: 2px 2px 20px 3px rgba(0, 0, 0, 0.03);
   transition:
     background-color 0.3s,
     box-shadow 0.3s;
 
-  font-size: 1.25rem;
+  label {
+    font-size: 1.2rem;
+    font-weight: 600;
+  }
 `;
 
 export default function AppView() {
@@ -77,6 +83,15 @@ export default function AppView() {
     } else if (tool === 'tool2') {
       setTool2Active(!tool2Active);
       console.log(tool2Active ? 'Tool 2 deactivated' : 'Tool 2 activated');
+    }
+  };
+
+  const savePositionClicked = async () => {
+    try {
+      const response = await savePosition();
+      console.log(response);
+    } catch (error) {
+      console.error('Failed to load data. : ', error);
     }
   };
 
@@ -113,7 +128,7 @@ export default function AppView() {
         </Grid>
 
         <Grid xs={14} sm={8} md={6}>
-          <ButtonBase style={{ width: '100%' }}>
+          <ButtonBase style={{ width: '100%' }} onClick={savePositionClicked}>
             <AppWidgetSummary
               style={{ width: '100%' }}
               title="Save Position"
@@ -153,6 +168,10 @@ export default function AppView() {
         </Grid>
 
         <Grid xs={11} sm={6} md={4}>
+          <FormDialog />
+        </Grid>
+
+        {/* <Grid xs={11} sm={6} md={4}>
           <ButtonBase style={{ width: '100%' }}>
             <AppWidgetSummary
               style={{ width: '100%' }}
@@ -162,7 +181,7 @@ export default function AppView() {
               icon={<img alt="icon" src="/assets/icons/glass/ic_glass_message.png" />}
             />
           </ButtonBase>
-        </Grid>
+        </Grid> */}
 
         <Grid xs={10} md={4} lg={6}>
           <AppTasks
