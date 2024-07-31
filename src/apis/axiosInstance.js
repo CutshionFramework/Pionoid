@@ -13,12 +13,11 @@ class AxiosInstance {
       headers: {
         'Content-Type': 'application/json',
       },
+      withCredentials: true,
     });
   }
 }
 
-const httpClient = new AxiosInstance('http://localhost:8080');
+// Use the proxy endpoint
+const httpClient = new AxiosInstance('/robotAPI');
 export const robotAPI = httpClient.instance('');
-
-//const httpClient = new AxiosInstance('/mock');
-//export const robotAPI = httpClient.instance('/robot.json');

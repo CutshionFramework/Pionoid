@@ -1,55 +1,5 @@
 import { robotAPI } from './axiosInstance';
 
-// export const robotLogin = async () => {
-//   const res = await robotAPI.get(``);
-//   return res.data.robot_login;
-// };
-
-// export const robotLogout = async () => {
-//   const res = await robotAPI.get(``);
-//   return res.data.robot_logout;
-// };
-
-// export const robotPowerOn = async () => {
-//   const res = await robotAPI.get(``);
-//   return res.data.robot_power_on;
-// };
-
-// export const robotPowerOff = async () => {
-//   const res = await robotAPI.get(``);
-//   return res.data.robot_power_off;
-// };
-
-// export const robotEnable = async () => {
-//   const res = await robotAPI.get(``);
-//   return res.data.robot_enable;
-// };
-
-// export const robotDisable = async () => {
-//   const res = await robotAPI.get(``);
-//   return res.data.robot_disable;
-// };
-
-// export const robotRunSaveMovements = async () => {
-//   const res = await robotAPI.get(``);
-//   return res.data.robot_run_save_movements;
-// };
-
-// export const savePosition = async () => {
-//   const res = await robotAPI.get(``);
-//   return res.data.save_position;
-// };
-
-// export const shutDown = async () => {
-//   const res = await robotAPI.get(``);
-//   return res.data.shut_down;
-// };
-
-// export const saveIpAddress = async () => {
-//   const res = await robotAPI.get(``);
-//   return res.data.save_ip_address;
-// };
-
 //------------------------------------------
 export const robotLogin = async () => {
   const res = await robotAPI.get(`/login_in`);

@@ -1,9 +1,7 @@
-import path from 'path';
 import { defineConfig } from 'vite';
-import react from '@vitejs/plugin-react-swc';
+import react from '@vitejs/plugin-react';
 import checker from 'vite-plugin-checker';
-
-// ----------------------------------------------------------------------
+import path from 'path';
 
 export default defineConfig({
   plugins: [
@@ -27,9 +25,21 @@ export default defineConfig({
     ],
   },
   server: {
-    port: 3030,
+    port: 3000,
+    proxy: {
+      '/robotAPI': {
+        target: 'http://localhost:8080',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/robotAPI/, ''),
+        configure: (proxy, options) => {
+          proxy.on('proxyReq', (proxyReq, req, res) => {
+            proxyReq.setHeader('Origin', 'http://localhost:3000');
+          });
+        },
+      },
+    },
   },
   preview: {
-    port: 3030,
+    port: 3000,
   },
 });
