@@ -11,7 +11,7 @@ class AxiosInstance {
     return axios.create({
       baseURL: this.baseUrl + endPoint,
       headers: {
-        'Content-Type': 'application/json',
+        'Content-Type': 'text/plain',
       },
       withCredentials: true,
     });

@@ -31,6 +31,7 @@ export default defineConfig({
         target: 'http://localhost:8080',
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/robotAPI/, ''),
+        cookieDomainRewrite: '', // Ensure cookies are forwarded correctly
         configure: (proxy, options) => {
           proxy.on('proxyReq', (proxyReq, req, res) => {
             proxyReq.setHeader('Origin', 'http://localhost:3000');

@@ -1,52 +1,166 @@
-import { robotAPI } from './axiosInstance';
+class FetchInstance {
+  constructor(baseUrl) {
+    this.baseUrl = baseUrl;
+  }
 
-//------------------------------------------
-export const robotLogin = async () => {
-  const res = await robotAPI.get(`/login_in`);
-  return res.data.robot_login;
+  async request(endPoint, options = {}) {
+    const url = this.baseUrl + endPoint;
+    const defaultOptions = {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      credentials: 'include', // This is equivalent to withCredentials: true in Axios
+    };
+
+    const finalOptions = { ...defaultOptions, ...options };
+
+    const response = await fetch(url, finalOptions);
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const contentType = response.headers.get('content-type');
+    if (contentType && contentType.includes('application/json')) {
+      return response.json();
+    }
+    return response.text(); // Handle non-JSON response
+  }
+}
+
+// Use the proxy endpoint
+const httpClient = new FetchInstance('/robotAPI');
+export const robotAPI = {
+  get: (endPoint, options) => httpClient.request(endPoint, { ...options, method: 'GET' }),
+  post: (endPoint, body, options) => httpClient.request(endPoint, { ...options, method: 'POST', body: JSON.stringify(body) }),
 };
 
-export const robotLogout = async () => {
-  const res = await robotAPI.get(`/login_out`);
-  return res.data.robot_logout;
-};
-
-export const robotPowerOn = async () => {
-  const res = await robotAPI.get(`/power_on`);
-  return res.data.robot_power_on;
-};
-
-export const robotPowerOff = async () => {
-  const res = await robotAPI.get(`/power_off`);
-  return res.data.robot_power_off;
-};
-
-export const robotEnable = async () => {
-  const res = await robotAPI.get(`/enable_robot`);
-  return res.data.robot_enable;
-};
-
-export const robotDisable = async () => {
-  const res = await robotAPI.get(`/disable_robot`);
-  return res.data.robot_disable;
-};
-
-export const robotRunSaveMovements = async () => {
-  const res = await robotAPI.get(`/run_saved_movements`);
-  return res.data.robot_run_save_movements;
+// Updated functions to interact with the server
+export const robotRunSaveMovements = async (times) => {
+  try {
+    const res = await robotAPI.get(`/run_saved_movements/${times}`);
+    return res;
+  } catch (error) {
+    console.error('Error running saved movements:', error);
+    throw error;
+  }
 };
 
 export const savePosition = async () => {
-  const res = await robotAPI.get(`/save_robot_status`);
-  return res.data.save_position;
+  try {
+    const res = await robotAPI.get(`/save_robot_status`);
+    return res;
+  } catch (error) {
+    console.error('Error saving position:', error);
+    throw error;
+  }
 };
 
 export const shutDown = async () => {
-  const res = await robotAPI.get(`/shut_down`);
-  return res.data.shut_down;
+  try {
+    const res = await robotAPI.get(`/shut_down`);
+    return res;
+  } catch (error) {
+    console.error('Error shutting down:', error);
+    throw error;
+  }
 };
 
-export const saveIpAddress = async () => {
-  const res = await robotAPI.get(`set_ip`);
-  return res.data.save_ip_address;
+export const saveIpAddress = async (ipAddress) => {
+  try {
+    const res = await robotAPI.post(`/set_ip`, { ipAddress });
+    return res;
+  } catch (error) {
+    console.error('Error saving IP address:', error);
+    throw error;
+  }
+};
+
+export const robotLogin = async () => {
+  try {
+    const res = await robotAPI.get(`/login_in`);
+    return res;
+  } catch (error) {
+    console.error('Error logging in:', error);
+    throw error;
+  }
+};
+
+export const robotLogout = async () => {
+  try {
+    const res = await robotAPI.get(`/login_out`);
+    return res;
+  } catch (error) {
+    console.error('Error logging out:', error);
+    throw error;
+  }
+};
+
+export const robotPowerOn = async () => {
+  try {
+    const res = await robotAPI.get(`/power_on`);
+    return res;
+  } catch (error) {
+    console.error('Error powering on:', error);
+    throw error;
+  }
+};
+
+export const robotPowerOff = async () => {
+  try {
+    const res = await robotAPI.get(`/power_off`);
+    return res;
+  } catch (error) {
+    console.error('Error powering off:', error);
+    throw error;
+  }
+};
+
+export const robotEnable = async () => {
+  try {
+    const res = await robotAPI.get(`/enable_robot`);
+    return res;
+  } catch (error) {
+    console.error('Error enabling robot:', error);
+    throw error;
+  }
+};
+
+export const robotDisable = async () => {
+  try {
+    const res = await robotAPI.get(`/disable_robot`);
+    return res;
+  } catch (error) {
+    console.error('Error disabling robot:', error);
+    throw error;
+  }
+};
+
+export const digitalOutputStatus = async () => {
+  try {
+    const res = await robotAPI.get(`/digital_output_status`);
+    return res;
+  } catch (error) {
+    console.error('Error getting digital output status:', error);
+    throw error;
+  }
+};
+
+export const useDigitalOutput1 = async () => {
+  try {
+    const res = await robotAPI.get(`/use_digital_output1`);
+    return res;
+  } catch (error) {
+    console.error('Error using digital output 1:', error);
+    throw error;
+  }
+};
+
+export const useDigitalOutput2 = async () => {
+  try {
+    const res = await robotAPI.get(`/use_digital_output2`);
+    return res;
+  } catch (error) {
+    console.error('Error using digital output 2:', error);
+    throw error;
+  }
 };
