@@ -1,3 +1,4 @@
+/*
 import React, { useState } from 'react';
 
 
@@ -84,8 +85,11 @@ function App() {
 
 export default App;
 
+*/
 
-/*
+
+
+
 //GUI code for the app --must be in the app.jsx file
 
 import './global.css';
@@ -105,4 +109,3 @@ export default function App() {
   );
 }
 
-*/
