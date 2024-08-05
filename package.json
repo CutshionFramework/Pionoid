@@ -43,7 +43,9 @@
     "rm:all": "rm -rf node_modules .next out dist build",
     "re:start": "yarn rm:all && yarn install && yarn dev",
     "re:build": "yarn rm:all && yarn install && yarn build",
-    "re:build-npm": "npm run rm:all && npm install && npm run build"
+    "re:build-npm": "npm run rm:all && npm install && npm run build",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
   },
   "eslintConfig": {
     "extends": [

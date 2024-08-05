@@ -46,7 +46,7 @@ AnalyticsOrderTimeline.propTypes = {
 function OrderItem({ item, lastTimeline }) {
   const { type, title, text } = item;
 
-  const timeText = text.join('-'); 
+  const timeText = text.join('-');
   return (
     <TimelineItem>
       <TimelineSeparator>
