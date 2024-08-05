@@ -1,4 +1,4 @@
-##This project is an open source C++ framework designed to:
+## This project is an open source C++ framework designed to:
 
 1. Automate corobots projects with ease, specifically targeting non-developers.
 2. (Demo preparation)Plan the construction of a project by first visualizing the expected outcome.
