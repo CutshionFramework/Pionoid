@@ -162,7 +162,7 @@ export default function AppView() {
               startAdornment: (
                 <img
                   alt="icon"
-                  src="/assets/icons/glass/ic_glass_bag.png"
+                  src="/assets/icons/glass/ic_glass_users.png"
                   style={{ marginRight: '8px' }}
                 />
               ),
@@ -190,7 +190,7 @@ export default function AppView() {
               total={2}
               color="primary"
               icon={
-                <img alt="icon" src="/assets/icons/glass/ic_glass_users.png" />
+                <img alt="icon" src="/assets/icons/glass/ic_glass_buy.png" />
               }
             />
           </ButtonBase>
@@ -206,7 +206,10 @@ export default function AppView() {
               total={3}
               color="primary"
               icon={
-                <img alt="icon" src="/assets/icons/glass/ic_glass_buy.png" />
+                <img
+                  alt="icon"
+                  src="/assets/icons/glass/ic_glass_message.png"
+                />
               }
             />
           </ButtonBase>
