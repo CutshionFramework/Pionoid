@@ -189,9 +189,7 @@ export default function AppView() {
               title="Save Position"
               total={2}
               color="primary"
-              icon={
-                <img alt="icon" src="/assets/icons/glass/ic_glass_buy.png" />
-              }
+              icon={<img alt="icon" src="/assets/icons/glass/ic_glass_buy.png" />}
             />
           </ButtonBase>
         </Grid>
@@ -205,12 +203,7 @@ export default function AppView() {
               title="Tool 1"
               total={3}
               color="primary"
-              icon={
-                <img
-                  alt="icon"
-                  src="/assets/icons/glass/ic_glass_message.png"
-                />
-              }
+              icon={<img alt="icon" src="/assets/icons/glass/ic_glass_message.png" />}
             />
           </ButtonBase>
         </Grid>
@@ -224,12 +217,7 @@ export default function AppView() {
               title="Tool 2"
               total={4}
               color="primary"
-              icon={
-                <img
-                  alt="icon"
-                  src="/assets/icons/glass/ic_glass_message.png"
-                />
-              }
+              icon={<img alt="icon" src="/assets/icons/glass/ic_glass_message.png" />}
             />
           </ButtonBase>
         </Grid>
@@ -275,9 +263,7 @@ export default function AppView() {
               title="Shut Down"
               total={6}
               color="primary"
-              icon={
-                <img alt="icon" src="/assets/icons/glass/ic_glass_users.png" />
-              }
+              icon={<img alt="icon" src="/assets/icons/glass/ic_glass_users.png" />}
             />
           </ButtonBase>
         </Grid>
