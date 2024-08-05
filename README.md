@@ -8,12 +8,14 @@ It leverages a C++ backend for performance and efficiency, and a React frontend 
 ## Prerequisites
 Before executing the project, ensure you have installed the required dependencies:
 
--Install 'Microsoft Runtime Packages' Link: https://learn.microsoft.com/en-us/cpp/windows/latest-supported-vc-redist?view=msvc-170
+-Install 'Microsoft Runtime Packages' 
+Link: https://learn.microsoft.com/en-us/cpp/windows/latest-supported-vc-redist?view=msvc-170
 
-## Execution Instructions
+-Unzip 'Prerequisites.zip' & execute 'C++SDK_Framework.exe'
+
+## Start the interface
 To run the project, follow these steps:
 
-Execute: C++SDK_Framework.exe
 In the terminal, run:
 npm install
 npm start
