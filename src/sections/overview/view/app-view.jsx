@@ -101,7 +101,7 @@ export default function AppView() {
 
   const handleSaveIpAddress = async () => {
     try {
-      const response = await saveIpAddress();
+      const response = await saveIpAddress(ipAddress);
       console.log(`${response}: ${ipAddress}`);
     } catch (error) {
       console.error('Failed to load data. : ', error);
@@ -189,7 +189,9 @@ export default function AppView() {
               title="Save Position"
               total={2}
               color="primary"
-              icon={<img alt="icon" src="/assets/icons/glass/ic_glass_users.png" />}
+              icon={
+                <img alt="icon" src="/assets/icons/glass/ic_glass_users.png" />
+              }
             />
           </ButtonBase>
         </Grid>
@@ -203,7 +205,9 @@ export default function AppView() {
               title="Tool 1"
               total={3}
               color="primary"
-              icon={<img alt="icon" src="/assets/icons/glass/ic_glass_buy.png" />}
+              icon={
+                <img alt="icon" src="/assets/icons/glass/ic_glass_buy.png" />
+              }
             />
           </ButtonBase>
         </Grid>
@@ -217,7 +221,12 @@ export default function AppView() {
               title="Tool 2"
               total={4}
               color="primary"
-              icon={<img alt="icon" src="/assets/icons/glass/ic_glass_message.png" />}
+              icon={
+                <img
+                  alt="icon"
+                  src="/assets/icons/glass/ic_glass_message.png"
+                />
+              }
             />
           </ButtonBase>
         </Grid>
@@ -263,7 +272,9 @@ export default function AppView() {
               title="Shut Down"
               total={6}
               color="primary"
-              icon={<img alt="icon" src="/assets/icons/glass/ic_glass_users.png" />}
+              icon={
+                <img alt="icon" src="/assets/icons/glass/ic_glass_users.png" />
+              }
             />
           </ButtonBase>
         </Grid>
