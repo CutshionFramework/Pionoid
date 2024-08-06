@@ -40,7 +40,7 @@ const menuItemStyles = css`
   color: rgb(135, 140, 146);
 `;
 
-export default function RobotOperationMenuList() {
+export default function RobotOperationList() {
   const [open, setOpen] = React.useState(false);
   const anchorRef = React.useRef(null);
 

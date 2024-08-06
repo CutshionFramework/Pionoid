@@ -1,4 +1,5 @@
 /** @jsxImportSource @emotion/react */
+import React, { useState, useEffect } from 'react';
 import { css } from '@emotion/react';
 import {
   Button,
@@ -18,12 +19,11 @@ import FormDialog from './app-form-dialogs';
 const listContainerStyles = css`
   position: fixed;
   bottom: 50px;
-  box-shadow: 2px 2px 20px 3px rgba(0, 0, 0, 0.03);
+  box-shadow: 2px 2px 10px 2px rgba(0, 0, 0, 0.04);
   background-color: white;
   border-radius: 4px;
   color: #919eab;
   max-height: 50%;
-  max-width: 578px;
   overflow-y: auto;
   transform: translateX(-50%);
   transition:
@@ -39,12 +39,12 @@ const listContainerStyles = css`
   }
 
   @media (min-width: 1024px) {
-    width: 578px;
+    width: 700px;
     left: 57.5%;
   }
 
   @media (max-width: 1023px) {
-    width: 578px;
+    width: 700px;
     left: 51%;
   }
 
@@ -62,6 +62,7 @@ const buttonStyles = css`
   font-size: 18px;
   color: #919eab;
   background-color: white;
+  box-shadow: 2px 2px 10px 3px rgba(0, 0, 0, 0.03);
 
   &:hover {
     background-color: #f0f0f0;
@@ -81,20 +82,30 @@ const tableStyles = css`
 `;
 
 const RobotMovementMenuList = ({ showList, toggleList, onItemClick }) => {
+  const [data, setData] = useState([]);
+
+  // 로컬스토리지에서 데이터를 읽어오는 함수
+  const loadDataFromLocalStorage = () => {
+    const storedData = localStorage.getItem('positions');
+    if (storedData) {
+      setData(JSON.parse(storedData));
+    }
+  };
+
+  useEffect(() => {
+    if (showList) {
+      loadDataFromLocalStorage();
+    }
+  }, [showList]);
+
   const handleItemClick = (item) => {
     onItemClick(item);
   };
 
-  // 임의의 데이터 생성
-  const data = [...Array(20)].map((_, index) => ({
-    name: `Item ${index + 1}`,
-    x: Math.random().toFixed(2),
-    y: Math.random().toFixed(2),
-    z: Math.random().toFixed(2),
-    rx: Math.random().toFixed(2),
-    ry: Math.random().toFixed(2),
-    rz: Math.random().toFixed(2),
-  }));
+  const handleButtonClick = () => {
+    loadDataFromLocalStorage();
+    toggleList();
+  };
 
   return (
     <>
@@ -142,7 +153,7 @@ const RobotMovementMenuList = ({ showList, toggleList, onItemClick }) => {
         variant="contained"
         color="primary"
         css={buttonStyles}
-        onClick={toggleList}
+        onClick={handleButtonClick}
       >
         Robot Movement List
       </Button>

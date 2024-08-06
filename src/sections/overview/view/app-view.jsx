@@ -13,7 +13,7 @@ import ButtonBase from '@mui/material/ButtonBase';
 import { shutDown, savePosition, saveIpAddress } from '../../../apis/apis';
 
 import AppTasks from '../app-tasks';
-import RobotOperationMenuList from '../robot-operation-menu-list';
+import RobotOperationList from '../robot-operation-list';
 import AppOrderTimeline from '../app-order-timeline';
 import AppWidgetSummary from '../app-widget-summary';
 import RobotMovementList from '../robot-movement-list';
@@ -144,7 +144,8 @@ export default function AppView() {
   const savePositionClicked = async () => {
     try {
       const response = await savePosition();
-      console.log(response);
+      saveToLocalStorage('positions', response); // 'positions'는 로컬스토리지의 키
+      console.log('Data saved to localStorage:', response);
     } catch (error) {
       console.error('Failed to load data. : ', error);
     }
@@ -167,6 +168,26 @@ export default function AppView() {
     console.log(`${item} clicked`);
   };
 
+  // 변환할 데이터 포맷
+  const formatData = (data, index) => ({
+    name: `Move ${index + 1}`, // 차례대로 1, 2, 3, ... 생성
+    x: data.x,
+    y: data.y,
+    z: data.z,
+    rx: data.rx,
+    ry: data.ry,
+    rz: data.rz,
+  });
+
+  // 로컬스토리지에 저장할 함수
+  const saveToLocalStorage = (key, data) => {
+    const existingData = JSON.parse(localStorage.getItem(key)) || [];
+    const newIndex = existingData.length; // 기존 데이터 개수로 새로운 index 결정
+    const formattedData = formatData(data, newIndex);
+    existingData.push(formattedData);
+    localStorage.setItem(key, JSON.stringify(existingData));
+  };
+
   return (
     <Container maxWidth="sm">
       <Typography variant="h4" sx={{ mb: 5 }}>
@@ -176,7 +197,7 @@ export default function AppView() {
       <Grid xs={12} md={6} lg={8} css={imgGridStyles}>
         <img src="/assets/images/jaka%20robot%20arm.png" alt="JAKA robot arm" />
         <Grid xs={12} md={6} lg={8} css={menuListStyles}>
-          <RobotOperationMenuList />
+          <RobotOperationList />
         </Grid>
       </Grid>
 
