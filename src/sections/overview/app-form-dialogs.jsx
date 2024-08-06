@@ -37,7 +37,7 @@ const buttonStyles = css`
   width: 100%;
   height: 100%;
   border: none;
-  font-size: 20px;
+  font-size: 18px;
   color: #919eab;
 
   &:hover {
@@ -87,7 +87,7 @@ export default function FormDialog() {
   return (
     <Stack css={divStyles}>
       <Button css={buttonStyles} variant="outlined" onClick={handleClickOpen}>
-        Run Save Movements
+        Run Movements
       </Button>
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle>Enter How Many times</DialogTitle>

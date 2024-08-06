@@ -13,10 +13,10 @@ import ButtonBase from '@mui/material/ButtonBase';
 import { shutDown, savePosition, saveIpAddress } from '../../../apis/apis';
 
 import AppTasks from '../app-tasks';
-import AppMenuList from '../app-menu-list';
-import FormDialog from '../app-form-dialogs';
+import RobotOperationMenuList from '../robot-operation-menu-list';
 import AppOrderTimeline from '../app-order-timeline';
 import AppWidgetSummary from '../app-widget-summary';
+import RobotMovementList from '../robot-movement-list';
 
 // ----------------------------------------------------------------------
 const imgGridStyles = css`
@@ -90,10 +90,33 @@ const textFieldStyles = css`
   }
 `;
 
+const formDialogStyles = css`
+  position: fixed;
+  bottom: 0;
+  height: 5%;
+  z-index: 1000;
+
+  @media (min-width: 1024px) {
+    width: 578px;
+  }
+
+  @media (max-width: 1023px) {
+    width: 578px;
+  }
+
+  @media (max-width: 767px) {
+    left: 0;
+    width: 100%;
+    padding-bottom: 8px;
+  }
+`;
+
 export default function AppView() {
   const [ipAddress, setIpAddress] = useState('');
   const [tool1Active, setTool1Active] = useState(false);
   const [tool2Active, setTool2Active] = useState(false);
+
+  const [showList, setShowList] = useState(false);
 
   const handleInputChange = (event) => {
     setIpAddress(event.target.value);
@@ -136,6 +159,14 @@ export default function AppView() {
     }
   };
 
+  const toggleList = () => {
+    setShowList(!showList);
+  };
+
+  const handleItemClick = (item) => {
+    console.log(`${item} clicked`);
+  };
+
   return (
     <Container maxWidth="sm">
       <Typography variant="h4" sx={{ mb: 5 }}>
@@ -145,7 +176,7 @@ export default function AppView() {
       <Grid xs={12} md={6} lg={8} css={imgGridStyles}>
         <img src="/assets/images/jaka%20robot%20arm.png" alt="JAKA robot arm" />
         <Grid xs={12} md={6} lg={8} css={menuListStyles}>
-          <AppMenuList />
+          <RobotOperationMenuList />
         </Grid>
       </Grid>
 
@@ -189,7 +220,9 @@ export default function AppView() {
               title="Save Position"
               total={2}
               color="primary"
-              icon={<img alt="icon" src="/assets/icons/glass/ic_glass_buy.png" />}
+              icon={
+                <img alt="icon" src="/assets/icons/glass/ic_glass_buy.png" />
+              }
             />
           </ButtonBase>
         </Grid>
@@ -203,7 +236,12 @@ export default function AppView() {
               title="Tool 1"
               total={3}
               color="primary"
-              icon={<img alt="icon" src="/assets/icons/glass/ic_glass_message.png" />}
+              icon={
+                <img
+                  alt="icon"
+                  src="/assets/icons/glass/ic_glass_message.png"
+                />
+              }
             />
           </ButtonBase>
         </Grid>
@@ -217,13 +255,29 @@ export default function AppView() {
               title="Tool 2"
               total={4}
               color="primary"
-              icon={<img alt="icon" src="/assets/icons/glass/ic_glass_message.png" />}
+              icon={
+                <img
+                  alt="icon"
+                  src="/assets/icons/glass/ic_glass_message.png"
+                />
+              }
             />
           </ButtonBase>
         </Grid>
 
         <Grid xs={14} sm={8} md={6}>
-          <FormDialog />
+          <ButtonBase style={{ width: '100%' }} onClick={shutDownClicked}>
+            <AppWidgetSummary
+              css={buttonStyles}
+              style={{ width: '100%' }}
+              title="Shut Down"
+              total={6}
+              color="primary"
+              icon={
+                <img alt="icon" src="/assets/icons/glass/ic_glass_users.png" />
+              }
+            />
+          </ButtonBase>
         </Grid>
 
         <Grid xs={10} md={4} lg={6}>
@@ -255,17 +309,12 @@ export default function AppView() {
           />
         </Grid>
 
-        <Grid xs={28} sm={1} md={12}>
-          <ButtonBase style={{ width: '100%' }} onClick={shutDownClicked}>
-            <AppWidgetSummary
-              css={buttonStyles}
-              style={{ width: '100%' }}
-              title="Shut Down"
-              total={6}
-              color="primary"
-              icon={<img alt="icon" src="/assets/icons/glass/ic_glass_users.png" />}
-            />
-          </ButtonBase>
+        <Grid css={formDialogStyles} xs={14} sm={8} md={6}>
+          <RobotMovementList
+            showList={showList}
+            toggleList={toggleList}
+            onItemClick={handleItemClick}
+          />
         </Grid>
       </Grid>
     </Container>
