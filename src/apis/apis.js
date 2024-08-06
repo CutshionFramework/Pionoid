@@ -20,6 +20,18 @@ export const savePosition = async () => {
   }
 };
 
+export const deletePosition = async (name) => {
+  try {
+    const res = await robotAPI.get(
+      `/delete_robot_status/${encodeURIComponent(name)}`
+    );
+    return res;
+  } catch (error) {
+    console.error('Error deleting position:', error);
+    throw error;
+  }
+};
+
 export const shutDown = async () => {
   try {
     const res = await robotAPI.get(`/shut_down`);

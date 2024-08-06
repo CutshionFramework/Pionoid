@@ -14,6 +14,7 @@ import {
 } from '@mui/material';
 
 import FormDialog from './app-form-dialogs';
+import { deletePosition } from '../../apis/apis';
 
 // 리스트 컨테이너 스타일
 const listContainerStyles = css`
@@ -107,6 +108,32 @@ const RobotMovementMenuList = ({ showList, toggleList, onItemClick }) => {
     toggleList();
   };
 
+  // 로컬스토리지에서 데이터를 삭제하는 함수
+  const deleteFromLocalStorage = (nameToDelete) => {
+    const existingData = JSON.parse(localStorage.getItem('positions')) || [];
+    const filteredData = existingData.filter(
+      (item) => item.name !== nameToDelete
+    );
+    localStorage.setItem('positions', JSON.stringify(filteredData));
+    setData(filteredData);
+  };
+
+  // 서버에서 세션을 삭제하는 함수
+  const deleteFromServer = async (nameToDelete) => {
+    try {
+      console.log(nameToDelete);
+      const response = await deletePosition(nameToDelete);
+      console.log(response);
+    } catch (error) {
+      console.error('Failed to delete session from server:', error);
+    }
+  };
+
+  const handleDelete = (name) => {
+    deleteFromLocalStorage(name);
+    deleteFromServer(name);
+  };
+
   return (
     <>
       <div
@@ -124,6 +151,7 @@ const RobotMovementMenuList = ({ showList, toggleList, onItemClick }) => {
                 <TableCell>RX</TableCell>
                 <TableCell>RY</TableCell>
                 <TableCell>RZ</TableCell>
+                <TableCell>Actions</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -140,6 +168,15 @@ const RobotMovementMenuList = ({ showList, toggleList, onItemClick }) => {
                   <TableCell>{item.rx}</TableCell>
                   <TableCell>{item.ry}</TableCell>
                   <TableCell>{item.rz}</TableCell>
+                  <TableCell>
+                    <Button
+                      variant="outlined"
+                      color="secondary"
+                      onClick={() => handleDelete(item.name)}
+                    >
+                      Delete
+                    </Button>
+                  </TableCell>
                 </TableRow>
               ))}
             </TableBody>

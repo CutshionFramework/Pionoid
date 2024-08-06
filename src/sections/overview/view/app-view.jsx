@@ -169,8 +169,8 @@ export default function AppView() {
   };
 
   // 변환할 데이터 포맷
-  const formatData = (data, index) => ({
-    name: `Move ${index + 1}`, // 차례대로 1, 2, 3, ... 생성
+  const formatData = (data) => ({
+    name: data.name,
     x: data.x,
     y: data.y,
     z: data.z,
@@ -182,8 +182,7 @@ export default function AppView() {
   // 로컬스토리지에 저장할 함수
   const saveToLocalStorage = (key, data) => {
     const existingData = JSON.parse(localStorage.getItem(key)) || [];
-    const newIndex = existingData.length; // 기존 데이터 개수로 새로운 index 결정
-    const formattedData = formatData(data, newIndex);
+    const formattedData = formatData(data); // 변환 함수 호출
     existingData.push(formattedData);
     localStorage.setItem(key, JSON.stringify(existingData));
   };

@@ -37,4 +37,6 @@ export const robotAPI = {
     httpClient.request(endPoint, { ...options, method: 'GET' }),
   post: (endPoint, body, options) =>
     httpClient.request(endPoint, { ...options, method: 'POST', data: body }),
+  delete: (endPoint, options) =>
+    httpClient.request(endPoint, { ...options, method: 'DELETE' }),
 };
