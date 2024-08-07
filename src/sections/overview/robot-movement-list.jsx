@@ -14,7 +14,8 @@ import {
 } from '@mui/material';
 
 import FormDialog from './app-form-dialogs';
-import { deletePosition } from '../../apis/apis';
+import ModifyFormDialog from './modify-form-dialog';
+import { deletePosition, updatePosition } from '../../apis/apis';
 
 // 리스트 컨테이너 스타일
 const listContainerStyles = css`
@@ -40,12 +41,12 @@ const listContainerStyles = css`
   }
 
   @media (min-width: 1024px) {
-    width: 700px;
+    width: 900px;
     left: 57.5%;
   }
 
   @media (max-width: 1023px) {
-    width: 700px;
+    width: 800px;
     left: 51%;
   }
 
@@ -84,6 +85,7 @@ const tableStyles = css`
 
 const RobotMovementMenuList = ({ showList, toggleList, onItemClick }) => {
   const [data, setData] = useState([]);
+  const [selectedItem, setSelectedItem] = useState(null);
 
   // 로컬스토리지에서 데이터를 읽어오는 함수
   const loadDataFromLocalStorage = () => {
@@ -129,6 +131,33 @@ const RobotMovementMenuList = ({ showList, toggleList, onItemClick }) => {
     }
   };
 
+  // 수정 버튼 클릭 핸들러
+  const handleModify = (item) => {
+    setSelectedItem(item); // 선택된 아이템을 상태에 저장
+  };
+
+  const handleSave = async (modifiedItem) => {
+    const existingData = JSON.parse(localStorage.getItem('positions')) || [];
+
+    const updatedData = existingData.map((item) => {
+      if (item.name === modifiedItem.originalName) {
+        return { ...modifiedItem, originalName: undefined };
+      }
+      return item;
+    });
+
+    localStorage.setItem('positions', JSON.stringify(updatedData));
+    setData(updatedData);
+
+    // 서버에 수정된 아이템 전송
+    try {
+      await updatePosition(modifiedItem.originalName, modifiedItem);
+      console.log('Position updated successfully');
+    } catch (error) {
+      console.error('Failed to update position:', error);
+    }
+  };
+
   const handleDelete = (name) => {
     deleteFromLocalStorage(name);
     deleteFromServer(name);
@@ -171,6 +200,13 @@ const RobotMovementMenuList = ({ showList, toggleList, onItemClick }) => {
                   <TableCell>
                     <Button
                       variant="outlined"
+                      color="primary"
+                      onClick={() => handleModify(item)}
+                    >
+                      Modify
+                    </Button>
+                    <Button
+                      variant="outlined"
                       color="secondary"
                       onClick={() => handleDelete(item.name)}
                     >
@@ -184,6 +220,14 @@ const RobotMovementMenuList = ({ showList, toggleList, onItemClick }) => {
         </TableContainer>
         <Box sx={{ mt: 2 }}>
           <FormDialog />
+        </Box>
+        <Box sx={{ mt: 2 }}>
+          <ModifyFormDialog
+            open={Boolean(selectedItem)}
+            item={selectedItem}
+            onClose={() => setSelectedItem(null)}
+            onSave={handleSave}
+          />
         </Box>
       </div>
       <Button
