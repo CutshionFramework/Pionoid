@@ -46,7 +46,7 @@ const buttonStyles = css`
   }
 `;
 
-export default function FormDialog() {
+export default function RunMovementFormDialog() {
   const [open, setOpen] = React.useState(false);
   const [inputValue, setInputValue] = React.useState('');
   const [snackbarOpen, setSnackbarOpen] = React.useState(false);

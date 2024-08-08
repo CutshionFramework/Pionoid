@@ -54,7 +54,7 @@ class AxiosInstance {
     });
   }
 
-  async request(endpoint, method, params = '', query = '', data = null) {
+  async request(endpoint, method, params = '', query = null, data = null) {
     const apiUrl = params
       ? `${endpoint}/${params}${query ? `?${query}` : ''}`
       : endpoint;
@@ -84,18 +84,18 @@ class AxiosInstance {
 const httpClient = new AxiosInstance(process.env.REACT_APP_API_URL);
 
 export const robotAPI = {
-  get: (endpoint, params = '', query = '') =>
+  get: (endpoint, params = '', query = null) =>
     httpClient.request(endpoint, 'GET', params, query),
 
-  post: (endpoint, params = '', data) =>
-    httpClient.request(endpoint, 'POST', params, data),
+  post: (endpoint, params = '', data = null) =>
+    httpClient.request(endpoint, 'POST', params, null, data),
 
-  put: (endpoint, params = '', data) =>
-    httpClient.request(endpoint, 'PUT', params, data),
+  put: (endpoint, params = '', data = null) =>
+    httpClient.request(endpoint, 'PUT', params, null, data),
 
-  delete: (endpoint, params = '', data = {}) =>
-    httpClient.request(endpoint, 'DELETE', params, data),
+  delete: (endpoint, params = '', data = null) =>
+    httpClient.request(endpoint, 'DELETE', params, null, data),
 
-  patch: (endpoint, params = '', data) =>
-    httpClient.request(endpoint, 'PATCH', params, data),
+  patch: (endpoint, params = '', data = null) =>
+    httpClient.request(endpoint, 'PATCH', params, null, data),
 };

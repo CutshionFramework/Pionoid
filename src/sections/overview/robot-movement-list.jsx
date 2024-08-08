@@ -13,11 +13,10 @@ import {
   Paper,
 } from '@mui/material';
 
-import FormDialog from './app-form-dialogs';
+import RunMovementFormDialog from './run-movement-form-dialog';
 import ModifyFormDialog from './modify-form-dialog';
 import { deletePosition, updatePosition } from '../../apis/apis';
 
-// 리스트 컨테이너 스타일
 const listContainerStyles = css`
   position: fixed;
   bottom: 50px;
@@ -56,7 +55,6 @@ const listContainerStyles = css`
   }
 `;
 
-// 버튼 스타일
 const buttonStyles = css`
   width: 100%;
   height: 100%;
@@ -72,13 +70,11 @@ const buttonStyles = css`
   }
 `;
 
-// 테이블 헤더 스타일
 const tableHeaderStyles = css`
   background-color: #f0f0f0;
   font-weight: bold;
 `;
 
-// 테이블 스타일
 const tableStyles = css`
   min-width: 650px;
 `;
@@ -219,7 +215,7 @@ const RobotMovementMenuList = ({ showList, toggleList, onItemClick }) => {
           </Table>
         </TableContainer>
         <Box sx={{ mt: 2 }}>
-          <FormDialog />
+          <RunMovementFormDialog />
         </Box>
         <Box sx={{ mt: 2 }}>
           <ModifyFormDialog
