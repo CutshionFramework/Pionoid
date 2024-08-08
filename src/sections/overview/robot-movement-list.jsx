@@ -1,9 +1,8 @@
 /** @jsxImportSource @emotion/react */
-import React, { useState, useEffect } from 'react';
 import { css } from '@emotion/react';
+import React, { useState, useEffect, useRef } from 'react';
+import { createPortal } from 'react-dom';
 import {
-  Button,
-  Box,
   Table,
   TableBody,
   TableCell,
@@ -11,11 +10,38 @@ import {
   TableHead,
   TableRow,
   Paper,
+  Button,
+  Box,
+  Menu,
+  MenuItem,
 } from '@mui/material';
+import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 
 import RunMovementFormDialog from './run-movement-form-dialog';
 import ModifyFormDialog from './modify-form-dialog';
 import { deletePosition, updatePosition } from '../../apis/apis';
+
+const useDraggableInPortal = () => {
+  const element = useRef(document.createElement('div')).current;
+
+  useEffect(() => {
+    document.body.appendChild(element);
+    return () => {
+      document.body.removeChild(element);
+    };
+  }, [element]);
+
+  return (render) => (provided, snapshot) => {
+    const result = render(provided, snapshot);
+    const style = provided.draggableProps.style;
+
+    if (style && style.position === 'fixed') {
+      return createPortal(result, element);
+    }
+
+    return result;
+  };
+};
 
 const listContainerStyles = css`
   position: fixed;
@@ -79,11 +105,11 @@ const tableStyles = css`
   min-width: 650px;
 `;
 
-const RobotMovementMenuList = ({ showList, toggleList, onItemClick }) => {
+const RobotMovementList = ({ showList, toggleList, onItemClick }) => {
   const [data, setData] = useState([]);
   const [selectedItem, setSelectedItem] = useState(null);
+  const [contextMenu, setContextMenu] = useState(null);
 
-  // 로컬스토리지에서 데이터를 읽어오는 함수
   const loadDataFromLocalStorage = () => {
     const storedData = localStorage.getItem('positions');
     if (storedData) {
@@ -97,39 +123,42 @@ const RobotMovementMenuList = ({ showList, toggleList, onItemClick }) => {
     }
   }, [showList]);
 
+  useEffect(() => {
+    if (contextMenu) {
+      const scrollbarWidth =
+        window.innerWidth - document.documentElement.clientWidth;
+      document.body.style.overflow = 'auto';
+      document.body.style.paddingRight = `${scrollbarWidth}px`;
+      document.querySelector('header').style.paddingRight =
+        `${scrollbarWidth}px`;
+    } else {
+      document.body.style.overflow = 'auto';
+      document.body.style.paddingRight = '';
+    }
+    return () => {
+      document.body.style.overflow = 'auto';
+      document.body.style.paddingRight = '';
+    };
+  }, [contextMenu]);
+
   const handleItemClick = (item) => {
     onItemClick(item);
   };
 
-  const handleButtonClick = () => {
+  const handleRobotMovementListButtonClick = () => {
     loadDataFromLocalStorage();
     toggleList();
   };
 
-  // 로컬스토리지에서 데이터를 삭제하는 함수
-  const deleteFromLocalStorage = (nameToDelete) => {
-    const existingData = JSON.parse(localStorage.getItem('positions')) || [];
-    const filteredData = existingData.filter(
-      (item) => item.name !== nameToDelete
-    );
-    localStorage.setItem('positions', JSON.stringify(filteredData));
-    setData(filteredData);
+  const handleCopy = () => {
+    console.log('Copy buton clicked');
   };
 
-  // 서버에서 세션을 삭제하는 함수
-  const deleteFromServer = async (nameToDelete) => {
-    try {
-      console.log(nameToDelete);
-      const response = await deletePosition(nameToDelete);
-      console.log(response);
-    } catch (error) {
-      console.error('Failed to delete session from server:', error);
+  const handleModify = () => {
+    if (contextMenu && contextMenu.item) {
+      setSelectedItem(contextMenu.item);
     }
-  };
-
-  // 수정 버튼 클릭 핸들러
-  const handleModify = (item) => {
-    setSelectedItem(item); // 선택된 아이템을 상태에 저장
+    setContextMenu(null); // 메뉴 닫기
   };
 
   const handleSave = async (modifiedItem) => {
@@ -145,7 +174,6 @@ const RobotMovementMenuList = ({ showList, toggleList, onItemClick }) => {
     localStorage.setItem('positions', JSON.stringify(updatedData));
     setData(updatedData);
 
-    // 서버에 수정된 아이템 전송
     try {
       await updatePosition(modifiedItem.originalName, modifiedItem);
       console.log('Position updated successfully');
@@ -154,65 +182,211 @@ const RobotMovementMenuList = ({ showList, toggleList, onItemClick }) => {
     }
   };
 
-  const handleDelete = (name) => {
-    deleteFromLocalStorage(name);
-    deleteFromServer(name);
+  const handleDelete = () => {
+    if (contextMenu && contextMenu.item) {
+      deleteFromLocalStorage(contextMenu.item.name);
+      deleteFromServer(contextMenu.item.name);
+    }
+    setContextMenu(null); // 메뉴 닫기
   };
 
+  const deleteFromLocalStorage = (nameToDelete) => {
+    const existingData = JSON.parse(localStorage.getItem('positions')) || [];
+    const filteredData = existingData.filter(
+      (item) => item.name !== nameToDelete
+    );
+    localStorage.setItem('positions', JSON.stringify(filteredData));
+    setData(filteredData);
+  };
+
+  const deleteFromServer = async (nameToDelete) => {
+    try {
+      console.log(nameToDelete);
+      const response = await deletePosition(nameToDelete);
+      console.log(response);
+    } catch (error) {
+      console.error('Failed to delete session from server:', error);
+    }
+  };
+
+  const handleContextMenu = (event, item) => {
+    event.preventDefault();
+    setContextMenu(
+      contextMenu === null
+        ? {
+            mouseX: event.clientX - 2,
+            mouseY: event.clientY - 4,
+            item: item,
+          }
+        : null
+    );
+  };
+
+  const handleCloseContextMenu = () => {
+    setContextMenu(null);
+  };
+
+  const onDragEnd = (result) => {
+    const { source, destination } = result;
+
+    if (!destination) return; // Dropped outside the list
+
+    const reorderedData = Array.from(data);
+    const [movedItem] = reorderedData.splice(source.index, 1);
+    reorderedData.splice(destination.index, 0, movedItem);
+
+    setData(reorderedData);
+
+    localStorage.setItem('positions', JSON.stringify(reorderedData));
+  };
+
+  const renderDraggable = useDraggableInPortal();
+
   return (
+    // <>
+    //   <div
+    //     className={`list-container ${showList ? 'show' : ''}`}
+    //     css={listContainerStyles}
+    //   >
+    //     <TableContainer component={Paper}>
+    //       <Table css={tableStyles} aria-label="robot movement table">
+    //         <TableHead>
+    //           <TableRow css={tableHeaderStyles}>
+    //             <TableCell>Name</TableCell>
+    //             <TableCell>X</TableCell>
+    //             <TableCell>Y</TableCell>
+    //             <TableCell>Z</TableCell>
+    //             <TableCell>RX</TableCell>
+    //             <TableCell>RY</TableCell>
+    //             <TableCell>RZ</TableCell>
+    //           </TableRow>
+    //         </TableHead>
+    //         <TableBody>
+    //           {data.map((item, index) => (
+    //             <TableRow
+    //               key={index}
+    //               hover
+    //               onClick={() => handleItemClick(item.name)}
+    //               onContextMenu={(event) => handleContextMenu(event, item)}
+    //             >
+    //               <TableCell>{item.name}</TableCell>
+    //               <TableCell>{item.x}</TableCell>
+    //               <TableCell>{item.y}</TableCell>
+    //               <TableCell>{item.z}</TableCell>
+    //               <TableCell>{item.rx}</TableCell>
+    //               <TableCell>{item.ry}</TableCell>
+    //               <TableCell>{item.rz}</TableCell>
+    //             </TableRow>
+    //           ))}
+    //         </TableBody>
+    //       </Table>
+    //     </TableContainer>
+    //     <Box sx={{ mt: 2 }}>
+    //       <RunMovementFormDialog />
+    //     </Box>
+    //     <Box sx={{ mt: 2 }}>
+    //       <ModifyFormDialog
+    //         open={Boolean(selectedItem)}
+    //         item={selectedItem}
+    //         onClose={() => setSelectedItem(null)}
+    //         onSave={handleSave}
+    //       />
+    //     </Box>
+    //   </div>
+    //   <Button
+    //     variant="contained"
+    //     color="primary"
+    //     css={buttonStyles}
+    //     onClick={handleRobotMovementListButtonClick}
+    //   >
+    //     Robot Movement List
+    //   </Button>
+    //   <Menu
+    //     keepMounted
+    //     open={contextMenu !== null}
+    //     onClose={handleCloseContextMenu}
+    //     anchorReference="anchorPosition"
+    //     anchorPosition={
+    //       contextMenu !== null
+    //         ? { top: contextMenu.mouseY, left: contextMenu.mouseX }
+    //         : undefined
+    //     }
+    //   >
+    //     <MenuItem onClick={handleCopy}>Copy</MenuItem>
+    //     <MenuItem onClick={handleModify}>Modify</MenuItem>
+    //     <MenuItem onClick={handleDelete}>Delete</MenuItem>
+    //   </Menu>
+    // </>
     <>
       <div
         className={`list-container ${showList ? 'show' : ''}`}
         css={listContainerStyles}
       >
         <TableContainer component={Paper}>
-          <Table css={tableStyles} aria-label="robot movement table">
-            <TableHead>
-              <TableRow css={tableHeaderStyles}>
-                <TableCell>Name</TableCell>
-                <TableCell>X</TableCell>
-                <TableCell>Y</TableCell>
-                <TableCell>Z</TableCell>
-                <TableCell>RX</TableCell>
-                <TableCell>RY</TableCell>
-                <TableCell>RZ</TableCell>
-                <TableCell>Actions</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {data.map((item, index) => (
-                <TableRow
-                  key={index}
-                  hover
-                  onClick={() => handleItemClick(item.name)}
+          <DragDropContext onDragEnd={onDragEnd}>
+            <Droppable droppableId="droppable">
+              {(provided) => (
+                <Table
+                  css={tableStyles}
+                  aria-label="robot movement table"
+                  ref={provided.innerRef}
+                  {...provided.droppableProps}
                 >
-                  <TableCell>{item.name}</TableCell>
-                  <TableCell>{item.x}</TableCell>
-                  <TableCell>{item.y}</TableCell>
-                  <TableCell>{item.z}</TableCell>
-                  <TableCell>{item.rx}</TableCell>
-                  <TableCell>{item.ry}</TableCell>
-                  <TableCell>{item.rz}</TableCell>
-                  <TableCell>
-                    <Button
-                      variant="outlined"
-                      color="primary"
-                      onClick={() => handleModify(item)}
-                    >
-                      Modify
-                    </Button>
-                    <Button
-                      variant="outlined"
-                      color="secondary"
-                      onClick={() => handleDelete(item.name)}
-                    >
-                      Delete
-                    </Button>
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
+                  <TableHead>
+                    <TableRow css={tableHeaderStyles}>
+                      <TableCell>Name</TableCell>
+                      <TableCell>X</TableCell>
+                      <TableCell>Y</TableCell>
+                      <TableCell>Z</TableCell>
+                      <TableCell>RX</TableCell>
+                      <TableCell>RY</TableCell>
+                      <TableCell>RZ</TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {data.map((item, index) => (
+                      <Draggable
+                        key={item.name}
+                        draggableId={item.name}
+                        index={index}
+                      >
+                        {renderDraggable((provided, snapshot) => (
+                          <TableRow
+                            ref={provided.innerRef}
+                            {...provided.draggableProps}
+                            {...provided.dragHandleProps}
+                            hover
+                            onClick={() => handleItemClick(item.name)}
+                            onContextMenu={(event) =>
+                              handleContextMenu(event, item)
+                            }
+                            style={{
+                              ...provided.draggableProps.style,
+                              backgroundColor: snapshot.isDragging
+                                ? '#e0e0e0'
+                                : 'transparent',
+                              opacity: snapshot.isDragging ? 0.8 : 1,
+                              zIndex: snapshot.isDragging ? 999999 : 'auto',
+                              transition: 'background-color 0.2s ease',
+                            }}
+                          >
+                            <TableCell>{item.name}</TableCell>
+                            <TableCell>{item.x}</TableCell>
+                            <TableCell>{item.y}</TableCell>
+                            <TableCell>{item.z}</TableCell>
+                            <TableCell>{item.rx}</TableCell>
+                            <TableCell>{item.ry}</TableCell>
+                            <TableCell>{item.rz}</TableCell>
+                          </TableRow>
+                        ))}
+                      </Draggable>
+                    ))}
+                    {provided.placeholder}
+                  </TableBody>
+                </Table>
+              )}
+            </Droppable>
+          </DragDropContext>
         </TableContainer>
         <Box sx={{ mt: 2 }}>
           <RunMovementFormDialog />
@@ -230,12 +404,27 @@ const RobotMovementMenuList = ({ showList, toggleList, onItemClick }) => {
         variant="contained"
         color="primary"
         css={buttonStyles}
-        onClick={handleButtonClick}
+        onClick={handleRobotMovementListButtonClick}
       >
         Robot Movement List
       </Button>
+      <Menu
+        keepMounted
+        open={contextMenu !== null}
+        onClose={handleCloseContextMenu}
+        anchorReference="anchorPosition"
+        anchorPosition={
+          contextMenu !== null
+            ? { top: contextMenu.mouseY, left: contextMenu.mouseX }
+            : undefined
+        }
+      >
+        <MenuItem onClick={handleCopy}>Copy</MenuItem>
+        <MenuItem onClick={handleModify}>Modify</MenuItem>
+        <MenuItem onClick={handleDelete}>Delete</MenuItem>
+      </Menu>
     </>
   );
 };
 
-export default RobotMovementMenuList;
+export default RobotMovementList;
