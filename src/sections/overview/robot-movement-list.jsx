@@ -81,9 +81,6 @@ const tableStyles = css`
   min-width: 650px;
 `;
 
-// 스타일 정의
-const draggingStyle = css``;
-
 const hoveredStyle = css`
   background-color: #f5f5f5;
 `;
@@ -91,6 +88,11 @@ const hoveredStyle = css`
 const defaultStyle = css`
   background-color: transparent;
   cursor: grab;
+
+  &:hover {
+    background-color: #f0f0f0;
+    border: none;
+  }
 `;
 
 const RobotMovementList = ({ showList, toggleList, onItemClick }) => {
