@@ -1,14 +1,14 @@
 /** @jsxImportSource @emotion/react */
-import { useState } from 'react';
-import { css } from '@emotion/react';
-import { faker } from '@faker-js/faker';
+import { useState } from "react";
+import { css } from "@emotion/react";
+import { faker } from "@faker-js/faker";
 
-import { Button } from '@mui/material';
-import Container from '@mui/material/Container';
-import Grid from '@mui/material/Unstable_Grid2';
-import TextField from '@mui/material/TextField';
-import Typography from '@mui/material/Typography';
-import ButtonBase from '@mui/material/ButtonBase';
+import { Button } from "@mui/material";
+import Container from "@mui/material/Container";
+import Grid from "@mui/material/Unstable_Grid2";
+import TextField from "@mui/material/TextField";
+import Typography from "@mui/material/Typography";
+import ButtonBase from "@mui/material/ButtonBase";
 
 import {
   shutDown,
@@ -16,13 +16,18 @@ import {
   saveIpAddress,
   useDigitalOutput1,
   useDigitalOutput2,
-} from '../../../apis/apis';
+} from "../../../apis/apis";
 
-import AppTasks from '../app-tasks';
-import RobotOperationList from '../robot-operation-list';
-import AppOrderTimeline from '../app-order-timeline';
-import AppWidgetSummary from '../app-widget-summary';
-import RobotMovementList from '../robot-movement-list';
+import AppTasks from "../app-tasks";
+import RobotOperationList from "../robot-operation-list";
+import AppOrderTimeline from "../app-order-timeline";
+import AppWidgetSummary from "../app-widget-summary";
+
+import RobotMovementList from "../robot-movement-list";
+
+import { useTranslation } from "react-i18next";
+import "../../../i18n.js";
+import { t } from "i18next";
 
 // ----------------------------------------------------------------------
 const imgGridStyles = css`
@@ -66,11 +71,11 @@ const saveButtonStyles = css`
 `;
 
 const activeButtonStyles = (active) => css`
-  background-color: ${active ? 'lightblue' : 'white'};
+  background-color: ${active ? "lightblue" : "white"};
   transition: background-color 0.3s;
 
   &:hover {
-    background-color: ${active ? 'lightblue' : '#f0f0f0'};
+    background-color: ${active ? "lightblue" : "#f0f0f0"};
   }
 `;
 
@@ -118,7 +123,7 @@ const formDialogStyles = css`
 `;
 
 export default function AppView() {
-  const [ipAddress, setIpAddress] = useState('');
+  const [ipAddress, setIpAddress] = useState("");
   const [tool1Active, setTool1Active] = useState(false);
   const [tool2Active, setTool2Active] = useState(false);
 
@@ -133,29 +138,29 @@ export default function AppView() {
       const response = await saveIpAddress(ipAddress);
       console.log(`${response}: ${ipAddress}`);
     } catch (error) {
-      console.error('Failed to load data. : ', error);
+      console.error("Failed to load data. : ", error);
     }
   };
 
   const handleToolClick = (tool) => {
-    if (tool === 'tool1') {
+    if (tool === "tool1") {
       setTool1Active(!tool1Active);
       Tool1Clicked();
-      console.log(tool1Active ? 'Tool 1 deactivated' : 'Tool 1 activated');
-    } else if (tool === 'tool2') {
+      console.log(tool1Active ? "Tool 1 deactivated" : "Tool 1 activated");
+    } else if (tool === "tool2") {
       setTool2Active(!tool2Active);
       Tool2Clicked();
-      console.log(tool2Active ? 'Tool 2 deactivated' : 'Tool 2 activated');
+      console.log(tool2Active ? "Tool 2 deactivated" : "Tool 2 activated");
     }
   };
 
   const savePositionClicked = async () => {
     try {
       const response = await savePosition();
-      saveToLocalStorage('positions', response); // 'positions'는 로컬스토리지의 키
-      console.log('Data saved to localStorage:', response);
+      saveToLocalStorage("positions", response); // 'positions'는 로컬스토리지의 키
+      console.log("Data saved to localStorage:", response);
     } catch (error) {
-      console.error('Failed to load data. : ', error);
+      console.error("Failed to load data. : ", error);
     }
   };
 
@@ -164,7 +169,7 @@ export default function AppView() {
       const response = await shutDown();
       console.log(response);
     } catch (error) {
-      console.error('Failed to load data. : ', error);
+      console.error("Failed to load data. : ", error);
     }
   };
 
@@ -173,7 +178,7 @@ export default function AppView() {
       const response = await useDigitalOutput1();
       console.log(response);
     } catch (error) {
-      console.error('Failed to load data. : ', error);
+      console.error("Failed to load data. : ", error);
     }
   };
 
@@ -182,7 +187,7 @@ export default function AppView() {
       const response = await useDigitalOutput2();
       console.log(response);
     } catch (error) {
-      console.error('Failed to load data. : ', error);
+      console.error("Failed to load data. : ", error);
     }
   };
 
@@ -213,10 +218,12 @@ export default function AppView() {
     localStorage.setItem(key, JSON.stringify(existingData));
   };
 
+  // 번역 함수
+  const { t } = useTranslation();
   return (
     <Container maxWidth="sm">
       <Typography variant="h4" sx={{ mb: 5 }}>
-        Hi, Welcome back 👋
+        {t("greeting")}
       </Typography>
 
       <Grid xs={12} md={6} lg={8} css={imgGridStyles}>
@@ -230,7 +237,7 @@ export default function AppView() {
         <Grid css={inputGridStyles} xs={8} sm={9} md={8}>
           <TextField
             css={textFieldStyles}
-            label="IP Address"
+            label={t("ip address")}
             variant="outlined"
             fullWidth
             value={ipAddress}
@@ -240,7 +247,7 @@ export default function AppView() {
                 <img
                   alt="icon"
                   src="/assets/icons/glass/ic_glass_users.png"
-                  style={{ marginRight: '8px' }}
+                  style={{ marginRight: "8px" }}
                 />
               ),
             }}
@@ -254,16 +261,16 @@ export default function AppView() {
             onClick={handleSaveIpAddress}
             fullWidth
           >
-            Save IP Address
+            {t("save ip")}
           </Button>
         </Grid>
 
         <Grid xs={14} sm={8} md={6}>
-          <ButtonBase style={{ width: '100%' }} onClick={savePositionClicked}>
+          <ButtonBase style={{ width: "100%" }} onClick={savePositionClicked}>
             <AppWidgetSummary
               css={buttonStyles}
-              style={{ width: '100%' }}
-              title="Save Position"
+              style={{ width: "100%" }}
+              title={t("save position")}
               total={2}
               color="primary"
               icon={
@@ -274,12 +281,12 @@ export default function AppView() {
         </Grid>
 
         <Grid xs={14} sm={8} md={6}>
-          <ButtonBase style={{ width: '100%' }}>
+          <ButtonBase style={{ width: "100%" }}>
             <AppWidgetSummary
-              onClick={() => handleToolClick('tool1')}
+              onClick={() => handleToolClick("tool1")}
               css={activeButtonStyles(tool1Active)}
-              style={{ width: '100%' }}
-              title="DO 1"
+              style={{ width: "100%" }}
+              title={t("do 1")}
               total={3}
               color="primary"
               icon={
@@ -293,12 +300,12 @@ export default function AppView() {
         </Grid>
 
         <Grid xs={14} sm={8} md={6}>
-          <ButtonBase style={{ width: '100%' }}>
+          <ButtonBase style={{ width: "100%" }}>
             <AppWidgetSummary
-              onClick={() => handleToolClick('tool2')}
+              onClick={() => handleToolClick("tool2")}
               css={activeButtonStyles(tool2Active)}
-              style={{ width: '100%' }}
-              title="DO 2"
+              style={{ width: "100%" }}
+              title={t("do 2")}
               total={4}
               color="primary"
               icon={
@@ -312,11 +319,11 @@ export default function AppView() {
         </Grid>
 
         <Grid xs={14} sm={8} md={6}>
-          <ButtonBase style={{ width: '100%' }} onClick={shutDownClicked}>
+          <ButtonBase style={{ width: "100%" }} onClick={shutDownClicked}>
             <AppWidgetSummary
               css={buttonStyles}
-              style={{ width: '100%' }}
-              title="Shut Down"
+              style={{ width: "100%" }}
+              title={t("shut down")}
               total={6}
               color="primary"
               icon={
@@ -328,13 +335,13 @@ export default function AppView() {
 
         <Grid xs={10} md={4} lg={6}>
           <AppTasks
-            title="Tasks"
+            title={t("task")}
             list={[
-              { id: '1', name: 'Activate robot arm' },
-              { id: '2', name: 'Manual move' },
-              { id: '3', name: 'Use web tools' },
-              { id: '4', name: 'Save positions' },
-              { id: '5', name: 'Run project ' },
+              { id: "1", name: t("listValue.name01") },
+              { id: "2", name: t("listValue.name02") },
+              { id: "3", name: t("listValue.name03") },
+              { id: "4", name: t("listValue.name04") },
+              { id: "5", name: t("listValue.name05") },
             ]}
           />
         </Grid>
@@ -345,12 +352,16 @@ export default function AppView() {
             list={[...Array(3)].map((_, index) => ({
               id: faker.string.uuid(),
               title: [
-                'Connect to robot arm',
-                'Move and Save different positions',
-                'Execute your robot automation project',
+                t("titleValue.01"),
+                t("titleValue.02"),
+                t("titleValue.03"),
               ][index],
               type: `order${index + 1}`,
-              text: [['2 min aprox'], ['4 min aprox'], ['1 sec']][index],
+              text: [
+                [t("requiredTime.01")],
+                [t("requiredTime.02")],
+                [t("requiredTime.03")],
+              ][index],
             }))}
           />
         </Grid>

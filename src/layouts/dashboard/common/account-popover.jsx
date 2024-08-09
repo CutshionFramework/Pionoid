@@ -10,20 +10,22 @@ import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
 
 import { account } from '../../../_mock/account';
+import { useTranslation } from 'react-i18next';
+import '../../../i18n.js';
 
 // ----------------------------------------------------------------------
 
 const MENU_OPTIONS = [
   {
-    label: 'Home',
+    label: 'home',
     icon: 'eva:home-fill',
   },
   {
-    label: 'Profile',
+    label: 'profile',
     icon: 'eva:person-fill',
   },
   {
-    label: 'Settings',
+    label: 'settings',
     icon: 'eva:settings-2-fill',
   },
 ];
@@ -40,6 +42,8 @@ export default function AccountPopover() {
   const handleClose = () => {
     setOpen(null);
   };
+
+  const { t } = useTranslation();
 
   return (
     <>
@@ -85,7 +89,7 @@ export default function AccountPopover() {
       >
         <Box sx={{ my: 1.5, px: 2 }}>
           <Typography variant="subtitle2" noWrap>
-            {account.displayName}
+            {t('user name',account.displayName)}
           </Typography>
           <Typography variant="body2" sx={{ color: 'text.secondary' }} noWrap>
             {account.email}
@@ -96,7 +100,7 @@ export default function AccountPopover() {
 
         {MENU_OPTIONS.map((option) => (
           <MenuItem key={option.label} onClick={handleClose}>
-            {option.label}
+            {t(option.label)}
           </MenuItem>
         ))}
 
@@ -108,7 +112,7 @@ export default function AccountPopover() {
           onClick={handleClose}
           sx={{ typography: 'body2', color: 'error.main', py: 1.5 }}
         >
-          Logout
+          {t('account logout')}
         </MenuItem>
       </Popover>
     </>
