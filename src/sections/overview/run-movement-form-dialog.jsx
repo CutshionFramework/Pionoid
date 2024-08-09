@@ -37,7 +37,7 @@ const buttonStyles = css`
   width: 100%;
   height: 100%;
   border: none;
-  font-size: 20px;
+  font-size: 18px;
   color: #919eab;
 
   &:hover {
@@ -46,7 +46,7 @@ const buttonStyles = css`
   }
 `;
 
-export default function FormDialog() {
+export default function RunMovementFormDialog() {
   const [open, setOpen] = React.useState(false);
   const [inputValue, setInputValue] = React.useState('');
   const [snackbarOpen, setSnackbarOpen] = React.useState(false);
@@ -87,9 +87,9 @@ export default function FormDialog() {
   return (
     <Stack css={divStyles}>
       <Button css={buttonStyles} variant="outlined" onClick={handleClickOpen}>
-        Run Save Movements
+        Run Movements
       </Button>
-      <Dialog open={open} onClose={handleClose}>
+      <Dialog open={open} onClose={handleClose} disableScrollLock={true}>
         <DialogTitle>Enter How Many times</DialogTitle>
         <DialogContent>
           <DialogContentText>

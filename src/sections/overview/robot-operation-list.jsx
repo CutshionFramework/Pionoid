@@ -40,7 +40,7 @@ const menuItemStyles = css`
   color: rgb(135, 140, 146);
 `;
 
-export default function MenuListComposition() {
+export default function RobotOperationList() {
   const [open, setOpen] = React.useState(false);
   const anchorRef = React.useRef(null);
 
@@ -156,13 +156,18 @@ export default function MenuListComposition() {
           placement="bottom-start"
           transition
           disablePortal={false}
-          style={{ width: anchorRef.current ? anchorRef.current.offsetWidth : undefined }}
+          style={{
+            width: anchorRef.current
+              ? anchorRef.current.offsetWidth
+              : undefined,
+          }}
         >
           {({ TransitionProps, placement }) => (
             <Grow
               {...TransitionProps}
               style={{
-                transformOrigin: placement === 'bottom-start' ? 'left top' : 'left bottom',
+                transformOrigin:
+                  placement === 'bottom-start' ? 'left top' : 'left bottom',
               }}
             >
               <Paper>
@@ -180,16 +185,25 @@ export default function MenuListComposition() {
                     <MenuItem css={menuItemStyles} onClick={robotLogoutClicked}>
                       robot logout
                     </MenuItem>
-                    <MenuItem css={menuItemStyles} onClick={robotPowerOnClicked}>
+                    <MenuItem
+                      css={menuItemStyles}
+                      onClick={robotPowerOnClicked}
+                    >
                       robot power on
                     </MenuItem>
-                    <MenuItem css={menuItemStyles} onClick={robotPowerOffClicked}>
+                    <MenuItem
+                      css={menuItemStyles}
+                      onClick={robotPowerOffClicked}
+                    >
                       robot power off
                     </MenuItem>
                     <MenuItem css={menuItemStyles} onClick={robotEnableClicked}>
                       robot enable
                     </MenuItem>
-                    <MenuItem css={menuItemStyles} onClick={robotDisableClicked}>
+                    <MenuItem
+                      css={menuItemStyles}
+                      onClick={robotDisableClicked}
+                    >
                       robot disable
                     </MenuItem>
                   </MenuList>

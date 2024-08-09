@@ -10,13 +10,19 @@ import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import ButtonBase from '@mui/material/ButtonBase';
 
-import { shutDown, savePosition, saveIpAddress } from '../../../apis/apis';
+import {
+  shutDown,
+  savePosition,
+  saveIpAddress,
+  useDigitalOutput1,
+  useDigitalOutput2,
+} from '../../../apis/apis';
 
 import AppTasks from '../app-tasks';
-import AppMenuList from '../app-menu-list';
-import FormDialog from '../app-form-dialogs';
+import RobotOperationList from '../robot-operation-list';
 import AppOrderTimeline from '../app-order-timeline';
 import AppWidgetSummary from '../app-widget-summary';
+import RobotMovementList from '../robot-movement-list';
 
 // ----------------------------------------------------------------------
 const imgGridStyles = css`
@@ -90,10 +96,33 @@ const textFieldStyles = css`
   }
 `;
 
+const formDialogStyles = css`
+  position: fixed;
+  bottom: 0;
+  height: 5%;
+  z-index: 1000;
+
+  @media (min-width: 1024px) {
+    width: 578px;
+  }
+
+  @media (max-width: 1023px) {
+    width: 578px;
+  }
+
+  @media (max-width: 767px) {
+    left: 0;
+    width: 100%;
+    padding-bottom: 8px;
+  }
+`;
+
 export default function AppView() {
   const [ipAddress, setIpAddress] = useState('');
   const [tool1Active, setTool1Active] = useState(false);
   const [tool2Active, setTool2Active] = useState(false);
+
+  const [showList, setShowList] = useState(false);
 
   const handleInputChange = (event) => {
     setIpAddress(event.target.value);
@@ -111,9 +140,11 @@ export default function AppView() {
   const handleToolClick = (tool) => {
     if (tool === 'tool1') {
       setTool1Active(!tool1Active);
+      Tool1Clicked();
       console.log(tool1Active ? 'Tool 1 deactivated' : 'Tool 1 activated');
     } else if (tool === 'tool2') {
       setTool2Active(!tool2Active);
+      Tool2Clicked();
       console.log(tool2Active ? 'Tool 2 deactivated' : 'Tool 2 activated');
     }
   };
@@ -121,7 +152,8 @@ export default function AppView() {
   const savePositionClicked = async () => {
     try {
       const response = await savePosition();
-      console.log(response);
+      saveToLocalStorage('positions', response); // 'positions'는 로컬스토리지의 키
+      console.log('Data saved to localStorage:', response);
     } catch (error) {
       console.error('Failed to load data. : ', error);
     }
@@ -136,6 +168,51 @@ export default function AppView() {
     }
   };
 
+  const Tool1Clicked = async () => {
+    try {
+      const response = await useDigitalOutput1();
+      console.log(response);
+    } catch (error) {
+      console.error('Failed to load data. : ', error);
+    }
+  };
+
+  const Tool2Clicked = async () => {
+    try {
+      const response = await useDigitalOutput2();
+      console.log(response);
+    } catch (error) {
+      console.error('Failed to load data. : ', error);
+    }
+  };
+
+  const toggleList = () => {
+    setShowList(!showList);
+  };
+
+  const handleItemClick = (item) => {
+    console.log(`${item} clicked`);
+  };
+
+  // 변환할 데이터 포맷
+  const formatData = (data) => ({
+    name: data.name,
+    x: data.x,
+    y: data.y,
+    z: data.z,
+    rx: data.rx,
+    ry: data.ry,
+    rz: data.rz,
+  });
+
+  // 로컬스토리지에 저장할 함수
+  const saveToLocalStorage = (key, data) => {
+    const existingData = JSON.parse(localStorage.getItem(key)) || [];
+    const formattedData = formatData(data); // 변환 함수 호출
+    existingData.push(formattedData);
+    localStorage.setItem(key, JSON.stringify(existingData));
+  };
+
   return (
     <Container maxWidth="sm">
       <Typography variant="h4" sx={{ mb: 5 }}>
@@ -145,7 +222,7 @@ export default function AppView() {
       <Grid xs={12} md={6} lg={8} css={imgGridStyles}>
         <img src="/assets/images/jaka%20robot%20arm.png" alt="JAKA robot arm" />
         <Grid xs={12} md={6} lg={8} css={menuListStyles}>
-          <AppMenuList />
+          <RobotOperationList />
         </Grid>
       </Grid>
 
@@ -189,7 +266,9 @@ export default function AppView() {
               title="Save Position"
               total={2}
               color="primary"
-              icon={<img alt="icon" src="/assets/icons/glass/ic_glass_buy.png" />}
+              icon={
+                <img alt="icon" src="/assets/icons/glass/ic_glass_buy.png" />
+              }
             />
           </ButtonBase>
         </Grid>
@@ -200,10 +279,15 @@ export default function AppView() {
               onClick={() => handleToolClick('tool1')}
               css={activeButtonStyles(tool1Active)}
               style={{ width: '100%' }}
-              title="Tool 1"
+              title="DO 1"
               total={3}
               color="primary"
-              icon={<img alt="icon" src="/assets/icons/glass/ic_glass_message.png" />}
+              icon={
+                <img
+                  alt="icon"
+                  src="/assets/icons/glass/ic_glass_message.png"
+                />
+              }
             />
           </ButtonBase>
         </Grid>
@@ -214,16 +298,32 @@ export default function AppView() {
               onClick={() => handleToolClick('tool2')}
               css={activeButtonStyles(tool2Active)}
               style={{ width: '100%' }}
-              title="Tool 2"
+              title="DO 2"
               total={4}
               color="primary"
-              icon={<img alt="icon" src="/assets/icons/glass/ic_glass_message.png" />}
+              icon={
+                <img
+                  alt="icon"
+                  src="/assets/icons/glass/ic_glass_message.png"
+                />
+              }
             />
           </ButtonBase>
         </Grid>
 
         <Grid xs={14} sm={8} md={6}>
-          <FormDialog />
+          <ButtonBase style={{ width: '100%' }} onClick={shutDownClicked}>
+            <AppWidgetSummary
+              css={buttonStyles}
+              style={{ width: '100%' }}
+              title="Shut Down"
+              total={6}
+              color="primary"
+              icon={
+                <img alt="icon" src="/assets/icons/glass/ic_glass_users.png" />
+              }
+            />
+          </ButtonBase>
         </Grid>
 
         <Grid xs={10} md={4} lg={6}>
@@ -255,17 +355,12 @@ export default function AppView() {
           />
         </Grid>
 
-        <Grid xs={28} sm={1} md={12}>
-          <ButtonBase style={{ width: '100%' }} onClick={shutDownClicked}>
-            <AppWidgetSummary
-              css={buttonStyles}
-              style={{ width: '100%' }}
-              title="Shut Down"
-              total={6}
-              color="primary"
-              icon={<img alt="icon" src="/assets/icons/glass/ic_glass_users.png" />}
-            />
-          </ButtonBase>
+        <Grid css={formDialogStyles} xs={14} sm={8} md={6}>
+          <RobotMovementList
+            showList={showList}
+            toggleList={toggleList}
+            onItemClick={handleItemClick}
+          />
         </Grid>
       </Grid>
     </Container>

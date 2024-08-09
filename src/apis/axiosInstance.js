@@ -12,29 +12,48 @@ class AxiosInstance {
     });
   }
 
-  async request(endPoint, options = {}) {
+  async request(endpoint, method, params = '', query = null, data = null) {
+    const apiUrl = params
+      ? `${endpoint}/${params}${query ? `?${query}` : ''}`
+      : endpoint;
+    const headers = { 'Content-Type': 'text/plain' };
+
     try {
       const response = await this.instance.request({
-        url: endPoint,
-        ...options,
+        url: apiUrl,
+        method,
+        headers,
+        data,
       });
       return response.data;
     } catch (error) {
       if (error.response) {
+        console.error(`HTTP error! status: ${error.response.status}`);
         throw new Error(`HTTP error! status: ${error.response.status}`);
       } else {
+        console.error('Network error');
         throw new Error('Network error');
       }
     }
   }
 }
 
-// Use the proxy endpoint
+// BASE URL
 const httpClient = new AxiosInstance(process.env.REACT_APP_API_URL);
 
 export const robotAPI = {
-  get: (endPoint, options) =>
-    httpClient.request(endPoint, { ...options, method: 'GET' }),
-  post: (endPoint, body, options) =>
-    httpClient.request(endPoint, { ...options, method: 'POST', data: body }),
+  get: (endpoint, params = '', query = null) =>
+    httpClient.request(endpoint, 'GET', params, query),
+
+  post: (endpoint, params = '', data = null) =>
+    httpClient.request(endpoint, 'POST', params, null, data),
+
+  put: (endpoint, params = '', data = null) =>
+    httpClient.request(endpoint, 'PUT', params, null, data),
+
+  delete: (endpoint, params = '', data = null) =>
+    httpClient.request(endpoint, 'DELETE', params, null, data),
+
+  patch: (endpoint, params = '', data = null) =>
+    httpClient.request(endpoint, 'PATCH', params, null, data),
 };
