@@ -1,4 +1,6 @@
 import SvgColor from '../../components/svg-color';
+import '../../i18n.js';
+import i18next from 'i18next';
 
 // ----------------------------------------------------------------------
 
@@ -8,10 +10,10 @@ const icon = (name) => (
 
 const navConfig = [
   {
-    title: 'Jaka robotics',
+    title: 'Jaka Robotics',
     path: '/',
     icon: icon('ic_blog'),
-  },
+  }
   /*
   {
     title: 'user',

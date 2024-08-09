@@ -1,9 +1,11 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import Box from '@mui/material/Box';
 import Popover from '@mui/material/Popover';
 import MenuItem from '@mui/material/MenuItem';
 import IconButton from '@mui/material/IconButton';
+import '../../../i18n.js';
 
 // ----------------------------------------------------------------------
 
@@ -31,6 +33,12 @@ export default function LanguagePopover() {
 
   const handleClose = () => {
     setOpen(null);
+  };
+
+  const { i18n } = useTranslation();
+
+  const changeLanguage = (lang) => {
+    i18n.changeLanguage(lang);
   };
 
   return (
@@ -67,7 +75,9 @@ export default function LanguagePopover() {
           <MenuItem
             key={option.value}
             selected={option.value === LANGS[0].value}
-            onClick={() => handleClose()}
+            onClick={() =>{ handleClose();
+              changeLanguage(i18n.language === 'en' ? 'ko' : 'en');
+            }}
             sx={{ typography: 'body2', py: 1 }}
           >
             <Box component="img" alt={option.label} src={option.icon} sx={{ width: 28, mr: 2 }} />
