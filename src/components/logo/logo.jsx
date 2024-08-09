@@ -6,15 +6,14 @@ import Link from '@mui/material/Link';
 
 import { RouterLink } from '../../routes/components';
 
-
-const logoImagePath = '/assets/logo.svg'; 
+const logoImagePath = '/assets/logo.svg';
 
 const Logo = forwardRef(({ disabledLink = false, sx, ...other }, ref) => {
   const logo = (
     <Box
       ref={ref}
-      component="img" 
-      src={logoImagePath} 
+      component="img"
+      src={logoImagePath}
       sx={{
         width: 90,
         height: 40,
