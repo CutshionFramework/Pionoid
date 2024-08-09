@@ -31,7 +31,7 @@ const ModifyFormDialog = ({ open, onClose, onSave, item }) => {
   };
 
   return (
-    <Dialog open={open} onClose={onClose}>
+    <Dialog open={open} onClose={onClose} disableScrollLock={true}>
       <DialogTitle>Edit Item</DialogTitle>
       <DialogContent>
         <TextField

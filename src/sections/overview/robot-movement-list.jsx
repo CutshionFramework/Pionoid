@@ -143,14 +143,22 @@ const RobotMovementList = ({ showList, toggleList, onItemClick }) => {
   };
 
   const handleCopy = () => {
-    console.log('Copy buton clicked');
+    if (contextMenu && contextMenu.item) {
+      const copiedItem = { ...contextMenu.item };
+      copiedItem.name = `${copiedItem.name}_copy`;
+
+      const updatedData = [...data, copiedItem];
+      setData(updatedData);
+      localStorage.setItem('positions', JSON.stringify(updatedData));
+    }
+    setContextMenu(null);
   };
 
   const handleModify = () => {
     if (contextMenu && contextMenu.item) {
       setSelectedItem(contextMenu.item);
     }
-    setContextMenu(null); // 메뉴 닫기
+    setContextMenu(null);
   };
 
   const handleSave = async (modifiedItem) => {
@@ -179,7 +187,7 @@ const RobotMovementList = ({ showList, toggleList, onItemClick }) => {
       deleteFromLocalStorage(contextMenu.item.name);
       deleteFromServer(contextMenu.item.name);
     }
-    setContextMenu(null); // 메뉴 닫기
+    setContextMenu(null);
   };
 
   const deleteFromLocalStorage = (nameToDelete) => {

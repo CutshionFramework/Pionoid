@@ -89,7 +89,7 @@ export default function RunMovementFormDialog() {
       <Button css={buttonStyles} variant="outlined" onClick={handleClickOpen}>
         Run Movements
       </Button>
-      <Dialog open={open} onClose={handleClose}>
+      <Dialog open={open} onClose={handleClose} disableScrollLock={true}>
         <DialogTitle>Enter How Many times</DialogTitle>
         <DialogContent>
           <DialogContentText>
