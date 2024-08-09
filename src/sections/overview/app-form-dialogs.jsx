@@ -1,6 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import * as React from 'react';
 import { css } from '@emotion/react';
+import '../../i18n.js';
 
 import {
   Alert,
@@ -16,6 +17,7 @@ import {
 } from '@mui/material';
 
 import { robotRunSaveMovements } from '../../apis/apis';
+import { useTranslation } from 'react-i18next';
 
 const divStyles = css`
   border-radius: 15px;
@@ -84,10 +86,12 @@ export default function FormDialog() {
     setSnackbarOpen(false);
   };
 
+  const { t, i18n } = useTranslation();
+
   return (
     <Stack css={divStyles}>
       <Button css={buttonStyles} variant="outlined" onClick={handleClickOpen}>
-        Run Save Movements
+        {t('run save movements')}
       </Button>
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle>Enter How Many times</DialogTitle>

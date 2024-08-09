@@ -1,6 +1,8 @@
 /** @jsxImportSource @emotion/react */
 import * as React from 'react';
 import { css } from '@emotion/react';
+import { useTranslation } from 'react-i18next';
+import '../../i18n.js';
 
 import {
   Grow,
@@ -135,6 +137,8 @@ export default function MenuListComposition() {
     }
   };
 
+  const { t } = useTranslation();
+
   return (
     <Stack direction="row" spacing={2}>
       <div>
@@ -147,7 +151,7 @@ export default function MenuListComposition() {
           aria-haspopup="true"
           onClick={handleToggle}
         >
-          Robot Operation
+          {t('operation menu')}
         </Button>
         <Popper
           open={open}
@@ -175,22 +179,22 @@ export default function MenuListComposition() {
                     onKeyDown={handleListKeyDown}
                   >
                     <MenuItem css={menuItemStyles} onClick={robotLoginClicked}>
-                      robot login
+                    {t('login')}
                     </MenuItem>
                     <MenuItem css={menuItemStyles} onClick={robotLogoutClicked}>
-                      robot logout
+                    {t('logout')}
                     </MenuItem>
                     <MenuItem css={menuItemStyles} onClick={robotPowerOnClicked}>
-                      robot power on
+                    {t('power on')}
                     </MenuItem>
                     <MenuItem css={menuItemStyles} onClick={robotPowerOffClicked}>
-                      robot power off
+                    {t('power off')}
                     </MenuItem>
                     <MenuItem css={menuItemStyles} onClick={robotEnableClicked}>
-                      robot enable
+                    {t('enable')}
                     </MenuItem>
                     <MenuItem css={menuItemStyles} onClick={robotDisableClicked}>
-                      robot disable
+                    {t('disable')}
                     </MenuItem>
                   </MenuList>
                 </ClickAwayListener>

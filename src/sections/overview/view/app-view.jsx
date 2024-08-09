@@ -17,6 +17,8 @@ import AppMenuList from '../app-menu-list';
 import FormDialog from '../app-form-dialogs';
 import AppOrderTimeline from '../app-order-timeline';
 import AppWidgetSummary from '../app-widget-summary';
+import { useTranslation } from 'react-i18next';
+import '../../../i18n.js';
 
 // ----------------------------------------------------------------------
 const imgGridStyles = css`
@@ -95,6 +97,8 @@ export default function AppView() {
   const [tool1Active, setTool1Active] = useState(false);
   const [tool2Active, setTool2Active] = useState(false);
 
+  const { t } = useTranslation();
+
   const handleInputChange = (event) => {
     setIpAddress(event.target.value);
   };
@@ -139,7 +143,7 @@ export default function AppView() {
   return (
     <Container maxWidth="sm">
       <Typography variant="h4" sx={{ mb: 5 }}>
-        Hi, Welcome back 👋
+        {t('greeting')}
       </Typography>
 
       <Grid xs={12} md={6} lg={8} css={imgGridStyles}>
@@ -153,7 +157,7 @@ export default function AppView() {
         <Grid css={inputGridStyles} xs={8} sm={9} md={8}>
           <TextField
             css={textFieldStyles}
-            label="IP Address"
+            label={t('ip address')}
             variant="outlined"
             fullWidth
             value={ipAddress}
@@ -177,7 +181,7 @@ export default function AppView() {
             onClick={handleSaveIpAddress}
             fullWidth
           >
-            Save IP Address
+            {t('save ip')}
           </Button>
         </Grid>
 
@@ -186,7 +190,7 @@ export default function AppView() {
             <AppWidgetSummary
               css={buttonStyles}
               style={{ width: '100%' }}
-              title="Save Position"
+              title={t('save position')}
               total={2}
               color="primary"
               icon={<img alt="icon" src="/assets/icons/glass/ic_glass_buy.png" />}
@@ -200,7 +204,7 @@ export default function AppView() {
               onClick={() => handleToolClick('tool1')}
               css={activeButtonStyles(tool1Active)}
               style={{ width: '100%' }}
-              title="Tool 1"
+              title={t('tool 1')}
               total={3}
               color="primary"
               icon={<img alt="icon" src="/assets/icons/glass/ic_glass_message.png" />}
@@ -214,7 +218,7 @@ export default function AppView() {
               onClick={() => handleToolClick('tool2')}
               css={activeButtonStyles(tool2Active)}
               style={{ width: '100%' }}
-              title="Tool 2"
+              title={t('tool 2')}
               total={4}
               color="primary"
               icon={<img alt="icon" src="/assets/icons/glass/ic_glass_message.png" />}
@@ -228,29 +232,29 @@ export default function AppView() {
 
         <Grid xs={10} md={4} lg={6}>
           <AppTasks
-            title="Tasks"
+            title={t('tasks')}
             list={[
-              { id: '1', name: 'Activate robot arm' },
-              { id: '2', name: 'Manual move' },
-              { id: '3', name: 'Use web tools' },
-              { id: '4', name: 'Save positions' },
-              { id: '5', name: 'Run project ' },
+              { id: '1', name: t('listValue.name01') },
+              { id: '2', name: t('listValue.name02') },
+              { id: '3', name: t('listValue.name03') },
+              { id: '4', name: t('listValue.name04') },
+              { id: '5', name: t('listValue.name05') },
             ]}
           />
         </Grid>
 
         <Grid xs={13} md={7} lg={6}>
           <AppOrderTimeline
-            title="Process"
+            title={t('process')}
             list={[...Array(3)].map((_, index) => ({
               id: faker.string.uuid(),
               title: [
-                'Connect to robot arm',
-                'Move and Save different positions',
-                'Execute your robot automation project',
+                t('titleValue.01'),
+                t('titleValue.02'),
+                t('titleValue.03'),
               ][index],
               type: `order${index + 1}`,
-              text: [['2 min aprox'], ['4 min aprox'], ['1 sec']][index],
+              text: [[t('requiredTime.01')], [t('requiredTime.02')], [t('requiredTime.03')]][index],
             }))}
           />
         </Grid>
@@ -260,7 +264,7 @@ export default function AppView() {
             <AppWidgetSummary
               css={buttonStyles}
               style={{ width: '100%' }}
-              title="Shut Down"
+              title={t('shut down')}
               total={6}
               color="primary"
               icon={<img alt="icon" src="/assets/icons/glass/ic_glass_users.png" />}
