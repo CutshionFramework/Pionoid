@@ -1,7 +1,9 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import PropTypes from 'prop-types';
 import { set, sub } from 'date-fns';
 import { faker } from '@faker-js/faker';
+import i18next from 'i18next';
 
 import Box from '@mui/material/Box';
 import List from '@mui/material/List';
@@ -22,6 +24,8 @@ import { fToNow } from '../../../utils/format-time';
 
 import Iconify from '../../../components/iconify';
 import Scrollbar from '../../../components/scrollbar';
+
+
 
 // ----------------------------------------------------------------------
 
@@ -97,6 +101,8 @@ export default function NotificationsPopover() {
     );
   };
 
+  const { t } = useTranslation();
+
   return (
     <>
       <IconButton color={open ? 'primary' : 'default'} onClick={handleOpen}>
@@ -121,9 +127,9 @@ export default function NotificationsPopover() {
       >
         <Box sx={{ display: 'flex', alignItems: 'center', py: 2, px: 2.5 }}>
           <Box sx={{ flexGrow: 1 }}>
-            <Typography variant="subtitle1">Notifications</Typography>
+            <Typography variant="subtitle1">{t('notifications')}</Typography>
             <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-              You have {totalUnRead} unread messages
+            { i18next.t('unread messages', {totalUnRead}) }
             </Typography>
           </Box>
 
@@ -143,7 +149,7 @@ export default function NotificationsPopover() {
             disablePadding
             subheader={
               <ListSubheader disableSticky sx={{ py: 1, px: 2.5, typography: 'overline' }}>
-                New
+                {t('new')}
               </ListSubheader>
             }
           >
@@ -156,7 +162,7 @@ export default function NotificationsPopover() {
             disablePadding
             subheader={
               <ListSubheader disableSticky sx={{ py: 1, px: 2.5, typography: 'overline' }}>
-                Before that
+                {t('before that')}
               </ListSubheader>
             }
           >
@@ -170,7 +176,7 @@ export default function NotificationsPopover() {
 
         <Box sx={{ p: 1 }}>
           <Button fullWidth disableRipple>
-            View All
+          {t('view all')}
           </Button>
         </Box>
       </Popover>
@@ -181,7 +187,7 @@ export default function NotificationsPopover() {
 // ----------------------------------------------------------------------
 
 NotificationItem.propTypes = {
-  notification: PropTypes.shape({
+    notification: PropTypes.shape({
     createdAt: PropTypes.instanceOf(Date),
     id: PropTypes.string,
     isUnRead: PropTypes.bool,
@@ -193,7 +199,9 @@ NotificationItem.propTypes = {
 };
 
 function NotificationItem({ notification }) {
-  const { avatar, title } = renderContent(notification);
+
+  const { t } = useTranslation();
+  const { avatar, title } = renderContent(notification,t);
 
   return (
     <ListItemButton
@@ -232,42 +240,48 @@ function NotificationItem({ notification }) {
 
 // ----------------------------------------------------------------------
 
-function renderContent(notification) {
-  const title = (
+function renderContent(notification,t) {
+
+  const { type } = notification;
+
+  const translatedTitle = t(`${type}.title`);
+  const translatedDescription = t(`${type}.description`);
+  
+  const titleComponent = (
     <Typography variant="subtitle2">
-      {notification.title}
+      {translatedTitle}
       <Typography component="span" variant="body2" sx={{ color: 'text.secondary' }}>
-        &nbsp; {notification.description}
+        &nbsp; {translatedDescription}
       </Typography>
     </Typography>
   );
 
-  if (notification.type === 'order_placed') {
+  if (type === 'order_placed') {
     return {
-      avatar: <img alt={notification.title} src="/assets/icons/ic_notification_package.svg" />,
-      title,
+      avatar: <img alt={translatedTitle} src="/assets/icons/ic_notification_package.svg" />,
+      title : titleComponent
     };
   }
-  if (notification.type === 'order_shipped') {
+  if (type === 'order_shipped') {
     return {
-      avatar: <img alt={notification.title} src="/assets/icons/ic_notification_shipping.svg" />,
-      title,
+      avatar: <img alt={translatedTitle} src="/assets/icons/ic_notification_shipping.svg" />,
+      title : titleComponent
     };
   }
-  if (notification.type === 'mail') {
+  if (type === 'mail') {
     return {
-      avatar: <img alt={notification.title} src="/assets/icons/ic_notification_mail.svg" />,
-      title,
+      avatar: <img alt={translatedTitle} src="/assets/icons/ic_notification_mail.svg" />,
+      title : titleComponent
     };
   }
-  if (notification.type === 'chat_message') {
+  if (type === 'chat_message') {
     return {
-      avatar: <img alt={notification.title} src="/assets/icons/ic_notification_chat.svg" />,
-      title,
+      avatar: <img alt={translatedTitle} src="/assets/icons/ic_notification_chat.svg" />,
+      title : titleComponent
     };
   }
   return {
-    avatar: notification.avatar ? <img alt={notification.title} src={notification.avatar} /> : null,
-    title,
+    avatar: notification.avatar ? <img alt={translatedTitle} src={notification.avatar} /> : null,
+    title : titleComponent
   };
 }

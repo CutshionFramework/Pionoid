@@ -1,6 +1,8 @@
 /** @jsxImportSource @emotion/react */
-import * as React from 'react';
-import { css } from '@emotion/react';
+import * as React from "react";
+import { css } from "@emotion/react";
+import { useTranslation } from "react-i18next";
+import "../../i18n.js";
 
 import {
   Grow,
@@ -11,7 +13,7 @@ import {
   MenuItem,
   MenuList,
   ClickAwayListener,
-} from '@mui/material';
+} from "@mui/material";
 
 import {
   robotLogin,
@@ -20,7 +22,7 @@ import {
   robotDisable,
   robotPowerOn,
   robotPowerOff,
-} from '../../apis/apis';
+} from "../../apis/apis";
 
 const buttonStyles = css`
   font-size: 1.25rem;
@@ -57,10 +59,10 @@ export default function RobotOperationList() {
   };
 
   const handleListKeyDown = (event) => {
-    if (event.key === 'Tab') {
+    if (event.key === "Tab") {
       event.preventDefault();
       setOpen(false);
-    } else if (event.key === 'Escape') {
+    } else if (event.key === "Escape") {
       setOpen(false);
     }
   };
@@ -81,7 +83,7 @@ export default function RobotOperationList() {
       const response = await robotLogin();
       console.log(response);
     } catch (error) {
-      console.error('Failed to load data. : ', error);
+      console.error("Failed to load data. : ", error);
     }
   };
 
@@ -91,7 +93,7 @@ export default function RobotOperationList() {
       const response = await robotLogout();
       console.log(response);
     } catch (error) {
-      console.error('Failed to load data. : ', error);
+      console.error("Failed to load data. : ", error);
     }
   };
 
@@ -101,7 +103,7 @@ export default function RobotOperationList() {
       const response = await robotPowerOn();
       console.log(response);
     } catch (error) {
-      console.error('Failed to load data. : ', error);
+      console.error("Failed to load data. : ", error);
     }
   };
 
@@ -111,7 +113,7 @@ export default function RobotOperationList() {
       const response = await robotPowerOff();
       console.log(response);
     } catch (error) {
-      console.error('Failed to load data. : ', error);
+      console.error("Failed to load data. : ", error);
     }
   };
 
@@ -121,7 +123,7 @@ export default function RobotOperationList() {
       const response = await robotEnable();
       console.log(response);
     } catch (error) {
-      console.error('Failed to load data. : ', error);
+      console.error("Failed to load data. : ", error);
     }
   };
 
@@ -131,9 +133,11 @@ export default function RobotOperationList() {
       const response = await robotDisable();
       console.log(response);
     } catch (error) {
-      console.error('Failed to load data. : ', error);
+      console.error("Failed to load data. : ", error);
     }
   };
+
+  const { t } = useTranslation();
 
   return (
     <Stack direction="row" spacing={2}>
@@ -142,12 +146,12 @@ export default function RobotOperationList() {
           css={buttonStyles}
           ref={anchorRef}
           id="composition-button"
-          aria-controls={open ? 'composition-menu' : undefined}
-          aria-expanded={open ? 'true' : undefined}
+          aria-controls={open ? "composition-menu" : undefined}
+          aria-expanded={open ? "true" : undefined}
           aria-haspopup="true"
           onClick={handleToggle}
         >
-          Robot Operation
+          {t("operation menu")}
         </Button>
         <Popper
           open={open}
@@ -167,7 +171,7 @@ export default function RobotOperationList() {
               {...TransitionProps}
               style={{
                 transformOrigin:
-                  placement === 'bottom-start' ? 'left top' : 'left bottom',
+                  placement === "bottom-start" ? "left top" : "left bottom",
               }}
             >
               <Paper>
@@ -180,31 +184,31 @@ export default function RobotOperationList() {
                     onKeyDown={handleListKeyDown}
                   >
                     <MenuItem css={menuItemStyles} onClick={robotLoginClicked}>
-                      robot login
+                      {t("login")}
                     </MenuItem>
                     <MenuItem css={menuItemStyles} onClick={robotLogoutClicked}>
-                      robot logout
+                      {t("logout")}
                     </MenuItem>
                     <MenuItem
                       css={menuItemStyles}
                       onClick={robotPowerOnClicked}
                     >
-                      robot power on
+                      {t("power on")}
                     </MenuItem>
                     <MenuItem
                       css={menuItemStyles}
                       onClick={robotPowerOffClicked}
                     >
-                      robot power off
+                      {t("power off")}
                     </MenuItem>
                     <MenuItem css={menuItemStyles} onClick={robotEnableClicked}>
-                      robot enable
+                      {t("enable")}
                     </MenuItem>
                     <MenuItem
                       css={menuItemStyles}
                       onClick={robotDisableClicked}
                     >
-                      robot disable
+                      {t("disable")}
                     </MenuItem>
                   </MenuList>
                 </ClickAwayListener>
