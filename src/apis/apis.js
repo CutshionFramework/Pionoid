@@ -142,7 +142,7 @@ export const robotDisable = async () => {
   }
 };
 
-export const digitalOutputStatus = async () => {
+export const getDigitalOutputStatus = async () => {
   try {
     const params = `/digital_output_status`;
     const res = await robotAPI.get(params);

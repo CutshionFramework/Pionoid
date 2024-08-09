@@ -10,7 +10,13 @@ import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import ButtonBase from '@mui/material/ButtonBase';
 
-import { shutDown, savePosition, saveIpAddress } from '../../../apis/apis';
+import {
+  shutDown,
+  savePosition,
+  saveIpAddress,
+  useDigitalOutput1,
+  useDigitalOutput2,
+} from '../../../apis/apis';
 
 import AppTasks from '../app-tasks';
 import RobotOperationList from '../robot-operation-list';
@@ -134,9 +140,11 @@ export default function AppView() {
   const handleToolClick = (tool) => {
     if (tool === 'tool1') {
       setTool1Active(!tool1Active);
+      Tool1Clicked();
       console.log(tool1Active ? 'Tool 1 deactivated' : 'Tool 1 activated');
     } else if (tool === 'tool2') {
       setTool2Active(!tool2Active);
+      Tool2Clicked();
       console.log(tool2Active ? 'Tool 2 deactivated' : 'Tool 2 activated');
     }
   };
@@ -154,6 +162,24 @@ export default function AppView() {
   const shutDownClicked = async () => {
     try {
       const response = await shutDown();
+      console.log(response);
+    } catch (error) {
+      console.error('Failed to load data. : ', error);
+    }
+  };
+
+  const Tool1Clicked = async () => {
+    try {
+      const response = await useDigitalOutput1();
+      console.log(response);
+    } catch (error) {
+      console.error('Failed to load data. : ', error);
+    }
+  };
+
+  const Tool2Clicked = async () => {
+    try {
+      const response = await useDigitalOutput2();
       console.log(response);
     } catch (error) {
       console.error('Failed to load data. : ', error);
@@ -253,7 +279,7 @@ export default function AppView() {
               onClick={() => handleToolClick('tool1')}
               css={activeButtonStyles(tool1Active)}
               style={{ width: '100%' }}
-              title="Tool 1"
+              title="DO 1"
               total={3}
               color="primary"
               icon={
@@ -272,7 +298,7 @@ export default function AppView() {
               onClick={() => handleToolClick('tool2')}
               css={activeButtonStyles(tool2Active)}
               style={{ width: '100%' }}
-              title="Tool 2"
+              title="DO 2"
               total={4}
               color="primary"
               icon={
