@@ -2,6 +2,7 @@
   "name": "pionoidapi",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://cutshionframework.github.io/Pionoid/",
   "dependencies": {
     "@emotion/react": "^11.13.0",
     "@emotion/styled": "^11.13.0",
@@ -69,6 +70,7 @@
     ]
   },
   "devDependencies": {
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
     "eslint": "^8.51.0",
     "eslint-config-airbnb": "^19.0.4",
     "eslint-config-prettier": "^9.0.0",
