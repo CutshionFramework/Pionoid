@@ -13,12 +13,12 @@ const LANGS = [
   {
     value: 'en',
     label: 'English',
-    icon: '/assets/icons/ic_flag_en.svg',
+    icon: `${process.env.PUBLIC_URL}/assets/icons/ic_flag_en.svg`,
   },
   {
     value: 'de',
     label: '한국어',
-    icon: '/assets/icons/ic_flag_kr.svg',
+    icon: `${process.env.PUBLIC_URL}/assets/icons/ic_flag_kr.svg`,
   },
 ];
 
@@ -75,12 +75,18 @@ export default function LanguagePopover() {
           <MenuItem
             key={option.value}
             selected={option.value === LANGS[0].value}
-            onClick={() =>{ handleClose();
+            onClick={() => {
+              handleClose();
               changeLanguage(i18n.language === 'en' ? 'ko' : 'en');
             }}
             sx={{ typography: 'body2', py: 1 }}
           >
-            <Box component="img" alt={option.label} src={option.icon} sx={{ width: 28, mr: 2 }} />
+            <Box
+              component="img"
+              alt={option.label}
+              src={option.icon}
+              sx={{ width: 28, mr: 2 }}
+            />
 
             {option.label}
           </MenuItem>

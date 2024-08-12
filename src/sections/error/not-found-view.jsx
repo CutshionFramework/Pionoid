@@ -19,7 +19,10 @@ export default function NotFoundView() {
         width: 1,
         lineHeight: 0,
         position: 'fixed',
-        p: (theme) => ({ xs: theme.spacing(3, 3, 0), sm: theme.spacing(5, 5, 0) }),
+        p: (theme) => ({
+          xs: theme.spacing(3, 3, 0),
+          sm: theme.spacing(5, 5, 0),
+        }),
       }}
     >
       <Logo />
@@ -49,13 +52,13 @@ export default function NotFoundView() {
           </Typography>
 
           <Typography sx={{ color: 'text.secondary' }}>
-            Sorry, we couldn’t find the page you’re looking for. Perhaps you’ve mistyped the URL? Be
-            sure to check your spelling.
+            Sorry, we couldn’t find the page you’re looking for. Perhaps you’ve
+            mistyped the URL? Be sure to check your spelling.
           </Typography>
 
           <Box
             component="img"
-            src="/assets/illustrations/illustration_404.svg"
+            src={`${process.env.PUBLIC_URL}/assets/illustrations/illustration_404.svg`}
             sx={{
               mx: 'auto',
               height: 260,
@@ -63,7 +66,12 @@ export default function NotFoundView() {
             }}
           />
 
-          <Button href="/" size="large" variant="contained" component={RouterLink}>
+          <Button
+            href="/"
+            size="large"
+            variant="contained"
+            component={RouterLink}
+          >
             Go to Home
           </Button>
         </Box>

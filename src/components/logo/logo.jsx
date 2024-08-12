@@ -6,7 +6,7 @@ import Link from '@mui/material/Link';
 
 import { RouterLink } from '../../routes/components';
 
-const logoImagePath = '/assets/logo.svg';
+const logoImagePath = `${process.env.PUBLIC_URL}/assets/logo.svg`;
 
 const Logo = forwardRef(({ disabledLink = false, sx, ...other }, ref) => {
   const logo = (

@@ -5,7 +5,10 @@ import i18next from 'i18next';
 // ----------------------------------------------------------------------
 
 const icon = (name) => (
-  <SvgColor src={`/assets/icons/navbar/${name}.svg`} sx={{ width: 1, height: 1 }} />
+  <SvgColor
+    src={`${process.env.PUBLIC_URL}/assets/icons/navbar/${name}.svg`}
+    sx={{ width: 1, height: 1 }}
+  />
 );
 
 const navConfig = [
@@ -13,7 +16,7 @@ const navConfig = [
     title: 'Jaka Robotics',
     path: '/',
     icon: icon('ic_blog'),
-  }
+  },
   /*
   {
     title: 'user',

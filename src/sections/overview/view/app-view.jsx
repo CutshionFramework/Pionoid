@@ -187,7 +187,10 @@ export default function AppView() {
       </Typography>
 
       <Grid xs={12} md={6} lg={8} css={imgGridStyles}>
-        <img src="/assets/images/jaka%20robot%20arm.png" alt="JAKA robot arm" />
+        <img
+          src={`${process.env.PUBLIC_URL}/assets/images/jaka%20robot%20arm.png`}
+          alt="JAKA robot arm"
+        />
         <Grid xs={12} md={6} lg={8} css={menuListStyles}>
           <RobotOperationList />
         </Grid>
@@ -206,7 +209,7 @@ export default function AppView() {
               startAdornment: (
                 <img
                   alt="icon"
-                  src="/assets/icons/glass/ic_glass_users.png"
+                  src={`${process.env.PUBLIC_URL}/assets/icons/glass/ic_glass_users.png`}
                   style={{ marginRight: '8px' }}
                 />
               ),
@@ -234,7 +237,10 @@ export default function AppView() {
               total={2}
               color="primary"
               icon={
-                <img alt="icon" src="/assets/icons/glass/ic_glass_buy.png" />
+                <img
+                  alt="icon"
+                  src={`${process.env.PUBLIC_URL}/assets/icons/glass/ic_glass_buy.png`}
+                />
               }
             />
           </ButtonBase>
@@ -254,7 +260,7 @@ export default function AppView() {
               icon={
                 <img
                   alt="icon"
-                  src="/assets/icons/glass/ic_glass_message.png"
+                  src={`${process.env.PUBLIC_URL}/assets/icons/glass/ic_glass_message.png`}
                 />
               }
             />
@@ -275,7 +281,7 @@ export default function AppView() {
               icon={
                 <img
                   alt="icon"
-                  src="/assets/icons/glass/ic_glass_message.png"
+                  src={`${process.env.PUBLIC_URL}/assets/icons/glass/ic_glass_message.png`}
                 />
               }
             />
@@ -297,7 +303,10 @@ export default function AppView() {
               total={6}
               color="primary"
               icon={
-                <img alt="icon" src="/assets/icons/glass/ic_glass_users.png" />
+                <img
+                  alt="icon"
+                  src={`${process.env.PUBLIC_URL}/assets/icons/glass/ic_glass_users.png`}
+                />
               }
             />
           </ButtonBase>
