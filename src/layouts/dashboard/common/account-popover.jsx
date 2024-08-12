@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import Box from '@mui/material/Box';
 import Avatar from '@mui/material/Avatar';
@@ -19,14 +20,17 @@ const MENU_OPTIONS = [
   {
     label: 'home',
     icon: 'eva:home-fill',
+    link: '/',
   },
   {
     label: 'profile',
     icon: 'eva:person-fill',
+    link: '/user',
   },
   {
     label: 'settings',
     icon: 'eva:settings-2-fill',
+    link: '/settings',
   },
 ];
 
@@ -35,12 +39,19 @@ const MENU_OPTIONS = [
 export default function AccountPopover() {
   const [open, setOpen] = useState(null);
 
+  const navigate = useNavigate();
+
   const handleOpen = (event) => {
     setOpen(event.currentTarget);
   };
 
   const handleClose = () => {
     setOpen(null);
+  };
+
+  const handleMenuItemClick = (link) => {
+    navigate(link);
+    handleClose();
   };
 
   const { t } = useTranslation();
@@ -89,7 +100,7 @@ export default function AccountPopover() {
       >
         <Box sx={{ my: 1.5, px: 2 }}>
           <Typography variant="subtitle2" noWrap>
-            {t('user name',account.displayName)}
+            {t('user name', account.displayName)}
           </Typography>
           <Typography variant="body2" sx={{ color: 'text.secondary' }} noWrap>
             {account.email}
@@ -99,7 +110,10 @@ export default function AccountPopover() {
         <Divider sx={{ borderStyle: 'dashed' }} />
 
         {MENU_OPTIONS.map((option) => (
-          <MenuItem key={option.label} onClick={handleClose}>
+          <MenuItem
+            key={option.label}
+            onClick={() => handleMenuItemClick(option.link)}
+          >
             {t(option.label)}
           </MenuItem>
         ))}
