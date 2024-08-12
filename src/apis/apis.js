@@ -153,24 +153,24 @@ export const getDigitalOutputStatus = async () => {
   }
 };
 
-export const useDigitalOutput1 = async () => {
+export const setDigitalOutput = async (index) => {
   try {
-    const params = `/use_digital_output1`;
+    const params = `/use_digital_output/${index}`;
     const res = await robotAPI.get(params);
     return res;
   } catch (error) {
-    console.error('Error using digital output 1:', error);
+    console.error('Error using digital output:', error);
     throw error;
   }
 };
 
-export const useDigitalOutput2 = async () => {
+export const setDigitalInput = async (index) => {
   try {
-    const params = `/use_digital_output2`;
+    const params = `/use_digital_input/${index}`;
     const res = await robotAPI.get(params);
     return res;
   } catch (error) {
-    console.error('Error using digital output 2:', error);
+    console.error('Error using digital input:', error);
     throw error;
   }
 };

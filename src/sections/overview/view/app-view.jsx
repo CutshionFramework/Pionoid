@@ -10,20 +10,14 @@ import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import ButtonBase from '@mui/material/ButtonBase';
 
-import {
-  shutDown,
-  savePosition,
-  saveIpAddress,
-  useDigitalOutput1,
-  useDigitalOutput2,
-} from '../../../apis/apis';
+import { shutDown, savePosition, saveIpAddress } from '../../../apis/apis';
 
 import AppTasks from '../app-tasks';
 import RobotOperationList from '../robot-operation-list';
 import AppOrderTimeline from '../app-order-timeline';
 import AppWidgetSummary from '../app-widget-summary';
-
 import RobotMovementList from '../robot-movement-list';
+import DigitalIODialog from '../digital_io_dialog.jsx';
 
 import { useTranslation } from 'react-i18next';
 import '../../../i18n.js';
@@ -54,6 +48,7 @@ const menuListStyles = css`
 `;
 
 const buttonStyles = css`
+  transition: background-color 0.3s;
   &:hover {
     background-color: #f0f0f0;
   }
@@ -67,15 +62,6 @@ const saveButtonStyles = css`
   font-size: 20px;
   &:hover {
     background-color: #f0f0f0;
-  }
-`;
-
-const activeButtonStyles = (active) => css`
-  background-color: ${active ? 'lightblue' : 'white'};
-  transition: background-color 0.3s;
-
-  &:hover {
-    background-color: ${active ? 'lightblue' : '#f0f0f0'};
   }
 `;
 
@@ -124,10 +110,9 @@ const formDialogStyles = css`
 
 export default function AppView() {
   const [ipAddress, setIpAddress] = useState('');
-  const [tool1Active, setTool1Active] = useState(false);
-  const [tool2Active, setTool2Active] = useState(false);
-
   const [showList, setShowList] = useState(false);
+  const [dialogType, setDialogType] = useState(null);
+  const [dialogOpen, setDialogOpen] = useState(false);
 
   const handleInputChange = (event) => {
     setIpAddress(event.target.value);
@@ -142,16 +127,9 @@ export default function AppView() {
     }
   };
 
-  const handleToolClick = (tool) => {
-    if (tool === 'tool1') {
-      setTool1Active(!tool1Active);
-      Tool1Clicked();
-      console.log(tool1Active ? 'Tool 1 deactivated' : 'Tool 1 activated');
-    } else if (tool === 'tool2') {
-      setTool2Active(!tool2Active);
-      Tool2Clicked();
-      console.log(tool2Active ? 'Tool 2 deactivated' : 'Tool 2 activated');
-    }
+  const handleDIOButtonClick = (type) => {
+    setDialogType(type);
+    setDialogOpen(true);
   };
 
   const savePositionClicked = async () => {
@@ -167,24 +145,6 @@ export default function AppView() {
   const shutDownClicked = async () => {
     try {
       const response = await shutDown();
-      console.log(response);
-    } catch (error) {
-      console.error('Failed to load data. : ', error);
-    }
-  };
-
-  const Tool1Clicked = async () => {
-    try {
-      const response = await useDigitalOutput1();
-      console.log(response);
-    } catch (error) {
-      console.error('Failed to load data. : ', error);
-    }
-  };
-
-  const Tool2Clicked = async () => {
-    try {
-      const response = await useDigitalOutput2();
       console.log(response);
     } catch (error) {
       console.error('Failed to load data. : ', error);
@@ -287,12 +247,14 @@ export default function AppView() {
         </Grid>
 
         <Grid xs={14} sm={8} md={6}>
-          <ButtonBase style={{ width: '100%' }}>
+          <ButtonBase
+            style={{ width: '100%' }}
+            onClick={() => handleDIOButtonClick('DO')}
+          >
             <AppWidgetSummary
-              onClick={() => handleToolClick('tool1')}
-              css={activeButtonStyles(tool1Active)}
+              css={buttonStyles}
               style={{ width: '100%' }}
-              title={t('do 1')}
+              title="DO"
               total={3}
               color="primary"
               icon={
@@ -306,12 +268,14 @@ export default function AppView() {
         </Grid>
 
         <Grid xs={14} sm={8} md={6}>
-          <ButtonBase style={{ width: '100%' }}>
+          <ButtonBase
+            style={{ width: '100%' }}
+            onClick={() => handleDIOButtonClick('DI')}
+          >
             <AppWidgetSummary
-              onClick={() => handleToolClick('tool2')}
-              css={activeButtonStyles(tool2Active)}
+              css={buttonStyles}
               style={{ width: '100%' }}
-              title={t('do 2')}
+              title="DI"
               total={4}
               color="primary"
               icon={
@@ -323,6 +287,12 @@ export default function AppView() {
             />
           </ButtonBase>
         </Grid>
+
+        <DigitalIODialog
+          open={dialogOpen}
+          onClose={() => setDialogOpen(false)}
+          dialogType={dialogType}
+        />
 
         <Grid xs={14} sm={8} md={6}>
           <ButtonBase style={{ width: '100%' }} onClick={shutDownClicked}>
