@@ -25,8 +25,6 @@ import { fToNow } from '../../../utils/format-time';
 import Iconify from '../../../components/iconify';
 import Scrollbar from '../../../components/scrollbar';
 
-
-
 // ----------------------------------------------------------------------
 
 const NOTIFICATIONS = [
@@ -43,7 +41,7 @@ const NOTIFICATIONS = [
     id: faker.string.uuid(),
     title: faker.person.fullName(),
     description: 'answered to your comment on the Minimal',
-    avatar: '/assets/images/avatars/avatar_2.jpg',
+    avatar: `${process.env.PUBLIC_URL}/assets/images/avatars/avatar_2.jpg`,
     type: 'friend_interactive',
     createdAt: sub(new Date(), { hours: 3, minutes: 30 }),
     isUnRead: true,
@@ -80,7 +78,9 @@ const NOTIFICATIONS = [
 export default function NotificationsPopover() {
   const [notifications, setNotifications] = useState(NOTIFICATIONS);
 
-  const totalUnRead = notifications.filter((item) => item.isUnRead === true).length;
+  const totalUnRead = notifications.filter(
+    (item) => item.isUnRead === true
+  ).length;
 
   const [open, setOpen] = useState(null);
 
@@ -129,7 +129,7 @@ export default function NotificationsPopover() {
           <Box sx={{ flexGrow: 1 }}>
             <Typography variant="subtitle1">{t('notifications')}</Typography>
             <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-            { i18next.t('unread messages', {totalUnRead}) }
+              {i18next.t('unread messages', { totalUnRead })}
             </Typography>
           </Box>
 
@@ -148,26 +148,38 @@ export default function NotificationsPopover() {
           <List
             disablePadding
             subheader={
-              <ListSubheader disableSticky sx={{ py: 1, px: 2.5, typography: 'overline' }}>
+              <ListSubheader
+                disableSticky
+                sx={{ py: 1, px: 2.5, typography: 'overline' }}
+              >
                 {t('new')}
               </ListSubheader>
             }
           >
             {notifications.slice(0, 2).map((notification) => (
-              <NotificationItem key={notification.id} notification={notification} />
+              <NotificationItem
+                key={notification.id}
+                notification={notification}
+              />
             ))}
           </List>
 
           <List
             disablePadding
             subheader={
-              <ListSubheader disableSticky sx={{ py: 1, px: 2.5, typography: 'overline' }}>
+              <ListSubheader
+                disableSticky
+                sx={{ py: 1, px: 2.5, typography: 'overline' }}
+              >
                 {t('before that')}
               </ListSubheader>
             }
           >
             {notifications.slice(2, 5).map((notification) => (
-              <NotificationItem key={notification.id} notification={notification} />
+              <NotificationItem
+                key={notification.id}
+                notification={notification}
+              />
             ))}
           </List>
         </Scrollbar>
@@ -176,7 +188,7 @@ export default function NotificationsPopover() {
 
         <Box sx={{ p: 1 }}>
           <Button fullWidth disableRipple>
-          {t('view all')}
+            {t('view all')}
           </Button>
         </Box>
       </Popover>
@@ -187,7 +199,7 @@ export default function NotificationsPopover() {
 // ----------------------------------------------------------------------
 
 NotificationItem.propTypes = {
-    notification: PropTypes.shape({
+  notification: PropTypes.shape({
     createdAt: PropTypes.instanceOf(Date),
     id: PropTypes.string,
     isUnRead: PropTypes.bool,
@@ -199,9 +211,8 @@ NotificationItem.propTypes = {
 };
 
 function NotificationItem({ notification }) {
-
   const { t } = useTranslation();
-  const { avatar, title } = renderContent(notification,t);
+  const { avatar, title } = renderContent(notification, t);
 
   return (
     <ListItemButton
@@ -229,7 +240,10 @@ function NotificationItem({ notification }) {
               color: 'text.disabled',
             }}
           >
-            <Iconify icon="eva:clock-outline" sx={{ mr: 0.5, width: 16, height: 16 }} />
+            <Iconify
+              icon="eva:clock-outline"
+              sx={{ mr: 0.5, width: 16, height: 16 }}
+            />
             {fToNow(notification.createdAt)}
           </Typography>
         }
@@ -240,17 +254,20 @@ function NotificationItem({ notification }) {
 
 // ----------------------------------------------------------------------
 
-function renderContent(notification,t) {
-
+function renderContent(notification, t) {
   const { type } = notification;
 
   const translatedTitle = t(`${type}.title`);
   const translatedDescription = t(`${type}.description`);
-  
+
   const titleComponent = (
     <Typography variant="subtitle2">
       {translatedTitle}
-      <Typography component="span" variant="body2" sx={{ color: 'text.secondary' }}>
+      <Typography
+        component="span"
+        variant="body2"
+        sx={{ color: 'text.secondary' }}
+      >
         &nbsp; {translatedDescription}
       </Typography>
     </Typography>
@@ -258,30 +275,52 @@ function renderContent(notification,t) {
 
   if (type === 'order_placed') {
     return {
-      avatar: <img alt={translatedTitle} src="/assets/icons/ic_notification_package.svg" />,
-      title : titleComponent
+      avatar: (
+        <img
+          alt={translatedTitle}
+          src={`${process.env.PUBLIC_URL}/assets/icons/ic_notification_package.svg`}
+        />
+      ),
+      title: titleComponent,
     };
   }
   if (type === 'order_shipped') {
     return {
-      avatar: <img alt={translatedTitle} src="/assets/icons/ic_notification_shipping.svg" />,
-      title : titleComponent
+      avatar: (
+        <img
+          alt={translatedTitle}
+          src={`${process.env.PUBLIC_URL}/assets/icons/ic_notification_shipping.svg`}
+        />
+      ),
+      title: titleComponent,
     };
   }
   if (type === 'mail') {
     return {
-      avatar: <img alt={translatedTitle} src="/assets/icons/ic_notification_mail.svg" />,
-      title : titleComponent
+      avatar: (
+        <img
+          alt={translatedTitle}
+          src={`${process.env.PUBLIC_URL}/assets/icons/ic_notification_mail.svg`}
+        />
+      ),
+      title: titleComponent,
     };
   }
   if (type === 'chat_message') {
     return {
-      avatar: <img alt={translatedTitle} src="/assets/icons/ic_notification_chat.svg" />,
-      title : titleComponent
+      avatar: (
+        <img
+          alt={translatedTitle}
+          src={`${process.env.PUBLIC_URL}/assets/icons/ic_notification_chat.svg`}
+        />
+      ),
+      title: titleComponent,
     };
   }
   return {
-    avatar: notification.avatar ? <img alt={translatedTitle} src={notification.avatar} /> : null,
-    title : titleComponent
+    avatar: notification.avatar ? (
+      <img alt={translatedTitle} src={notification.avatar} />
+    ) : null,
+    title: titleComponent,
   };
 }

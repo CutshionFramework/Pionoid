@@ -22,7 +22,7 @@ import Scrollbar from '../../components/scrollbar';
 
 import { NAV } from './config-layout';
 import navConfig from './config-navigation';
-import '../../i18n.js'
+import '../../i18n.js';
 import { useTranslation } from 'react-i18next';
 
 // ----------------------------------------------------------------------
@@ -56,7 +56,9 @@ export default function Nav({ openNav, onCloseNav }) {
       <Avatar src={account.photoURL} alt="photoURL" />
 
       <Box sx={{ ml: 2 }}>
-        <Typography variant="subtitle2">{t('user name',account.displayName)}</Typography>
+        <Typography variant="subtitle2">
+          {t('user name', account.displayName)}
+        </Typography>
 
         <Typography variant="body2" sx={{ color: 'text.secondary' }}>
           {account.role}
@@ -75,10 +77,14 @@ export default function Nav({ openNav, onCloseNav }) {
 
   const renderUpgrade = (
     <Box sx={{ px: 2.5, pb: 3, mt: 10 }}>
-      <Stack alignItems="center" spacing={3} sx={{ pt: 5, borderRadius: 2, position: 'relative' }}>
+      <Stack
+        alignItems="center"
+        spacing={3}
+        sx={{ pt: 5, borderRadius: 2, position: 'relative' }}
+      >
         <Box
           component="img"
-          src="/assets/illustrations/illustration_avatar.png"
+          src={`${process.env.PUBLIC_URL}/assets/illustrations/illustration_avatar.png`}
           sx={{ width: 100, position: 'absolute', top: -50 }}
         />
 

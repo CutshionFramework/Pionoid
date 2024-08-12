@@ -94,7 +94,9 @@ export default function PostCard({ post, index }) {
           }}
         >
           <Iconify width={16} icon={info.icon} sx={{ mr: 0.5 }} />
-          <Typography variant="caption">{fShortenNumber(info.number)}</Typography>
+          <Typography variant="caption">
+            {fShortenNumber(info.number)}
+          </Typography>
         </Stack>
       ))}
     </Stack>
@@ -135,7 +137,7 @@ export default function PostCard({ post, index }) {
   const renderShape = (
     <SvgColor
       color="paper"
-      src="/assets/icons/shape-avatar.svg"
+      src={`${process.env.PUBLIC_URL}/assets/icons/shape-avatar.svg`}
       sx={{
         width: 80,
         height: 36,
