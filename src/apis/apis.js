@@ -4,8 +4,9 @@ const BASE_URL = process.env.REACT_APP_API_URL;
 
 export const getRobotSessions = async () => {
   try {
-    const params = `/get_robot_sessions`;
-    const res = await robotAPI.get(params);
+    const endpoint = `${BASE_URL}`;
+    const params = `get_robot_sessions`;
+    const res = await robotAPI.get(endpoint, params);
     return res;
   } catch (error) {
     console.error('Error saving position:', error);
@@ -15,15 +16,8 @@ export const getRobotSessions = async () => {
 
 export const saveIpAddress = async (ipAddress) => {
   try {
-    // endpoint example : const endpoint = `${BASE_URL}/users`;
-    //                  : const endpoint = `${BASE_URL}/posts`;
-    const endpoint = `${BASE_URL}`; // can be omitted now that just using base url.
-
-    // params example : const params = `${userid}/profile`;
-    //                : const params = `${postid}/text`;
+    const endpoint = `${BASE_URL}`;
     const params = `set_ip`;
-
-    // body(=Data you want to send) example : Function Parameter
     const res = await robotAPI.post(endpoint, params, ipAddress);
     return res;
   } catch (error) {
@@ -34,8 +28,9 @@ export const saveIpAddress = async (ipAddress) => {
 
 export const savePosition = async () => {
   try {
-    const params = `/save_robot_status`;
-    const res = await robotAPI.get(params);
+    const endpoint = `${BASE_URL}`;
+    const params = `save_robot_status`;
+    const res = await robotAPI.get(endpoint, params);
     return res;
   } catch (error) {
     console.error('Error saving position:', error);
@@ -45,8 +40,9 @@ export const savePosition = async () => {
 
 export const updatePosition = async (originalName, updatedItem) => {
   try {
-    const params = `/update_robot_status/${encodeURIComponent(originalName)}`;
-    const res = await robotAPI.put(params, updatedItem);
+    const endpoint = `${BASE_URL}`;
+    const params = `update_robot_status/${encodeURIComponent(originalName)}`;
+    const res = await robotAPI.put(endpoint, params, updatedItem);
     return res;
   } catch (error) {
     console.error('Error updating position:', error);
@@ -56,8 +52,9 @@ export const updatePosition = async (originalName, updatedItem) => {
 
 export const deletePosition = async (name) => {
   try {
-    const params = `/delete_robot_status/${encodeURIComponent(name)}`;
-    const res = await robotAPI.get(params);
+    const endpoint = `${BASE_URL}`;
+    const params = `delete_robot_status/${encodeURIComponent(name)}`;
+    const res = await robotAPI.get(endpoint, params);
     return res;
   } catch (error) {
     console.error('Error deleting position:', error);
@@ -67,8 +64,9 @@ export const deletePosition = async (name) => {
 
 export const robotRunSaveMovements = async (times) => {
   try {
-    const params = `/run_saved_movements/${times}`;
-    const res = await robotAPI.get(params);
+    const endpoint = `${BASE_URL}`;
+    const params = `run_saved_movements/${times}`;
+    const res = await robotAPI.get(endpoint, params);
     return res;
   } catch (error) {
     console.error('Error running saved movements:', error);
@@ -78,8 +76,9 @@ export const robotRunSaveMovements = async (times) => {
 
 export const shutDown = async () => {
   try {
-    const params = `/shut_down`;
-    const res = await robotAPI.get(params);
+    const endpoint = `${BASE_URL}`;
+    const params = `shut_down`;
+    const res = await robotAPI.get(endpoint, params);
     return res;
   } catch (error) {
     console.error('Error shutting down:', error);
@@ -89,8 +88,9 @@ export const shutDown = async () => {
 
 export const robotLogin = async () => {
   try {
-    const params = `/login_in`;
-    const res = await robotAPI.get(params);
+    const endpoint = `${BASE_URL}`;
+    const params = `login_in`;
+    const res = await robotAPI.get(endpoint, params);
     return res;
   } catch (error) {
     console.error('Error logging in:', error);
@@ -100,8 +100,9 @@ export const robotLogin = async () => {
 
 export const robotLogout = async () => {
   try {
-    const params = `/login_out`;
-    const res = await robotAPI.get(params);
+    const endpoint = `${BASE_URL}`;
+    const params = `login_out`;
+    const res = await robotAPI.get(endpoint, params);
     return res;
   } catch (error) {
     console.error('Error logging out:', error);
@@ -111,8 +112,9 @@ export const robotLogout = async () => {
 
 export const robotPowerOn = async () => {
   try {
-    const params = `/power_on`;
-    const res = await robotAPI.get(params);
+    const endpoint = `${BASE_URL}`;
+    const params = `power_on`;
+    const res = await robotAPI.get(endpoint, params);
     return res;
   } catch (error) {
     console.error('Error powering on:', error);
@@ -122,8 +124,9 @@ export const robotPowerOn = async () => {
 
 export const robotPowerOff = async () => {
   try {
-    const params = `/power_off`;
-    const res = await robotAPI.get(params);
+    const endpoint = `${BASE_URL}`;
+    const params = `power_off`;
+    const res = await robotAPI.get(endpoint, params);
     return res;
   } catch (error) {
     console.error('Error powering off:', error);
@@ -133,8 +136,9 @@ export const robotPowerOff = async () => {
 
 export const robotEnable = async () => {
   try {
-    const params = `/enable_robot`;
-    const res = await robotAPI.get(params);
+    const endpoint = `${BASE_URL}`;
+    const params = `enable_robot`;
+    const res = await robotAPI.get(endpoint, params);
     return res;
   } catch (error) {
     console.error('Error enabling robot:', error);
@@ -144,8 +148,9 @@ export const robotEnable = async () => {
 
 export const robotDisable = async () => {
   try {
-    const params = `/disable_robot`;
-    const res = await robotAPI.get(params);
+    const endpoint = `${BASE_URL}`;
+    const params = `disable_robot`;
+    const res = await robotAPI.get(endpoint, params);
     return res;
   } catch (error) {
     console.error('Error disabling robot:', error);
@@ -155,8 +160,9 @@ export const robotDisable = async () => {
 
 export const getDigitalOutputStatus = async () => {
   try {
-    const params = `/digital_output_status`;
-    const res = await robotAPI.get(params);
+    const endpoint = `${BASE_URL}`;
+    const params = `digital_output_status`;
+    const res = await robotAPI.get(endpoint, params);
     return res;
   } catch (error) {
     console.error('Error getting digital output status:', error);
@@ -166,8 +172,9 @@ export const getDigitalOutputStatus = async () => {
 
 export const setDigitalOutput = async (index) => {
   try {
-    const params = `/use_digital_output/${index}`;
-    const res = await robotAPI.get(params);
+    const endpoint = `${BASE_URL}`;
+    const params = `use_digital_output/${index}`;
+    const res = await robotAPI.get(endpoint, params);
     return res;
   } catch (error) {
     console.error('Error using digital output:', error);
@@ -177,8 +184,9 @@ export const setDigitalOutput = async (index) => {
 
 export const setDigitalInput = async (index) => {
   try {
-    const params = `/use_digital_input/${index}`;
-    const res = await robotAPI.get(params);
+    const endpoint = `${BASE_URL}`;
+    const params = `use_digital_input/${index}`;
+    const res = await robotAPI.get(endpoint, params);
     return res;
   } catch (error) {
     console.error('Error using digital input:', error);
