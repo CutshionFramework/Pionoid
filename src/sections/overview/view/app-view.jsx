@@ -10,7 +10,12 @@ import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import ButtonBase from '@mui/material/ButtonBase';
 
-import { shutDown, savePosition, saveIpAddress } from '../../../apis/apis';
+import {
+  shutDown,
+  savePosition,
+  saveIpAddress,
+  getRobotSessions,
+} from '../../../apis/apis';
 
 import AppTasks from '../app-tasks';
 import RobotOperationList from '../robot-operation-list';
@@ -153,10 +158,6 @@ export default function AppView() {
 
   const toggleList = () => {
     setShowList(!showList);
-  };
-
-  const handleItemClick = (item) => {
-    console.log(`${item} clicked`);
   };
 
   // 번역 함수
@@ -331,11 +332,7 @@ export default function AppView() {
         </Grid>
 
         <Grid css={formDialogStyles} xs={14} sm={8} md={6}>
-          <RobotMovementList
-            showList={showList}
-            toggleList={toggleList}
-            onItemClick={handleItemClick}
-          />
+          <RobotMovementList showList={showList} toggleList={toggleList} />
         </Grid>
       </Grid>
     </Container>

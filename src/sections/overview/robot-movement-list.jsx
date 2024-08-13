@@ -98,7 +98,7 @@ const defaultStyle = css`
   }
 `;
 
-const RobotMovementList = ({ showList, toggleList, onItemClick }) => {
+const RobotMovementList = ({ showList, toggleList }) => {
   const [data, setData] = useState([]);
   const [selectedItem, setSelectedItem] = useState(null);
   const [contextMenu, setContextMenu] = useState(null);
@@ -147,9 +147,9 @@ const RobotMovementList = ({ showList, toggleList, onItemClick }) => {
   //   }
   // };
 
-  const handleItemClick = (item) => {
-    onItemClick(item);
-  };
+  // const handleItemClick = (item) => {
+  //   onItemClick(item);
+  // };
 
   const handleRobotMovementListButtonClick = () => {
     loadDataFromServer();
@@ -298,7 +298,6 @@ const RobotMovementList = ({ showList, toggleList, onItemClick }) => {
                   onDragStart={(e) => onDragStart(e, index)}
                   onDragOver={(e) => onDragOver(e, index)}
                   onDrop={(e) => onDrop(e, index)}
-                  onClick={() => handleItemClick(item.name)}
                   onContextMenu={(event) => handleContextMenu(event, item)}
                   css={[
                     defaultStyle,
