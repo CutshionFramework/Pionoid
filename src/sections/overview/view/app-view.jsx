@@ -1,5 +1,5 @@
 /** @jsxImportSource @emotion/react */
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { css } from '@emotion/react';
 import { faker } from '@faker-js/faker';
 
@@ -17,7 +17,8 @@ import RobotOperationList from '../robot-operation-list';
 import AppOrderTimeline from '../app-order-timeline';
 import AppWidgetSummary from '../app-widget-summary';
 import RobotMovementList from '../robot-movement-list';
-import DigitalIODialog from '../digital_io_dialog.jsx';
+import DigitalIODialog from '../digital_io_dialog';
+import RunMovementFormDialog from '../run-movement-form-dialog';
 
 import { useTranslation } from 'react-i18next';
 import '../../../i18n.js';
@@ -135,8 +136,7 @@ export default function AppView() {
   const savePositionClicked = async () => {
     try {
       const response = await savePosition();
-      saveToLocalStorage('positions', response); // 'positions'는 로컬스토리지의 키
-      console.log('Data saved to localStorage:', response);
+      console.log('Data saved to server:', response);
     } catch (error) {
       console.error('Failed to load data. : ', error);
     }
@@ -157,25 +157,6 @@ export default function AppView() {
 
   const handleItemClick = (item) => {
     console.log(`${item} clicked`);
-  };
-
-  // 변환할 데이터 포맷
-  const formatData = (data) => ({
-    name: data.name,
-    x: data.x,
-    y: data.y,
-    z: data.z,
-    rx: data.rx,
-    ry: data.ry,
-    rz: data.rz,
-  });
-
-  // 로컬스토리지에 저장할 함수
-  const saveToLocalStorage = (key, data) => {
-    const existingData = JSON.parse(localStorage.getItem(key)) || [];
-    const formattedData = formatData(data); // 변환 함수 호출
-    existingData.push(formattedData);
-    localStorage.setItem(key, JSON.stringify(existingData));
   };
 
   // 번역 함수
@@ -343,6 +324,10 @@ export default function AppView() {
               ][index],
             }))}
           />
+        </Grid>
+
+        <Grid xs={26} md={14} lg={12}>
+          <RunMovementFormDialog />
         </Grid>
 
         <Grid css={formDialogStyles} xs={14} sm={8} md={6}>

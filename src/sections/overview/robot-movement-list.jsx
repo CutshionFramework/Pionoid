@@ -15,9 +15,12 @@ import {
   MenuItem,
 } from '@mui/material';
 
-import RunMovementFormDialog from './run-movement-form-dialog';
 import ModifyFormDialog from './modify-form-dialog';
-import { deletePosition, updatePosition } from '../../apis/apis';
+import {
+  deletePosition,
+  updatePosition,
+  getRobotSessions,
+} from '../../apis/apis';
 
 const listContainerStyles = css`
   position: fixed;
@@ -100,18 +103,11 @@ const RobotMovementList = ({ showList, toggleList, onItemClick }) => {
   const [selectedItem, setSelectedItem] = useState(null);
   const [contextMenu, setContextMenu] = useState(null);
 
-  const [draggedOverIndex, setDraggedOverIndex] = useState(null); // 드래그 중인 요소가 현재 위치한 인덱스
-
-  const loadDataFromLocalStorage = () => {
-    const storedData = localStorage.getItem('positions');
-    if (storedData) {
-      setData(JSON.parse(storedData));
-    }
-  };
+  const [draggedOverIndex, setDraggedOverIndex] = useState(null);
 
   useEffect(() => {
     if (showList) {
-      loadDataFromLocalStorage();
+      loadDataFromServer();
     }
   }, [showList]);
 
@@ -133,12 +129,30 @@ const RobotMovementList = ({ showList, toggleList, onItemClick }) => {
     };
   }, [contextMenu]);
 
+  const loadDataFromServer = async () => {
+    try {
+      const response = await getRobotSessions();
+      setData(response);
+    } catch (error) {
+      console.error('Failed to load data from server:', error);
+    }
+  };
+
+  // const handleCopyPosition = async () => {
+  //   try {
+  //     const response = await copyPosition();
+  //     console.log('Data copy to server:', response);
+  //   } catch (error) {
+  //     console.error('Failed to load data. : ', error);
+  //   }
+  // };
+
   const handleItemClick = (item) => {
     onItemClick(item);
   };
 
   const handleRobotMovementListButtonClick = () => {
-    loadDataFromLocalStorage();
+    loadDataFromServer();
     toggleList();
   };
 
@@ -149,7 +163,8 @@ const RobotMovementList = ({ showList, toggleList, onItemClick }) => {
 
       const updatedData = [...data, copiedItem];
       setData(updatedData);
-      localStorage.setItem('positions', JSON.stringify(updatedData));
+      // handleCopyPosition(updatedData);
+      // localStorage.setItem('positions', JSON.stringify(updatedData));
     }
     setContextMenu(null);
   };
@@ -162,7 +177,8 @@ const RobotMovementList = ({ showList, toggleList, onItemClick }) => {
   };
 
   const handleSave = async (modifiedItem) => {
-    const existingData = JSON.parse(localStorage.getItem('positions')) || [];
+    // const existingData = JSON.parse(localStorage.getItem('positions')) || [];
+    const existingData = data;
 
     const updatedData = existingData.map((item) => {
       if (item.name === modifiedItem.originalName) {
@@ -171,7 +187,7 @@ const RobotMovementList = ({ showList, toggleList, onItemClick }) => {
       return item;
     });
 
-    localStorage.setItem('positions', JSON.stringify(updatedData));
+    // localStorage.setItem('positions', JSON.stringify(updatedData));
     setData(updatedData);
 
     try {
@@ -191,11 +207,13 @@ const RobotMovementList = ({ showList, toggleList, onItemClick }) => {
   };
 
   const deleteFromLocalStorage = (nameToDelete) => {
-    const existingData = JSON.parse(localStorage.getItem('positions')) || [];
+    // const existingData = JSON.parse(localStorage.getItem('positions')) || [];
+    const existingData = data;
+
     const filteredData = existingData.filter(
       (item) => item.name !== nameToDelete
     );
-    localStorage.setItem('positions', JSON.stringify(filteredData));
+    // localStorage.setItem('positions', JSON.stringify(filteredData));
     setData(filteredData);
   };
 
@@ -248,7 +266,7 @@ const RobotMovementList = ({ showList, toggleList, onItemClick }) => {
     reorderedData.splice(dropIndex, 0, movedItem);
 
     setData(reorderedData);
-    localStorage.setItem('positions', JSON.stringify(reorderedData));
+    // localStorage.setItem('positions', JSON.stringify(reorderedData));
 
     setDraggedOverIndex(null);
   };
@@ -299,9 +317,6 @@ const RobotMovementList = ({ showList, toggleList, onItemClick }) => {
             </TableBody>
           </Table>
         </TableContainer>
-        <Box sx={{ mt: 2 }}>
-          <RunMovementFormDialog />
-        </Box>
         <Box sx={{ mt: 2 }}>
           <ModifyFormDialog
             open={Boolean(selectedItem)}
