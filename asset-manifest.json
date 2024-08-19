@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/Pionoid/static/css/main.69053253.css",
-    "main.js": "/Pionoid/static/js/main.085d2fd9.js",
+    "main.js": "/Pionoid/static/js/main.0d510aa3.js",
     "static/js/352.3e32955d.chunk.js": "/Pionoid/static/js/352.3e32955d.chunk.js",
     "static/js/260.a50204dd.chunk.js": "/Pionoid/static/js/260.a50204dd.chunk.js",
     "static/js/209.155be1f2.chunk.js": "/Pionoid/static/js/209.155be1f2.chunk.js",
@@ -19,7 +19,7 @@
     "static/js/77.e17f2c9c.chunk.js": "/Pionoid/static/js/77.e17f2c9c.chunk.js",
     "index.html": "/Pionoid/index.html",
     "main.69053253.css.map": "/Pionoid/static/css/main.69053253.css.map",
-    "main.085d2fd9.js.map": "/Pionoid/static/js/main.085d2fd9.js.map",
+    "main.0d510aa3.js.map": "/Pionoid/static/js/main.0d510aa3.js.map",
     "352.3e32955d.chunk.js.map": "/Pionoid/static/js/352.3e32955d.chunk.js.map",
     "260.a50204dd.chunk.js.map": "/Pionoid/static/js/260.a50204dd.chunk.js.map",
     "209.155be1f2.chunk.js.map": "/Pionoid/static/js/209.155be1f2.chunk.js.map",
@@ -38,6 +38,6 @@
   },
   "entrypoints": [
     "static/css/main.69053253.css",
-    "static/js/main.085d2fd9.js"
+    "static/js/main.0d510aa3.js"
   ]
 }
