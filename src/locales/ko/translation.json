@@ -7,7 +7,7 @@
   "save position": "좌표 저장",
   "tool 1": "툴 1",
   "tool 2": "툴 2",
-  "tasks": "작업",
+  "task": "작업",
   "listValue": {
     "name01": "로봇 팔 활성화",
     "name02": "수동 작동",
@@ -32,9 +32,9 @@
 
   "run save movements": "실행 동작 저장",
 
-  "================================ <app-menu-list.jsx 번역>": "app-menu-list.jsx 번역본입니다 ==================================",
+  "================================ <robot-operation-list.jsx 번역>": "app-menu-list.jsx 번역본입니다 ==================================",
 
-  "operation menu": "로봇 작동메뉴",
+  "operation menu": "로봇 켜기/끄기",
   "login": "로봇 로그인",
   "logout": "로봇 로그아웃",
   "power on": "로봇 전원 공급",
@@ -85,5 +85,19 @@
   },
   "need help": "도움이 필요하신가요?",
   "email us at": "이메일 연락처",
-  "user name": "유저"
+  "user name": "유저",
+
+  "================================ <robot-movement-list.jsx Translation>": "These are translation related with nav.jsx ==================================",
+  "robot Movement List": "로봇 동작 리스트",
+  "copy": "복사",
+  "modify": "수정",
+  "delete": "삭제",
+
+  "================================ <run-movement-form-dialogue.jsx Translation>": "These are translation related with run-movement-form-dialogue.jsx ==================================",
+  "run movements": "실행 동작들",
+  "enter how many times": "동작 횟수 입력",
+  "description about repetitions": "로봇이 움직임을 수행해야 하는 횟수를 입력하십시오. 이 동작은 그에 따라 반복됩니다.",
+  "number of repetitions": "반복 횟수",
+  "cancel": "취소",
+  "start": "시작"
 }
