@@ -1,6 +1,7 @@
 /** @jsxImportSource @emotion/react */
-import { css } from '@emotion/react';
-import React, { useState, useEffect } from 'react';
+import { css } from "@emotion/react";
+import { useState, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import {
   Table,
   TableBody,
@@ -13,11 +14,12 @@ import {
   Box,
   Menu,
   MenuItem,
-} from '@mui/material';
+} from "@mui/material";
 
-import RunMovementFormDialog from './run-movement-form-dialog';
-import ModifyFormDialog from './modify-form-dialog';
-import { deletePosition, updatePosition } from '../../apis/apis';
+import RunMovementFormDialog from "./run-movement-form-dialog";
+import ModifyFormDialog from "./modify-form-dialog";
+import { deletePosition, updatePosition } from "../../apis/apis";
+import "../../i18n";
 
 const listContainerStyles = css`
   position: fixed;
@@ -58,17 +60,36 @@ const listContainerStyles = css`
 `;
 
 const buttonStyles = css`
-  width: 100%;
+  width: 200px;
   height: 100%;
   border: none;
   font-size: 18px;
-  color: #919eab;
-  background-color: white;
+  color: white;
+  background-color: rgb(160, 186, 237);
   box-shadow: 2px 2px 10px 3px rgba(0, 0, 0, 0.03);
+  transition: background-color 0.3s ease;
+  animation: bounce 2s;
 
   &:hover {
     background-color: #f0f0f0;
+    color: black;
     border: none;
+  }
+
+  @keyframes bounce {
+    0%,
+    20%,
+    50%,
+    80%,
+    100% {
+      transform: translateY(0);
+    }
+    40% {
+      transform: translateY(-40px);
+    }
+    60% {
+      transform: translateY(-15px);
+    }
   }
 `;
 
@@ -103,7 +124,7 @@ const RobotMovementList = ({ showList, toggleList, onItemClick }) => {
   const [draggedOverIndex, setDraggedOverIndex] = useState(null); // 드래그 중인 요소가 현재 위치한 인덱스
 
   const loadDataFromLocalStorage = () => {
-    const storedData = localStorage.getItem('positions');
+    const storedData = localStorage.getItem("positions");
     if (storedData) {
       setData(JSON.parse(storedData));
     }
@@ -119,17 +140,17 @@ const RobotMovementList = ({ showList, toggleList, onItemClick }) => {
     if (contextMenu) {
       const scrollbarWidth =
         window.innerWidth - document.documentElement.clientWidth;
-      document.body.style.overflow = 'auto';
+      document.body.style.overflow = "auto";
       document.body.style.paddingRight = `${scrollbarWidth}px`;
-      document.querySelector('header').style.paddingRight =
+      document.querySelector("header").style.paddingRight =
         `${scrollbarWidth}px`;
     } else {
-      document.body.style.overflow = 'auto';
-      document.body.style.paddingRight = '';
+      document.body.style.overflow = "auto";
+      document.body.style.paddingRight = "";
     }
     return () => {
-      document.body.style.overflow = 'auto';
-      document.body.style.paddingRight = '';
+      document.body.style.overflow = "auto";
+      document.body.style.paddingRight = "";
     };
   }, [contextMenu]);
 
@@ -149,7 +170,7 @@ const RobotMovementList = ({ showList, toggleList, onItemClick }) => {
 
       const updatedData = [...data, copiedItem];
       setData(updatedData);
-      localStorage.setItem('positions', JSON.stringify(updatedData));
+      localStorage.setItem("positions", JSON.stringify(updatedData));
     }
     setContextMenu(null);
   };
@@ -162,7 +183,8 @@ const RobotMovementList = ({ showList, toggleList, onItemClick }) => {
   };
 
   const handleSave = async (modifiedItem) => {
-    const existingData = JSON.parse(localStorage.getItem('positions')) || [];
+    const existingData =
+      JSON.parse(localStorage.getItem("positions")) || [];
 
     const updatedData = existingData.map((item) => {
       if (item.name === modifiedItem.originalName) {
@@ -171,14 +193,14 @@ const RobotMovementList = ({ showList, toggleList, onItemClick }) => {
       return item;
     });
 
-    localStorage.setItem('positions', JSON.stringify(updatedData));
+    localStorage.setItem("positions", JSON.stringify(updatedData));
     setData(updatedData);
 
     try {
       await updatePosition(modifiedItem.originalName, modifiedItem);
-      console.log('Position updated successfully');
+      console.log("Position updated successfully");
     } catch (error) {
-      console.error('Failed to update position:', error);
+      console.error("Failed to update position:", error);
     }
   };
 
@@ -191,11 +213,12 @@ const RobotMovementList = ({ showList, toggleList, onItemClick }) => {
   };
 
   const deleteFromLocalStorage = (nameToDelete) => {
-    const existingData = JSON.parse(localStorage.getItem('positions')) || [];
+    const existingData =
+      JSON.parse(localStorage.getItem("positions")) || [];
     const filteredData = existingData.filter(
       (item) => item.name !== nameToDelete
     );
-    localStorage.setItem('positions', JSON.stringify(filteredData));
+    localStorage.setItem("positions", JSON.stringify(filteredData));
     setData(filteredData);
   };
 
@@ -205,7 +228,7 @@ const RobotMovementList = ({ showList, toggleList, onItemClick }) => {
       const response = await deletePosition(nameToDelete);
       console.log(response);
     } catch (error) {
-      console.error('Failed to delete session from server:', error);
+      console.error("Failed to delete session from server:", error);
     }
   };
 
@@ -227,20 +250,20 @@ const RobotMovementList = ({ showList, toggleList, onItemClick }) => {
   };
 
   const onDragStart = (e, index) => {
-    e.dataTransfer.setData('text/plain', index);
-    e.dataTransfer.effectAllowed = 'move';
+    e.dataTransfer.setData("text/plain", index);
+    e.dataTransfer.effectAllowed = "move";
   };
 
   const onDragOver = (e, index) => {
     e.preventDefault();
-    e.dataTransfer.dropEffect = 'move';
+    e.dataTransfer.dropEffect = "move";
 
     setDraggedOverIndex(index);
   };
 
   const onDrop = (e, dropIndex) => {
     e.preventDefault();
-    const dragIndex = e.dataTransfer.getData('text/plain');
+    const dragIndex = e.dataTransfer.getData("text/plain");
     if (dragIndex === undefined) return;
 
     const reorderedData = Array.from(data);
@@ -248,17 +271,17 @@ const RobotMovementList = ({ showList, toggleList, onItemClick }) => {
     reorderedData.splice(dropIndex, 0, movedItem);
 
     setData(reorderedData);
-    localStorage.setItem('positions', JSON.stringify(reorderedData));
+    localStorage.setItem("positions", JSON.stringify(reorderedData));
 
     setDraggedOverIndex(null);
   };
 
+  const { t } = useTranslation();
   return (
     <>
       <div
-        className={`list-container ${showList ? 'show' : ''}`}
-        css={listContainerStyles}
-      >
+        className={`list-container ${showList ? "show" : ""}`}
+        css={listContainerStyles}>
         <TableContainer component={Paper}>
           <Table css={tableStyles} aria-label="robot movement table">
             <TableHead>
@@ -281,12 +304,13 @@ const RobotMovementList = ({ showList, toggleList, onItemClick }) => {
                   onDragOver={(e) => onDragOver(e, index)}
                   onDrop={(e) => onDrop(e, index)}
                   onClick={() => handleItemClick(item.name)}
-                  onContextMenu={(event) => handleContextMenu(event, item)}
+                  onContextMenu={(event) =>
+                    handleContextMenu(event, item)
+                  }
                   css={[
                     defaultStyle,
                     draggedOverIndex === index && hoveredStyle,
-                  ]}
-                >
+                  ]}>
                   <TableCell>{item.name}</TableCell>
                   <TableCell>{item.x}</TableCell>
                   <TableCell>{item.y}</TableCell>
@@ -311,29 +335,26 @@ const RobotMovementList = ({ showList, toggleList, onItemClick }) => {
           />
         </Box>
       </div>
-      <Button
-        variant="contained"
-        color="primary"
-        css={buttonStyles}
-        onClick={handleRobotMovementListButtonClick}
-      >
-        Robot Movement List
-      </Button>
-      <Menu
-        keepMounted
-        open={contextMenu !== null}
-        onClose={handleCloseContextMenu}
-        anchorReference="anchorPosition"
-        anchorPosition={
-          contextMenu !== null
-            ? { top: contextMenu.mouseY, left: contextMenu.mouseX }
-            : undefined
-        }
-      >
-        <MenuItem onClick={handleCopy}>Copy</MenuItem>
-        <MenuItem onClick={handleModify}>Modify</MenuItem>
-        <MenuItem onClick={handleDelete}>Delete</MenuItem>
-      </Menu>
+      <div style={{ display: "flex", justifyContent: "center" }}>
+        <Button
+          variant="contained"
+          css={buttonStyles}
+          onClick={handleRobotMovementListButtonClick}></Button>
+        <Menu
+          keepMounted
+          open={contextMenu !== null}
+          onClose={handleCloseContextMenu}
+          anchorReference="anchorPosition"
+          anchorPosition={
+            contextMenu !== null
+              ? { top: contextMenu.mouseY, left: contextMenu.mouseX }
+              : undefined
+          }>
+          <MenuItem onClick={handleCopy}>{t("copy")}</MenuItem>
+          <MenuItem onClick={handleModify}>{t("modify")}</MenuItem>
+          <MenuItem onClick={handleDelete}>{t("delete")}</MenuItem>
+        </Menu>
+      </div>
     </>
   );
 };
