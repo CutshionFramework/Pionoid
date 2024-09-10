@@ -14,14 +14,27 @@ export const getRobotSessions = async () => {
   }
 };
 
-export const saveIpAddress = async (ipAddress) => {
+export const saveIpAddress = async (ipAddress, robotType = 'JakaRobot') => {
   try {
     const endpoint = `${BASE_URL}`;
     const params = `set_ip`;
-    const res = await robotAPI.post(endpoint, params, ipAddress);
-    return res;
+
+    // IP와 로봇 타입을 데이터로 전송
+    const data = {
+      ip: ipAddress,
+      robot_type: robotType,
+    };
+
+    const res = await robotAPI.post(endpoint, params, data);
+
+    // 서버로부터 받은 토큰을 로컬 스토리지에 저장
+    if (res.token) {
+      localStorage.setItem('token', res.token);
+    }
+
+    return res.data;
   } catch (error) {
-    console.error('Error saving IP address:', error);
+    console.error('Error saving IP address and robot type:', error);
     throw error;
   }
 };
@@ -78,7 +91,7 @@ export const shutDown = async () => {
   try {
     const endpoint = `${BASE_URL}`;
     const params = `shut_down`;
-    const res = await robotAPI.get(endpoint, params);
+    const res = await robotAPI.post(endpoint, params);
     return res;
   } catch (error) {
     console.error('Error shutting down:', error);
@@ -90,7 +103,7 @@ export const robotLogin = async () => {
   try {
     const endpoint = `${BASE_URL}`;
     const params = `login_in`;
-    const res = await robotAPI.get(endpoint, params);
+    const res = await robotAPI.post(endpoint, params);
     return res;
   } catch (error) {
     console.error('Error logging in:', error);
@@ -102,7 +115,7 @@ export const robotLogout = async () => {
   try {
     const endpoint = `${BASE_URL}`;
     const params = `login_out`;
-    const res = await robotAPI.get(endpoint, params);
+    const res = await robotAPI.post(endpoint, params);
     return res;
   } catch (error) {
     console.error('Error logging out:', error);
@@ -114,7 +127,7 @@ export const robotPowerOn = async () => {
   try {
     const endpoint = `${BASE_URL}`;
     const params = `power_on`;
-    const res = await robotAPI.get(endpoint, params);
+    const res = await robotAPI.post(endpoint, params);
     return res;
   } catch (error) {
     console.error('Error powering on:', error);
@@ -126,7 +139,7 @@ export const robotPowerOff = async () => {
   try {
     const endpoint = `${BASE_URL}`;
     const params = `power_off`;
-    const res = await robotAPI.get(endpoint, params);
+    const res = await robotAPI.post(endpoint, params);
     return res;
   } catch (error) {
     console.error('Error powering off:', error);
@@ -138,7 +151,7 @@ export const robotEnable = async () => {
   try {
     const endpoint = `${BASE_URL}`;
     const params = `enable_robot`;
-    const res = await robotAPI.get(endpoint, params);
+    const res = await robotAPI.post(endpoint, params);
     return res;
   } catch (error) {
     console.error('Error enabling robot:', error);
@@ -150,7 +163,7 @@ export const robotDisable = async () => {
   try {
     const endpoint = `${BASE_URL}`;
     const params = `disable_robot`;
-    const res = await robotAPI.get(endpoint, params);
+    const res = await robotAPI.post(endpoint, params);
     return res;
   } catch (error) {
     console.error('Error disabling robot:', error);
