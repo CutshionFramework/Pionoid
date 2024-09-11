@@ -158,7 +158,7 @@ export default function RobotOperationList() {
             onClick={handleToggle}>
             {t("operation menu")}
           </Button>
-          <Button style={{ marginRight: "90px" }}>
+          <Button>
             <MicNoneOutlinedIcon
               style={{
                 height: "57px",

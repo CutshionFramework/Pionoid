@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { css } from "@emotion/react";
 import { faker } from "@faker-js/faker";
+import { useRecoilValue } from "recoil";
 
 import { Button } from "@mui/material";
 import Container from "@mui/material/Container";
@@ -25,6 +26,8 @@ import DigitalIODialog from "../digital_io_dialog.jsx";
 
 import { useTranslation } from "react-i18next";
 import "../../../i18n.js";
+
+import { imageState } from "../../../recoilState";
 
 // ----------------------------------------------------------------------
 const imgGridStyles = css`
@@ -116,6 +119,7 @@ export default function AppView() {
   const [showList, setShowList] = useState(false);
   const [dialogType, setDialogType] = useState(null);
   const [dialogOpen, setDialogOpen] = useState(false);
+  const currentImage = useRecoilValue(imageState);
 
   const handleInputChange = (event) => {
     setIpAddress(event.target.value);
@@ -183,6 +187,7 @@ export default function AppView() {
 
   // 번역 함수
   const { t } = useTranslation();
+
   return (
     <Container
       maxWidth="sm"
@@ -196,15 +201,11 @@ export default function AppView() {
       </Typography>
 
       <Grid xs={12} md={6} lg={8} css={imgGridStyles}>
-        <img
-          src={`${process.env.PUBLIC_URL}/assets/images/jaka%20robot%20arm.png`}
-          alt="JAKA robot arm"
-        />
+        <img src={currentImage} alt="robot arm" />
         <Grid xs={12} md={6} lg={8} css={menuListStyles}>
           <RobotOperationList />
         </Grid>
       </Grid>
-
       <Grid
         container
         spacing={3}
