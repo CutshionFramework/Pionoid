@@ -4,10 +4,11 @@
   "private": true,
   "homepage": "https://cutshionframework.github.io/Pionoid/",
   "dependencies": {
-    "@emotion/react": "^11.13.0",
+    "@emotion/react": "^11.13.3",
     "@emotion/styled": "^11.13.0",
     "@faker-js/faker": "^8.1.0",
     "@iconify/react": "^4.1.1",
+    "@mui/icons-material": "^5.16.6",
     "@mui/lab": "^5.0.0-alpha.147",
     "@mui/material": "^5.16.6",
     "@testing-library/jest-dom": "^5.17.0",
@@ -33,6 +34,7 @@
     "react-is": "^18.3.1",
     "react-router-dom": "^6.25.1",
     "react-scripts": "^5.0.1",
+    "recoil": "^0.7.7",
     "simplebar-react": "^3.2.4",
     "web-vitals": "^2.1.4"
   },
