@@ -70,11 +70,29 @@ export const updatePosition = async (originalName, updatedItem) => {
 export const deletePosition = async (name) => {
   try {
     const endpoint = `${BASE_URL}`;
-    const params = `delete_robot_status/${encodeURIComponent(name)}`;
-    const res = await robotAPI.get(endpoint, params);
+    const params = `delete_move`;
+    const data = {
+      move_name: name,
+    };
+    const res = await robotAPI.delete(endpoint, params, data);
     return res;
   } catch (error) {
     console.error('Error deleting position:', error);
+    throw error;
+  }
+};
+
+export const copyPosition = async (originalName) => {
+  try {
+    const endpoint = `${BASE_URL}`;
+    const params = `copy_pos`;
+    const data = {
+      originalName: originalName,
+    };
+    const res = await robotAPI.post(endpoint, params, data);
+    return res;
+  } catch (error) {
+    console.error('Error saving position:', error);
     throw error;
   }
 };

@@ -21,6 +21,7 @@ import ModifyFormDialog from './modify-form-dialog';
 import {
   deletePosition,
   updatePosition,
+  copyPosition,
   getRobotMovements,
 } from '../../apis/apis';
 
@@ -183,15 +184,28 @@ const RobotMovementList = ({ showList, toggleList }) => {
 
   const handleCopy = () => {
     if (contextMenu && contextMenu.item) {
+      const originalName = contextMenu.item.move_name;
       const copiedItem = { ...contextMenu.item };
       copiedItem.move_name = `${copiedItem.move_name}_copy`;
 
       const updatedData = [...data, copiedItem];
+
       setData(updatedData);
+
+      saveCopiedItemToServer(originalName);
     }
+
     setContextMenu(null);
   };
 
+  const saveCopiedItemToServer = async (originalName) => {
+    try {
+      await copyPosition(originalName);
+      console.log('Copied item saved successfully');
+    } catch (error) {
+      console.error('Failed to save copied item to server:', error);
+    }
+  };
   const handleModify = () => {
     if (contextMenu && contextMenu.item) {
       setSelectedItem(contextMenu.item);
@@ -222,20 +236,14 @@ const RobotMovementList = ({ showList, toggleList }) => {
 
   const handleDelete = () => {
     if (contextMenu && contextMenu.item) {
-      deleteFromLocalStorage(contextMenu.item.move_name);
-      deleteFromServer(contextMenu.item.move_name);
+      const nameToDelete = contextMenu.item.move_name;
+      const filteredData = data.filter(
+        (item) => item.move_name !== nameToDelete
+      );
+      setData(filteredData);
+      deleteFromServer(nameToDelete);
     }
     setContextMenu(null);
-  };
-
-  const deleteFromLocalStorage = (nameToDelete) => {
-    const existingData = data;
-
-    const filteredData = existingData.filter(
-      (item) => item.move_name !== nameToDelete
-    );
-
-    setData(filteredData);
   };
 
   const deleteFromServer = async (nameToDelete) => {
@@ -314,7 +322,7 @@ const RobotMovementList = ({ showList, toggleList }) => {
             <TableBody>
               {data.map((item, index) => (
                 <TableRow
-                  key={item.id}
+                  key={`${item.id}-${index}`}
                   draggable
                   onDragStart={(e) => onDragStart(e, index)}
                   onDragOver={(e) => onDragOver(e, index)}
