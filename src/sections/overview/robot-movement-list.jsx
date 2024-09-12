@@ -16,6 +16,7 @@ import {
   MenuItem,
 } from '@mui/material';
 
+import RunMovementFormDialog from './run-movement-form-dialog';
 import ModifyFormDialog from './modify-form-dialog';
 import {
   deletePosition,
@@ -337,6 +338,9 @@ const RobotMovementList = ({ showList, toggleList }) => {
             </TableBody>
           </Table>
         </TableContainer>
+        <Box sx={{ mt: 2 }}>
+          <RunMovementFormDialog />
+        </Box>
         <Box sx={{ mt: 2 }}>
           <ModifyFormDialog
             open={Boolean(selectedItem)}

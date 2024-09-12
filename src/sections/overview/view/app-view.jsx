@@ -19,7 +19,6 @@ import AppOrderTimeline from '../app-order-timeline';
 import AppWidgetSummary from '../app-widget-summary';
 import RobotMovementList from '../robot-movement-list';
 import DigitalIODialog from '../digital_io_dialog';
-import RunMovementFormDialog from '../run-movement-form-dialog';
 
 import { useTranslation } from 'react-i18next';
 import '../../../i18n.js';
@@ -332,10 +331,6 @@ export default function AppView() {
               ][index],
             }))}
           />
-        </Grid>
-
-        <Grid xs={26} md={14} lg={12}>
-          <RunMovementFormDialog />
         </Grid>
 
         <Grid css={formDialogStyles} xs={14} sm={8} md={6}>
