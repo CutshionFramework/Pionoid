@@ -158,7 +158,7 @@ const RobotMovementList = ({ showList, toggleList }) => {
       const formattedData = Object.keys(response).map((key) => {
         const item = response[key];
         return {
-          name: key,
+          id: key,
           move_name: item.move_name || 'N/A',
           x: item.x || 0,
           y: item.y || 0,
@@ -184,7 +184,7 @@ const RobotMovementList = ({ showList, toggleList }) => {
   const handleCopy = () => {
     if (contextMenu && contextMenu.item) {
       const copiedItem = { ...contextMenu.item };
-      copiedItem.name = `${copiedItem.name}_copy`;
+      copiedItem.move_name = `${copiedItem.move_name}_copy`;
 
       const updatedData = [...data, copiedItem];
       setData(updatedData);
@@ -203,7 +203,7 @@ const RobotMovementList = ({ showList, toggleList }) => {
     const existingData = data;
 
     const updatedData = existingData.map((item) => {
-      if (item.name === modifiedItem.originalName) {
+      if (item.move_name === modifiedItem.originalName) {
         return { ...modifiedItem, originalName: undefined };
       }
       return item;
@@ -212,6 +212,7 @@ const RobotMovementList = ({ showList, toggleList }) => {
     setData(updatedData);
 
     try {
+      console.log('수정할 거 : ', modifiedItem.originalName, modifiedItem);
       await updatePosition(modifiedItem.originalName, modifiedItem);
       console.log('Position updated successfully');
     } catch (error) {
@@ -221,8 +222,8 @@ const RobotMovementList = ({ showList, toggleList }) => {
 
   const handleDelete = () => {
     if (contextMenu && contextMenu.item) {
-      deleteFromLocalStorage(contextMenu.item.name);
-      deleteFromServer(contextMenu.item.name);
+      deleteFromLocalStorage(contextMenu.item.move_name);
+      deleteFromServer(contextMenu.item.move_name);
     }
     setContextMenu(null);
   };
@@ -231,7 +232,7 @@ const RobotMovementList = ({ showList, toggleList }) => {
     const existingData = data;
 
     const filteredData = existingData.filter(
-      (item) => item.name !== nameToDelete
+      (item) => item.move_name !== nameToDelete
     );
 
     setData(filteredData);
@@ -313,7 +314,7 @@ const RobotMovementList = ({ showList, toggleList }) => {
             <TableBody>
               {data.map((item, index) => (
                 <TableRow
-                  key={item.name}
+                  key={item.id}
                   draggable
                   onDragStart={(e) => onDragStart(e, index)}
                   onDragOver={(e) => onDragOver(e, index)}

@@ -54,8 +54,12 @@ export const savePosition = async () => {
 export const updatePosition = async (originalName, updatedItem) => {
   try {
     const endpoint = `${BASE_URL}`;
-    const params = `update_robot_status/${encodeURIComponent(originalName)}`;
-    const res = await robotAPI.put(endpoint, params, updatedItem);
+    const params = `update_move_pos`;
+    const data = {
+      originalName: originalName,
+      updatedItem: updatedItem,
+    };
+    const res = await robotAPI.put(endpoint, params, data);
     return res;
   } catch (error) {
     console.error('Error updating position:', error);
