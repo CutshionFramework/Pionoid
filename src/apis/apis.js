@@ -2,10 +2,10 @@ import { robotAPI } from './axiosInstance';
 
 const BASE_URL = process.env.REACT_APP_API_URL;
 
-export const getRobotSessions = async () => {
+export const getRobotMovements = async () => {
   try {
     const endpoint = `${BASE_URL}`;
-    const params = `get_robot_sessions`;
+    const params = `get_movements`;
     const res = await robotAPI.get(endpoint, params);
     return res;
   } catch (error) {
@@ -42,8 +42,8 @@ export const saveIpAddress = async (ipAddress, robotType) => {
 export const savePosition = async () => {
   try {
     const endpoint = `${BASE_URL}`;
-    const params = `save_robot_status`;
-    const res = await robotAPI.get(endpoint, params);
+    const params = `save_pos`;
+    const res = await robotAPI.post(endpoint, params);
     return res;
   } catch (error) {
     console.error('Error saving position:', error);

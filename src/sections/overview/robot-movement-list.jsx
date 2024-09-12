@@ -21,7 +21,7 @@ import ModifyFormDialog from './modify-form-dialog';
 import {
   deletePosition,
   updatePosition,
-  getRobotSessions,
+  getRobotMovements,
 } from '../../apis/apis';
 
 const listContainerStyles = css`
@@ -152,25 +152,29 @@ const RobotMovementList = ({ showList, toggleList }) => {
 
   const loadDataFromServer = async () => {
     try {
-      const response = await getRobotSessions();
-      setData(response);
+      const response = await getRobotMovements();
+      console.log(response);
+
+      const formattedData = Object.keys(response).map((key) => {
+        const item = response[key];
+        return {
+          name: key,
+          move_name: item.move_name || 'N/A',
+          x: item.x || 0,
+          y: item.y || 0,
+          z: item.z || 0,
+          rx: item.RX || 0,
+          ry: item.RY || 0,
+          rz: item.RZ || 0,
+        };
+      });
+
+      setData(formattedData);
+      console.log('formattedData: ', formattedData);
     } catch (error) {
       console.error('Failed to load data from server:', error);
     }
   };
-
-  // const handleCopyPosition = async () => {
-  //   try {
-  //     const response = await copyPosition();
-  //     console.log('Data copy to server:', response);
-  //   } catch (error) {
-  //     console.error('Failed to load data. : ', error);
-  //   }
-  // };
-
-  // const handleItemClick = (item) => {
-  //   onItemClick(item);
-  // };
 
   const handleRobotMovementListButtonClick = () => {
     loadDataFromServer();
@@ -184,8 +188,6 @@ const RobotMovementList = ({ showList, toggleList }) => {
 
       const updatedData = [...data, copiedItem];
       setData(updatedData);
-      // handleCopyPosition(updatedData);
-      // localStorage.setItem('positions', JSON.stringify(updatedData));
     }
     setContextMenu(null);
   };
@@ -198,7 +200,6 @@ const RobotMovementList = ({ showList, toggleList }) => {
   };
 
   const handleSave = async (modifiedItem) => {
-    // const existingData = JSON.parse(localStorage.getItem('positions')) || [];
     const existingData = data;
 
     const updatedData = existingData.map((item) => {
@@ -208,7 +209,6 @@ const RobotMovementList = ({ showList, toggleList }) => {
       return item;
     });
 
-    // localStorage.setItem('positions', JSON.stringify(updatedData));
     setData(updatedData);
 
     try {
@@ -228,13 +228,12 @@ const RobotMovementList = ({ showList, toggleList }) => {
   };
 
   const deleteFromLocalStorage = (nameToDelete) => {
-    // const existingData = JSON.parse(localStorage.getItem('positions')) || [];
     const existingData = data;
 
     const filteredData = existingData.filter(
       (item) => item.name !== nameToDelete
     );
-    // localStorage.setItem('positions', JSON.stringify(filteredData));
+
     setData(filteredData);
   };
 
@@ -287,7 +286,6 @@ const RobotMovementList = ({ showList, toggleList }) => {
     reorderedData.splice(dropIndex, 0, movedItem);
 
     setData(reorderedData);
-    // localStorage.setItem('positions', JSON.stringify(reorderedData));
 
     setDraggedOverIndex(null);
   };
@@ -326,7 +324,7 @@ const RobotMovementList = ({ showList, toggleList }) => {
                     draggedOverIndex === index && hoveredStyle,
                   ]}
                 >
-                  <TableCell>{item.name}</TableCell>
+                  <TableCell>{item.move_name}</TableCell>
                   <TableCell>{item.x}</TableCell>
                   <TableCell>{item.y}</TableCell>
                   <TableCell>{item.z}</TableCell>
