@@ -28,9 +28,9 @@ const MENU_OPTIONS = [
     link: '/user',
   },
   {
-    label: 'settings',
+    label: 'documentation',
     icon: 'eva:settings-2-fill',
-    link: '/settings',
+    link: 'https://docsrobotcontroller-samuel-romeros-projects.vercel.app/docs/getting-started/introduction',
   },
 ];
 
@@ -50,7 +50,11 @@ export default function AccountPopover() {
   };
 
   const handleMenuItemClick = (link) => {
-    navigate(link);
+    if (link.startsWith('http')) {
+      window.location.href = link;
+    } else {
+      navigate(link);
+    }
     handleClose();
   };
 

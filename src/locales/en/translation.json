@@ -1,89 +1,102 @@
 {
-    "================================ <app-view.jsx Translation>" : "These are translation related with app-view.jsx ==================================",
+  "================================ <app-view.jsx Translation>": "These are translation related with app-view.jsx ==================================",
 
-    "greeting": "Hi, This is a robot application, pionoid!👋",
-    "save ip": "save IP Address",
-    "ip address": "IP Address",
-    "save position": "Save position",
-    "tool 1": "Tool 1",
-    "tool 2": "Tool 2",
-    "tasks": "Tasks",
-        "listValue": {
-                "name01": "Active robot arm",
-                "name02": "Manual move",
-                "name03": "Use web tools",
-                "name04": "Save positions",
-                "name05": "Run project"
-            },
-    "process": "Process",
-        "titleValue": {
-            "01": "Connect to robot arm",
-            "02": "Move and Save different positions",
-            "03": "Execute your robot automation project"
-            },
-        "requiredTime": {
-            "01": "2 min aprox",
-            "02": "4 min aprox",
-            "03": "1 sec"
-        },
-    "shut down": "Shut down",
+  "greeting": "Hi, This is a robot application, pionoid!👋",
+  "save ip": "save IP Address",
+  "ip address": "IP Address",
+  "save position": "Save position",
+  "tool 1": "Tool 1",
+  "tool 2": "Tool 2",
+  "task": "Tasks",
+  "listValue": {
+    "name01": "Active robot arm",
+    "name02": "Manual move",
+    "name03": "Use web tools",
+    "name04": "Save positions",
+    "name05": "Run project"
+  },
+  "process": "Process",
+  "titleValue": {
+    "01": "Connect to robot arm",
+    "02": "Move and Save different positions",
+    "03": "Execute your robot automation project"
+  },
+  "requiredTime": {
+    "01": "2 min aprox",
+    "02": "4 min aprox",
+    "03": "1 sec"
+  },
+  "shut down": "Shut down",
 
-    "================================ <app-form-dialogs.jsx Translation>" : "These are translation related with app-form-dialogs.jsx ==================================",
+  "================================ <app-form-dialogs.jsx Translation>": "These are translation related with app-form-dialogs.jsx ==================================",
 
-    "run save movements": "Run Save Movements",
+  "run save movements": "Run Save Movements",
 
-    "================================ <app-menu-list.jsx Translation>" : "These are translation related with app-menu-list.jsx ==================================",
+  "================================ <robot-operation-list.jsx Translation>": "These are translation related with app-menu-list.jsx ==================================",
 
-    "operation menu": "Robot Operation",
-    "login": "robot login",
-    "logout": "robot logout",
-    "power on": "robot power on",
-    "power off": "robot power off",
-    "enable": "robot enable",
-    "disable": "robot disable",
+  "operation menu": "Robot on/off",
+  "login": "robot login",
+  "logout": "robot logout",
+  "power on": "robot power on",
+  "power off": "robot power off",
+  "enable": "robot enable",
+  "disable": "robot disable",
 
-    "================================ <notifications-popover.jsx Translation>" : "These are translation related with notifications.jsx ==================================",
+  "================================ <notifications-popover.jsx Translation>": "These are translation related with notifications.jsx ==================================",
 
-    "notifications": "Notifications",
-    "unread messages": "You have {{totalUnRead}} unread messages",
-    "new": "NEW",
-    "before that": "BEFORE THAT",
-    "view all": "View All",
-    "order_placed": {
-        "title": "Your order is placed",
-        "description": "waiting for shipping"
-        },
-    "order_shipped": {
-        "title": "Delivery processing",
-        "description": "Your order is being shipped"
-        },
-    "mail": {
-        "title": "You have new mail",
-        "description": "sent from Guido Padberg"
-        },
-    "chat_message": {
-        "title": "You have a new chat message",
-        "description": "5 unread messages"
-    },
-    "friend_interactive": {
-        "title": "Ryan",
-        "description": "answered to your comment on the Minimal"
-    },
+  "notifications": "Notifications",
+  "unread messages": "You have {{totalUnRead}} unread messages",
+  "new": "NEW",
+  "before that": "BEFORE THAT",
+  "view all": "View All",
+  "order_placed": {
+    "title": "Your order is placed",
+    "description": "waiting for shipping"
+  },
+  "order_shipped": {
+    "title": "Delivery processing",
+    "description": "Your order is being shipped"
+  },
+  "mail": {
+    "title": "You have new mail",
+    "description": "sent from Guido Padberg"
+  },
+  "chat_message": {
+    "title": "You have a new chat message",
+    "description": "5 unread messages"
+  },
+  "friend_interactive": {
+    "title": "Ryan",
+    "description": "answered to your comment on the Minimal"
+  },
 
-    "================================ <account-popover.jsx Translation>" : "These are translation related with account-popover.jsx ==================================",
+  "================================ <account-popover.jsx Translation>": "These are translation related with account-popover.jsx ==================================",
 
-    "account logout": "Logout",
-    "home": "Home",
-    "profile": "Profile",
-    "settings": "Settings",
+  "account logout": "Logout",
+  "home": "Home",
+  "profile": "Profile",
+  "settings": "Settings",
 
-    "================================ <nav.jsx Translation>" : "These are translation related with nav.jsx ==================================",
+  "================================ <nav.jsx Translation>": "These are translation related with nav.jsx ==================================",
 
-    "navTitle": {
-        "01": "Jaka Robotics"
-    },
-    "need help": "Need help?",
-    "email us at": "Email us at",
-    "user name": "User"
-    
+  "navTitle": {
+    "01": "Jaka Robotics"
+  },
+  "need help": "Need help?",
+  "email us at": "Email us at",
+  "user name": "User",
+
+  "================================ <robot-movement-list.jsx Translation>": "These are translation related with robot-movement-list.jsx ==================================",
+  "robot movement list": "Robot Movement List",
+  "copy": "Copy",
+  "modify": "Modify",
+  "delete": "Delete",
+
+  "================================ <run-movement-form-dialogue.jsx Translation>": "These are translation related with run-movement-form-dialogue.jsx ==================================",
+  "run movements": "run movements",
+  "enter how many times": "Enter how many times",
+  "description about repetitions": "Please enter the number of times the robot should perform the movement. This action will be repeatedaccordingly.",
+  "number of repetitions": "Number of Repetitions",
+  "cancel": "Cancel",
+  "start": "Start"
 }

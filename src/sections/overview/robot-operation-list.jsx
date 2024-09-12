@@ -3,6 +3,7 @@ import * as React from "react";
 import { css } from "@emotion/react";
 import { useTranslation } from "react-i18next";
 import "../../i18n.js";
+import MicNoneOutlinedIcon from "@mui/icons-material/MicNoneOutlined";
 
 import {
   Grow,
@@ -24,14 +25,6 @@ import {
   robotPowerOff,
 } from "../../apis/apis";
 
-const buttonStyles = css`
-  font-size: 1.25rem;
-  padding: 12px;
-  color: rgba(131, 169, 190);
-  background-color: white;
-  box-shadow: 0 0 10px rgba(131, 169, 190, 0.6);
-`;
-
 const menuListStyles = css`
   font-size: 1.25rem;
 `;
@@ -51,7 +44,10 @@ export default function RobotOperationList() {
   };
 
   const handleClose = (event) => {
-    if (anchorRef.current && anchorRef.current.contains(event.target)) {
+    if (
+      anchorRef.current &&
+      anchorRef.current.contains(event.target)
+    ) {
       return;
     }
 
@@ -142,17 +138,40 @@ export default function RobotOperationList() {
   return (
     <Stack direction="row" spacing={2}>
       <div>
-        <Button
-          css={buttonStyles}
-          ref={anchorRef}
-          id="composition-button"
-          aria-controls={open ? "composition-menu" : undefined}
-          aria-expanded={open ? "true" : undefined}
-          aria-haspopup="true"
-          onClick={handleToggle}
-        >
-          {t("operation menu")}
-        </Button>
+        <div style={{ display: "flex", justifyContent: "center" }}>
+          <Button
+            style={{
+              color: "white",
+              backgroundColor: "rgb(178,204,255)",
+              width: "200px",
+              height: "57px",
+              fontSize: "20px",
+              boxShadow: "0 0 10px rgba(131, 169, 190, 0.6)",
+              borderRadius: "20px",
+              marginTop: "5px",
+            }}
+            ref={anchorRef}
+            id="composition-button"
+            aria-controls={open ? "composition-menu" : undefined}
+            aria-expanded={open ? "true" : undefined}
+            aria-haspopup="true"
+            onClick={handleToggle}>
+            {t("operation menu")}
+          </Button>
+          <Button>
+            <MicNoneOutlinedIcon
+              style={{
+                height: "57px",
+                width: "57px",
+                padding: "0 15 0 15",
+                color: "gray",
+                backgroundColor: "white",
+                boxShadow: "0 0 10px rgba(131, 169, 190, 0.6)",
+                borderRadius: "20px",
+              }}
+            />
+          </Button>
+        </div>
         <Popper
           open={open}
           anchorEl={anchorRef.current}
@@ -164,16 +183,16 @@ export default function RobotOperationList() {
             width: anchorRef.current
               ? anchorRef.current.offsetWidth
               : undefined,
-          }}
-        >
+          }}>
           {({ TransitionProps, placement }) => (
             <Grow
               {...TransitionProps}
               style={{
                 transformOrigin:
-                  placement === "bottom-start" ? "left top" : "left bottom",
-              }}
-            >
+                  placement === "bottom-start"
+                    ? "left top"
+                    : "left bottom",
+              }}>
               <Paper>
                 <ClickAwayListener onClickAway={handleClose}>
                   <MenuList
@@ -181,33 +200,35 @@ export default function RobotOperationList() {
                     autoFocusItem={open}
                     id="composition-menu"
                     aria-labelledby="composition-button"
-                    onKeyDown={handleListKeyDown}
-                  >
-                    <MenuItem css={menuItemStyles} onClick={robotLoginClicked}>
+                    onKeyDown={handleListKeyDown}>
+                    <MenuItem
+                      css={menuItemStyles}
+                      onClick={robotLoginClicked}>
                       {t("login")}
                     </MenuItem>
-                    <MenuItem css={menuItemStyles} onClick={robotLogoutClicked}>
+                    <MenuItem
+                      css={menuItemStyles}
+                      onClick={robotLogoutClicked}>
                       {t("logout")}
                     </MenuItem>
                     <MenuItem
                       css={menuItemStyles}
-                      onClick={robotPowerOnClicked}
-                    >
+                      onClick={robotPowerOnClicked}>
                       {t("power on")}
                     </MenuItem>
                     <MenuItem
                       css={menuItemStyles}
-                      onClick={robotPowerOffClicked}
-                    >
+                      onClick={robotPowerOffClicked}>
                       {t("power off")}
                     </MenuItem>
-                    <MenuItem css={menuItemStyles} onClick={robotEnableClicked}>
+                    <MenuItem
+                      css={menuItemStyles}
+                      onClick={robotEnableClicked}>
                       {t("enable")}
                     </MenuItem>
                     <MenuItem
                       css={menuItemStyles}
-                      onClick={robotDisableClicked}
-                    >
+                      onClick={robotDisableClicked}>
                       {t("disable")}
                     </MenuItem>
                   </MenuList>

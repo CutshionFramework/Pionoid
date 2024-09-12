@@ -1,6 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   Table,
   TableBody,
@@ -61,17 +62,36 @@ const listContainerStyles = css`
 `;
 
 const buttonStyles = css`
-  width: 100%;
+  width: 200px;
   height: 100%;
   border: none;
   font-size: 18px;
-  color: #919eab;
-  background-color: white;
+  color: white;
+  background-color: rgb(160, 186, 237);
   box-shadow: 2px 2px 10px 3px rgba(0, 0, 0, 0.03);
+  transition: background-color 0.3s ease;
+  animation: bounce 2s;
 
   &:hover {
     background-color: #f0f0f0;
+    color: black;
     border: none;
+  }
+
+  @keyframes bounce {
+    0%,
+    20%,
+    50%,
+    80%,
+    100% {
+      transform: translateY(0);
+    }
+    40% {
+      transform: translateY(-40px);
+    }
+    60% {
+      transform: translateY(-15px);
+    }
   }
 `;
 
@@ -271,6 +291,7 @@ const RobotMovementList = ({ showList, toggleList }) => {
     setDraggedOverIndex(null);
   };
 
+  const { t } = useTranslation();
   return (
     <>
       <div
@@ -325,29 +346,28 @@ const RobotMovementList = ({ showList, toggleList }) => {
           />
         </Box>
       </div>
-      <Button
-        variant="contained"
-        color="primary"
-        css={buttonStyles}
-        onClick={handleRobotMovementListButtonClick}
-      >
-        Robot Movement List
-      </Button>
-      <Menu
-        keepMounted
-        open={contextMenu !== null}
-        onClose={handleCloseContextMenu}
-        anchorReference="anchorPosition"
-        anchorPosition={
-          contextMenu !== null
-            ? { top: contextMenu.mouseY, left: contextMenu.mouseX }
-            : undefined
-        }
-      >
-        <MenuItem onClick={handleCopy}>Copy</MenuItem>
-        <MenuItem onClick={handleModify}>Modify</MenuItem>
-        <MenuItem onClick={handleDelete}>Delete</MenuItem>
-      </Menu>
+      <div style={{ display: 'flex', justifyContent: 'center' }}>
+        <Button
+          variant="contained"
+          css={buttonStyles}
+          onClick={handleRobotMovementListButtonClick}
+        ></Button>
+        <Menu
+          keepMounted
+          open={contextMenu !== null}
+          onClose={handleCloseContextMenu}
+          anchorReference="anchorPosition"
+          anchorPosition={
+            contextMenu !== null
+              ? { top: contextMenu.mouseY, left: contextMenu.mouseX }
+              : undefined
+          }
+        >
+          <MenuItem onClick={handleCopy}>{t('copy')}</MenuItem>
+          <MenuItem onClick={handleModify}>{t('modify')}</MenuItem>
+          <MenuItem onClick={handleDelete}>{t('delete')}</MenuItem>
+        </Menu>
+      </div>
     </>
   );
 };

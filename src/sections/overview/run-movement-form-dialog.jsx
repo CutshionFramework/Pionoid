@@ -86,25 +86,30 @@ export default function RunMovementFormDialog() {
     setSnackbarOpen(false);
   };
 
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
 
   return (
     <Stack css={divStyles}>
-      <Button css={buttonStyles} variant="outlined" onClick={handleClickOpen}>
+      <Button
+        css={buttonStyles}
+        variant="outlined"
+        onClick={handleClickOpen}>
         {t("run movements")}
       </Button>
-      <Dialog open={open} onClose={handleClose} disableScrollLock={true}>
+      <Dialog
+        open={open}
+        onClose={handleClose}
+        disableScrollLock={true}>
         <DialogTitle>Enter How Many times</DialogTitle>
         <DialogContent>
           <DialogContentText>
-            Please enter the number of times the robot should perform the
-            movement. This action will be repeated accordingly.
+            {t("description about repetitions")}
           </DialogContentText>
           <TextField
             autoFocus
             required
             margin="dense"
-            label="Number of Repetitions"
+            label={t("number of repetitions")}
             type="number"
             fullWidth
             variant="standard"
@@ -113,20 +118,18 @@ export default function RunMovementFormDialog() {
           />
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose}>Cancel</Button>
-          <Button onClick={handleConfirm}>Start</Button>
+          <Button onClick={handleClose}>{t("cancel")}</Button>
+          <Button onClick={handleConfirm}>{t("start")}</Button>
         </DialogActions>
       </Dialog>
       <Snackbar
         open={snackbarOpen}
         autoHideDuration={3000}
-        onClose={handleSnackbarClose}
-      >
+        onClose={handleSnackbarClose}>
         <Alert
           onClose={handleSnackbarClose}
           severity="error"
-          sx={{ width: "100%" }}
-        >
+          sx={{ width: "100%" }}>
           {snackbarMessage}
         </Alert>
       </Snackbar>

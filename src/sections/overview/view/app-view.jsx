@@ -1,7 +1,8 @@
 /** @jsxImportSource @emotion/react */
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { css } from '@emotion/react';
 import { faker } from '@faker-js/faker';
+import { useRecoilValue } from 'recoil';
 
 import { Button } from '@mui/material';
 import Container from '@mui/material/Container';
@@ -27,7 +28,8 @@ import RunMovementFormDialog from '../run-movement-form-dialog';
 
 import { useTranslation } from 'react-i18next';
 import '../../../i18n.js';
-import { t } from 'i18next';
+
+import { imageState } from '../../../recoilState';
 
 // ----------------------------------------------------------------------
 const imgGridStyles = css`
@@ -119,6 +121,7 @@ export default function AppView() {
   const [showList, setShowList] = useState(false);
   const [dialogType, setDialogType] = useState(null);
   const [dialogOpen, setDialogOpen] = useState(false);
+  const currentImage = useRecoilValue(imageState);
 
   const handleInputChange = (event) => {
     setIpAddress(event.target.value);
@@ -162,23 +165,31 @@ export default function AppView() {
 
   // 번역 함수
   const { t } = useTranslation();
+
   return (
-    <Container maxWidth="sm">
+    <Container
+      maxWidth="sm"
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+      }}
+    >
       <Typography variant="h4" sx={{ mb: 5 }}>
         {t('greeting')}
       </Typography>
 
       <Grid xs={12} md={6} lg={8} css={imgGridStyles}>
-        <img
-          src={`${process.env.PUBLIC_URL}/assets/images/jaka%20robot%20arm.png`}
-          alt="JAKA robot arm"
-        />
+        <img src={currentImage} alt="robot arm" />
         <Grid xs={12} md={6} lg={8} css={menuListStyles}>
           <RobotOperationList />
         </Grid>
       </Grid>
-
-      <Grid container spacing={3}>
+      <Grid
+        container
+        spacing={3}
+        style={{ display: 'flex', justifyContent: 'center' }}
+      >
         <Grid css={inputGridStyles} xs={8} sm={9} md={8}>
           <TextField
             css={textFieldStyles}
