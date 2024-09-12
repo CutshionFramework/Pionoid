@@ -14,7 +14,7 @@ export const getRobotSessions = async () => {
   }
 };
 
-export const saveIpAddress = async (ipAddress, robotType = 'JakaRobot') => {
+export const saveIpAddress = async (ipAddress, robotType) => {
   try {
     const endpoint = `${BASE_URL}`;
     const params = `set_ip`;

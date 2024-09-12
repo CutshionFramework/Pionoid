@@ -11,12 +11,7 @@ import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import ButtonBase from '@mui/material/ButtonBase';
 
-import {
-  shutDown,
-  savePosition,
-  saveIpAddress,
-  getRobotSessions,
-} from '../../../apis/apis';
+import { shutDown, savePosition, saveIpAddress } from '../../../apis/apis';
 
 import AppTasks from '../app-tasks';
 import RobotOperationList from '../robot-operation-list';
@@ -29,7 +24,7 @@ import RunMovementFormDialog from '../run-movement-form-dialog';
 import { useTranslation } from 'react-i18next';
 import '../../../i18n.js';
 
-import { imageState } from '../../../recoilState';
+import { imageState, brandState } from '../../../recoilState';
 
 // ----------------------------------------------------------------------
 const imgGridStyles = css`
@@ -122,6 +117,7 @@ export default function AppView() {
   const [dialogType, setDialogType] = useState(null);
   const [dialogOpen, setDialogOpen] = useState(false);
   const currentImage = useRecoilValue(imageState);
+  const currentBrand = useRecoilValue(brandState);
 
   const handleInputChange = (event) => {
     setIpAddress(event.target.value);
@@ -129,8 +125,8 @@ export default function AppView() {
 
   const handleSaveIpAddress = async () => {
     try {
-      const response = await saveIpAddress(ipAddress);
-      console.log(`${response}: ${ipAddress}`);
+      const response = await saveIpAddress(ipAddress, currentBrand);
+      console.log(`${response}: ${ipAddress}, ${currentBrand}`);
     } catch (error) {
       console.error('Failed to load data. : ', error);
     }
