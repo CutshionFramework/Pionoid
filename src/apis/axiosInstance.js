@@ -6,17 +6,26 @@ class AxiosInstance {
     this.instance = axios.create({
       baseURL: this.baseUrl,
       headers: {
-        'Content-Type': 'text/plain',
+        'Content-Type': 'application/json', // JSON으로 수정
       },
       withCredentials: true,
     });
+  }
+
+  // 토큰을 로컬 스토리지나 상태에서 가져오는 함수
+  getToken() {
+    return localStorage.getItem('token'); // 토큰을 저장한 위치에 따라 수정
   }
 
   async request(endpoint, method, params = '', query = null, data = null) {
     const apiUrl = params
       ? `${endpoint}/${params}${query ? `?${query}` : ''}`
       : endpoint;
-    const headers = { 'Content-Type': 'text/plain' };
+
+    const headers = {
+      'Content-Type': 'application/json', // text/plain에서 JSON으로 변경
+      Authorization: `Bearer ${this.getToken()}`, // Authorization 헤더 추가
+    };
 
     try {
       const response = await this.instance.request({
