@@ -1,9 +1,9 @@
 /** @jsxImportSource @emotion/react */
-import * as React from "react";
-import { css } from "@emotion/react";
-import { useTranslation } from "react-i18next";
-import "../../i18n.js";
-import MicNoneOutlinedIcon from "@mui/icons-material/MicNoneOutlined";
+import * as React from 'react';
+import { css } from '@emotion/react';
+import { useTranslation } from 'react-i18next';
+import '../../i18n.js';
+import MicNoneOutlinedIcon from '@mui/icons-material/MicNoneOutlined';
 
 import {
   Grow,
@@ -14,7 +14,7 @@ import {
   MenuItem,
   MenuList,
   ClickAwayListener,
-} from "@mui/material";
+} from '@mui/material';
 
 import {
   robotLogin,
@@ -23,7 +23,8 @@ import {
   robotDisable,
   robotPowerOn,
   robotPowerOff,
-} from "../../apis/apis";
+  voiceCommand,
+} from '../../apis/apis';
 
 const menuListStyles = css`
   font-size: 1.25rem;
@@ -44,10 +45,7 @@ export default function RobotOperationList() {
   };
 
   const handleClose = (event) => {
-    if (
-      anchorRef.current &&
-      anchorRef.current.contains(event.target)
-    ) {
+    if (anchorRef.current && anchorRef.current.contains(event.target)) {
       return;
     }
 
@@ -55,10 +53,10 @@ export default function RobotOperationList() {
   };
 
   const handleListKeyDown = (event) => {
-    if (event.key === "Tab") {
+    if (event.key === 'Tab') {
       event.preventDefault();
       setOpen(false);
-    } else if (event.key === "Escape") {
+    } else if (event.key === 'Escape') {
       setOpen(false);
     }
   };
@@ -79,7 +77,7 @@ export default function RobotOperationList() {
       const response = await robotLogin();
       console.log(response);
     } catch (error) {
-      console.error("Failed to load data. : ", error);
+      console.error('Failed to load data. : ', error);
     }
   };
 
@@ -89,7 +87,7 @@ export default function RobotOperationList() {
       const response = await robotLogout();
       console.log(response);
     } catch (error) {
-      console.error("Failed to load data. : ", error);
+      console.error('Failed to load data. : ', error);
     }
   };
 
@@ -99,7 +97,7 @@ export default function RobotOperationList() {
       const response = await robotPowerOn();
       console.log(response);
     } catch (error) {
-      console.error("Failed to load data. : ", error);
+      console.error('Failed to load data. : ', error);
     }
   };
 
@@ -109,7 +107,7 @@ export default function RobotOperationList() {
       const response = await robotPowerOff();
       console.log(response);
     } catch (error) {
-      console.error("Failed to load data. : ", error);
+      console.error('Failed to load data. : ', error);
     }
   };
 
@@ -119,7 +117,7 @@ export default function RobotOperationList() {
       const response = await robotEnable();
       console.log(response);
     } catch (error) {
-      console.error("Failed to load data. : ", error);
+      console.error('Failed to load data. : ', error);
     }
   };
 
@@ -129,7 +127,16 @@ export default function RobotOperationList() {
       const response = await robotDisable();
       console.log(response);
     } catch (error) {
-      console.error("Failed to load data. : ", error);
+      console.error('Failed to load data. : ', error);
+    }
+  };
+
+  const handleVoiceCommand = async () => {
+    try {
+      const response = await voiceCommand(); // Call the voiceCommand API
+      console.log('Voice command executed:', response);
+    } catch (error) {
+      console.error('Failed to execute voice command: ', error);
     }
   };
 
@@ -138,36 +145,38 @@ export default function RobotOperationList() {
   return (
     <Stack direction="row" spacing={2}>
       <div>
-        <div style={{ display: "flex", justifyContent: "center" }}>
+        <div style={{ display: 'flex', justifyContent: 'center' }}>
           <Button
             style={{
-              color: "white",
-              backgroundColor: "rgb(178,204,255)",
-              width: "200px",
-              height: "57px",
-              fontSize: "20px",
-              boxShadow: "0 0 10px rgba(131, 169, 190, 0.6)",
-              borderRadius: "20px",
-              marginTop: "5px",
+              color: 'white',
+              backgroundColor: 'rgb(178,204,255)',
+              width: '200px',
+              height: '57px',
+              fontSize: '20px',
+              boxShadow: '0 0 10px rgba(131, 169, 190, 0.6)',
+              borderRadius: '20px',
+              marginTop: '5px',
             }}
             ref={anchorRef}
             id="composition-button"
-            aria-controls={open ? "composition-menu" : undefined}
-            aria-expanded={open ? "true" : undefined}
+            aria-controls={open ? 'composition-menu' : undefined}
+            aria-expanded={open ? 'true' : undefined}
             aria-haspopup="true"
-            onClick={handleToggle}>
-            {t("operation menu")}
+            onClick={handleToggle}
+          >
+            {t('operation menu')}
           </Button>
           <Button>
             <MicNoneOutlinedIcon
+              onClick={handleVoiceCommand}
               style={{
-                height: "57px",
-                width: "57px",
-                padding: "0 15 0 15",
-                color: "gray",
-                backgroundColor: "white",
-                boxShadow: "0 0 10px rgba(131, 169, 190, 0.6)",
-                borderRadius: "20px",
+                height: '57px',
+                width: '57px',
+                padding: '0 15 0 15',
+                color: 'gray',
+                backgroundColor: 'white',
+                boxShadow: '0 0 10px rgba(131, 169, 190, 0.6)',
+                borderRadius: '20px',
               }}
             />
           </Button>
@@ -183,16 +192,16 @@ export default function RobotOperationList() {
             width: anchorRef.current
               ? anchorRef.current.offsetWidth
               : undefined,
-          }}>
+          }}
+        >
           {({ TransitionProps, placement }) => (
             <Grow
               {...TransitionProps}
               style={{
                 transformOrigin:
-                  placement === "bottom-start"
-                    ? "left top"
-                    : "left bottom",
-              }}>
+                  placement === 'bottom-start' ? 'left top' : 'left bottom',
+              }}
+            >
               <Paper>
                 <ClickAwayListener onClickAway={handleClose}>
                   <MenuList
@@ -200,36 +209,34 @@ export default function RobotOperationList() {
                     autoFocusItem={open}
                     id="composition-menu"
                     aria-labelledby="composition-button"
-                    onKeyDown={handleListKeyDown}>
-                    <MenuItem
-                      css={menuItemStyles}
-                      onClick={robotLoginClicked}>
-                      {t("login")}
+                    onKeyDown={handleListKeyDown}
+                  >
+                    <MenuItem css={menuItemStyles} onClick={robotLoginClicked}>
+                      {t('login')}
+                    </MenuItem>
+                    <MenuItem css={menuItemStyles} onClick={robotLogoutClicked}>
+                      {t('logout')}
                     </MenuItem>
                     <MenuItem
                       css={menuItemStyles}
-                      onClick={robotLogoutClicked}>
-                      {t("logout")}
+                      onClick={robotPowerOnClicked}
+                    >
+                      {t('power on')}
                     </MenuItem>
                     <MenuItem
                       css={menuItemStyles}
-                      onClick={robotPowerOnClicked}>
-                      {t("power on")}
+                      onClick={robotPowerOffClicked}
+                    >
+                      {t('power off')}
+                    </MenuItem>
+                    <MenuItem css={menuItemStyles} onClick={robotEnableClicked}>
+                      {t('enable')}
                     </MenuItem>
                     <MenuItem
                       css={menuItemStyles}
-                      onClick={robotPowerOffClicked}>
-                      {t("power off")}
-                    </MenuItem>
-                    <MenuItem
-                      css={menuItemStyles}
-                      onClick={robotEnableClicked}>
-                      {t("enable")}
-                    </MenuItem>
-                    <MenuItem
-                      css={menuItemStyles}
-                      onClick={robotDisableClicked}>
-                      {t("disable")}
+                      onClick={robotDisableClicked}
+                    >
+                      {t('disable')}
                     </MenuItem>
                   </MenuList>
                 </ClickAwayListener>
