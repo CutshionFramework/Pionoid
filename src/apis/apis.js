@@ -226,10 +226,10 @@ export const voiceCommand = async () => {
 
 // ------------------------------------
 
-export const getDigitalOutputStatus = async () => {
+export const getIOStatus = async () => {
   try {
     const endpoint = `${BASE_URL}`;
-    const params = `digital_output_status`;
+    const params = `get_io_status`;
     const res = await robotAPI.get(endpoint, params);
     return res;
   } catch (error) {
@@ -238,26 +238,20 @@ export const getDigitalOutputStatus = async () => {
   }
 };
 
-export const setDigitalOutput = async (index) => {
+export const setIO = async (tabName, type, index, value) => {
   try {
     const endpoint = `${BASE_URL}`;
-    const params = `use_digital_output/${index}`;
-    const res = await robotAPI.get(endpoint, params);
+    const params = `set_io_status`;
+    const data = {
+      io_type: tabName,
+      io_signal_type: type,
+      index: index,
+      value: value,
+    };
+    const res = await robotAPI.post(endpoint, params, data);
     return res;
   } catch (error) {
     console.error('Error using digital output:', error);
-    throw error;
-  }
-};
-
-export const setDigitalInput = async (index) => {
-  try {
-    const endpoint = `${BASE_URL}`;
-    const params = `use_digital_input/${index}`;
-    const res = await robotAPI.get(endpoint, params);
-    return res;
-  } catch (error) {
-    console.error('Error using digital input:', error);
     throw error;
   }
 };
