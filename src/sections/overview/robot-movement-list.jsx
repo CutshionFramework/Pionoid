@@ -22,7 +22,7 @@ import {
   deleteMove,
   updateMove,
   copyMove,
-  getRobotMovements,
+  getRobotMoves,
   updateMoveOrder,
 } from '../../apis/apis';
 
@@ -154,7 +154,7 @@ const RobotMovementList = ({ showList, toggleList }) => {
 
   const loadDataFromServer = async () => {
     try {
-      const response = await getRobotMovements();
+      const response = await getRobotMoves();
       console.log(response);
 
       const formattedData = Object.keys(response).map((key) => {
@@ -179,7 +179,6 @@ const RobotMovementList = ({ showList, toggleList }) => {
   };
 
   const handleRobotMovementListButtonClick = () => {
-    loadDataFromServer();
     toggleList();
   };
 

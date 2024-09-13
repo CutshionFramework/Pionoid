@@ -2,7 +2,7 @@ import { robotAPI } from './axiosInstance';
 
 const BASE_URL = process.env.REACT_APP_API_URL;
 
-export const getRobotMovements = async () => {
+export const getRobotMoves = async () => {
   try {
     const endpoint = `${BASE_URL}`;
     const params = `get_moves`;
