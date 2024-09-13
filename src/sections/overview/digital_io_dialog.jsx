@@ -18,18 +18,58 @@ import { getIOStatus, setIO } from '../../apis/apis';
 const statusStyle = (isActive) => css`
   padding: 10px;
   border-radius: 10px;
-  background-color: ${isActive ? '#71f49a' : '#efedec'};
-  color: black;
+  background-color: ${isActive ? '#92bea9' : '#efedec'};
+  color: ${isActive ? '#f7edda' : 'black'};
   text-align: center;
 `;
 
-const buttonStyle = css`
+const buttonContainerStyle = css`
   display: inline-block;
   margin: 4px;
 `;
 
+const buttonStyle = (isActive) => css`
+  border-color: ${isActive ? '#4F7670' : '#c5deda'};
+  background-color: ${isActive ? '#4F7670' : '#c5deda'};
+  color: ${isActive ? '#f7edda' : '#333333'};
+  &:hover {
+    border-color: ${isActive ? '#c5deda' : '#92bea9'};
+    background-color: ${isActive ? '#5a8c6f' : '#92bea9'};
+  }
+`;
+
 const dialogContentStyle = css`
   min-height: 400px; /* Adjust as needed */
+`;
+
+const tabContainerContainerStyle = css`
+  display: flex;
+  justify-content: center;
+`;
+
+const tabContainerStyle = css`
+  width: 271px;
+  border-radius: 23px;
+  overflow: hidden;
+  background-color: #92bea9;
+  margin: 10px;
+`;
+
+const tabStyle = css`
+  .MuiTab-root {
+    color: #f7edda;
+    background-color: #92bea9;
+    font-size: 15px;
+  }
+
+  .MuiTabs-indicator {
+    display: none;
+  }
+
+  .MuiTab-root.Mui-selected {
+    background-color: #4f7670;
+    color: #f7edda;
+  }
 `;
 
 function IODialog({ open, onClose }) {
@@ -145,8 +185,13 @@ function IODialog({ open, onClose }) {
         <Collapse in={openSections[type]} timeout="auto" unmountOnExit>
           <Grid container spacing={1}>
             {buttons.map((button) => (
-              <Grid item key={button} css={buttonStyle}>
+              <Grid item key={button} css={buttonContainerStyle}>
                 <Button
+                  css={buttonStyle(
+                    activeButtons[tabNames[currentTab]][type]?.includes(
+                      button - 1
+                    )
+                  )}
                   variant={
                     activeButtons[tabNames[currentTab]][type]?.includes(
                       button - 1
@@ -188,7 +233,7 @@ function IODialog({ open, onClose }) {
           <Grid container spacing={1}>
             {activeButtons[tabNames[currentTab]][type].map(
               (isActive, index) => (
-                <Grid item key={index} css={buttonStyle}>
+                <Grid item key={index} css={buttonContainerStyle}>
                   <div css={statusStyle(isActive)}>
                     {`${type} ${index + 1} : `}{' '}
                     {isActive ? 'Active' : 'Inactive'}
@@ -205,11 +250,17 @@ function IODialog({ open, onClose }) {
   return (
     <Dialog open={open} onClose={onClose} fullWidth maxWidth="md">
       <DialogTitle>{title}</DialogTitle>
-      <Tabs value={currentTab} onChange={handleTabChange} centered>
-        <Tab label="Cabinet" />
-        <Tab label="Tool" />
-        <Tab label="Extend" />
-      </Tabs>
+      <div css={tabContainerContainerStyle}>
+        <div css={tabContainerStyle}>
+          <div css={tabStyle}>
+            <Tabs value={currentTab} onChange={handleTabChange} centered>
+              <Tab label="Cabinet" />
+              <Tab label="Tool" />
+              <Tab label="Extend" />
+            </Tabs>
+          </div>
+        </div>
+      </div>
       <DialogContent css={dialogContentStyle}>
         <Grid container spacing={2}>
           {currentTab === 0 && (
