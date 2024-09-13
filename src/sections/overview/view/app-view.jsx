@@ -18,7 +18,7 @@ import RobotOperationList from '../robot-operation-list';
 import AppOrderTimeline from '../app-order-timeline';
 import AppWidgetSummary from '../app-widget-summary';
 import RobotMovementList from '../robot-movement-list';
-import DigitalIODialog from '../digital_io_dialog';
+import IODialog from '../digital_io_dialog';
 
 import { useTranslation } from 'react-i18next';
 import '../../../i18n.js';
@@ -113,7 +113,6 @@ const formDialogStyles = css`
 export default function AppView() {
   const [ipAddress, setIpAddress] = useState('');
   const [showList, setShowList] = useState(false);
-  const [dialogType, setDialogType] = useState(null);
   const [dialogOpen, setDialogOpen] = useState(false);
   const currentImage = useRecoilValue(imageState);
   const currentBrand = useRecoilValue(brandState);
@@ -131,8 +130,7 @@ export default function AppView() {
     }
   };
 
-  const handleDIOButtonClick = (type) => {
-    setDialogType(type);
+  const handleIOButtonClick = () => {
     setDialogOpen(true);
   };
 
@@ -237,12 +235,12 @@ export default function AppView() {
         <Grid xs={14} sm={8} md={6}>
           <ButtonBase
             style={{ width: '100%' }}
-            onClick={() => handleDIOButtonClick('DO')}
+            onClick={() => handleIOButtonClick()}
           >
             <AppWidgetSummary
               css={buttonStyles}
               style={{ width: '100%' }}
-              title="DO"
+              title="IO"
               total={3}
               color="primary"
               icon={
@@ -255,34 +253,9 @@ export default function AppView() {
           </ButtonBase>
         </Grid>
 
-        <Grid xs={14} sm={8} md={6}>
-          <ButtonBase
-            style={{ width: '100%' }}
-            onClick={() => handleDIOButtonClick('DI')}
-          >
-            <AppWidgetSummary
-              css={buttonStyles}
-              style={{ width: '100%' }}
-              title="DI"
-              total={4}
-              color="primary"
-              icon={
-                <img
-                  alt="icon"
-                  src={`${process.env.PUBLIC_URL}/assets/icons/glass/ic_glass_message.png`}
-                />
-              }
-            />
-          </ButtonBase>
-        </Grid>
+        <IODialog open={dialogOpen} onClose={() => setDialogOpen(false)} />
 
-        <DigitalIODialog
-          open={dialogOpen}
-          onClose={() => setDialogOpen(false)}
-          dialogType={dialogType}
-        />
-
-        <Grid xs={14} sm={8} md={6}>
+        <Grid xs={14} sm={8} md={12}>
           <ButtonBase style={{ width: '100%' }} onClick={shutDownClicked}>
             <AppWidgetSummary
               css={buttonStyles}
