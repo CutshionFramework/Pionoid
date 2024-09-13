@@ -39,7 +39,7 @@ export const saveIpAddress = async (ipAddress, robotType) => {
   }
 };
 
-export const savePosition = async () => {
+export const saveMove = async () => {
   try {
     const endpoint = `${BASE_URL}`;
     const params = `save_move`;
@@ -51,7 +51,7 @@ export const savePosition = async () => {
   }
 };
 
-export const updatePosition = async (originalName, updatedItem) => {
+export const updateMove = async (originalName, updatedItem) => {
   try {
     const endpoint = `${BASE_URL}`;
     const params = `update_move`;
@@ -67,7 +67,7 @@ export const updatePosition = async (originalName, updatedItem) => {
   }
 };
 
-export const deletePosition = async (name) => {
+export const deleteMove = async (name) => {
   try {
     const endpoint = `${BASE_URL}`;
     const params = `delete_move`;
@@ -82,7 +82,7 @@ export const deletePosition = async (name) => {
   }
 };
 
-export const copyPosition = async (originalName) => {
+export const copyMove = async (originalName) => {
   try {
     const endpoint = `${BASE_URL}`;
     const params = `copy_move`;
@@ -97,12 +97,28 @@ export const copyPosition = async (originalName) => {
   }
 };
 
-export const robotRunSaveMovements = async (times = 1) => {
+export const runAllMoves = async (times = 1) => {
   try {
     const endpoint = `${BASE_URL}`;
     const params = `run_all_moves`;
     const data = {
       times: times,
+    };
+    const res = await robotAPI.post(endpoint, params, data);
+    return res;
+  } catch (error) {
+    console.error('Error running saved movements:', error);
+    throw error;
+  }
+};
+
+export const updateMoveOrder = async (moveName, newIndex) => {
+  try {
+    const endpoint = `${BASE_URL}`;
+    const params = `reorder_moves`;
+    const data = {
+      move_name: moveName,
+      new_index: newIndex,
     };
     const res = await robotAPI.post(endpoint, params, data);
     return res;

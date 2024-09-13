@@ -11,7 +11,7 @@ import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import ButtonBase from '@mui/material/ButtonBase';
 
-import { shutDown, savePosition, saveIpAddress } from '../../../apis/apis';
+import { shutDown, saveMove, saveIpAddress } from '../../../apis/apis';
 
 import AppTasks from '../app-tasks';
 import RobotOperationList from '../robot-operation-list';
@@ -138,7 +138,7 @@ export default function AppView() {
 
   const savePositionClicked = async () => {
     try {
-      const response = await savePosition();
+      const response = await saveMove();
       console.log('Data saved to server:', response);
     } catch (error) {
       console.error('Failed to load data. : ', error);

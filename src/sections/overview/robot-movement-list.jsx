@@ -19,10 +19,11 @@ import {
 import RunMovementFormDialog from './run-movement-form-dialog';
 import ModifyFormDialog from './modify-form-dialog';
 import {
-  deletePosition,
-  updatePosition,
-  copyPosition,
+  deleteMove,
+  updateMove,
+  copyMove,
   getRobotMovements,
+  updateMoveOrder,
 } from '../../apis/apis';
 
 const listContainerStyles = css`
@@ -200,7 +201,7 @@ const RobotMovementList = ({ showList, toggleList }) => {
 
   const saveCopiedItemToServer = async (originalName) => {
     try {
-      await copyPosition(originalName);
+      await copyMove(originalName);
       console.log('Copied item saved successfully');
     } catch (error) {
       console.error('Failed to save copied item to server:', error);
@@ -227,7 +228,7 @@ const RobotMovementList = ({ showList, toggleList }) => {
 
     try {
       console.log('수정할 거 : ', modifiedItem.originalName, modifiedItem);
-      await updatePosition(modifiedItem.originalName, modifiedItem);
+      await updateMove(modifiedItem.originalName, modifiedItem);
       console.log('Position updated successfully');
     } catch (error) {
       console.error('Failed to update position:', error);
@@ -249,7 +250,7 @@ const RobotMovementList = ({ showList, toggleList }) => {
   const deleteFromServer = async (nameToDelete) => {
     try {
       console.log(nameToDelete);
-      const response = await deletePosition(nameToDelete);
+      const response = await deleteMove(nameToDelete);
       console.log(response);
     } catch (error) {
       console.error('Failed to delete session from server:', error);
@@ -296,7 +297,18 @@ const RobotMovementList = ({ showList, toggleList }) => {
 
     setData(reorderedData);
 
+    sendReorderedDataToServer(movedItem.move_name, dropIndex);
+
     setDraggedOverIndex(null);
+  };
+
+  const sendReorderedDataToServer = async (moveName, newIndex) => {
+    try {
+      await updateMoveOrder(moveName, newIndex);
+      console.log(`Move name ${moveName} reordered to index ${newIndex}`);
+    } catch (error) {
+      console.error('Failed to update position order on server:', error);
+    }
   };
 
   const { t } = useTranslation();
