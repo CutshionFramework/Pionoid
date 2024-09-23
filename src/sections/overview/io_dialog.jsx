@@ -72,7 +72,27 @@ const tabStyle = css`
   }
 `;
 
-function IODialog({ open, onClose }) {
+function convertStringToObject(inputString) {
+  // 문자열에서 튜플 형식의 괄호를 대괄호로 변경
+  let formattedString = inputString
+    .replace(/\(/g, '[') // '('를 '['로 변경
+    .replace(/\)/g, ']') // ')'를 ']'로 변경
+    .replace(/'/g, '"') // 작은따옴표를 큰따옴표로 변경
+    .replace(/,\s*([\]}])/g, '$1') // 배열이나 객체의 끝에서 쉼표 제거
+    .replace(/(\d+(\.\d+)?)/g, '$1') // 숫자 형식을 유지
+    .replace(/(\w+):/g, '"$1":'); // 키를 큰따옴표로 감싸기
+
+  // JSON 형태로 변환
+  try {
+    const resultObject = JSON.parse(formattedString);
+    return resultObject;
+  } catch (error) {
+    console.error('Parsing error:', error);
+    return null;
+  }
+}
+
+function IODialog({ open, onClose, ioData }) {
   const [activeButtons, setActiveButtons] = useState({
     Cabinet: { DO: [], DI: [], AO: [], AI: [] },
     Tool: { DO: [], DI: [], AI: [] },
@@ -91,9 +111,14 @@ function IODialog({ open, onClose }) {
 
   useEffect(() => {
     if (open) {
-      fetchIOStatus();
+      if (ioData) {
+        const convertIoData = convertStringToObject(ioData);
+        updateButtonStates(convertIoData);
+      } else {
+        fetchIOStatus();
+      }
     }
-  }, [open, currentTab]);
+  }, [open, currentTab, ioData]);
 
   const fetchIOStatus = async () => {
     try {
@@ -134,18 +159,10 @@ function IODialog({ open, onClose }) {
     const tabName = tabNames[currentTab];
     const buttonIndex = button - 1;
     const updatedButtons = { ...activeButtons };
-    const isActive = updatedButtons[tabName][type].includes(buttonIndex);
 
-    if (isActive) {
-      updatedButtons[tabName][type] = updatedButtons[tabName][type].filter(
-        (b) => b !== buttonIndex
-      );
-    } else {
-      updatedButtons[tabName][type] = [
-        ...updatedButtons[tabName][type],
-        buttonIndex,
-      ];
-    }
+    const isActive = updatedButtons[tabName][type][buttonIndex];
+
+    updatedButtons[tabName][type][buttonIndex] = !isActive;
 
     setActiveButtons(updatedButtons);
 
@@ -159,7 +176,7 @@ function IODialog({ open, onClose }) {
   };
 
   const toggleSection = (type) => {
-    const tabName = tabNames[currentTab]; // 현재 탭 이름
+    const tabName = tabNames[currentTab];
     setOpenSections((prev) => ({
       ...prev,
       [tabName]: { ...prev[tabName], [type]: !prev[tabName][type] },
@@ -189,28 +206,21 @@ function IODialog({ open, onClose }) {
           unmountOnExit
         >
           <Grid container spacing={1}>
-            {buttons.map((button) => (
-              <Grid item key={button} css={buttonContainerStyle}>
-                <Button
-                  css={buttonStyle(
-                    activeButtons[tabNames[currentTab]][type]?.includes(
-                      button - 1
-                    )
-                  )}
-                  variant={
-                    activeButtons[tabNames[currentTab]][type]?.includes(
-                      button - 1
-                    )
-                      ? 'contained'
-                      : 'outlined'
-                  }
-                  color="primary"
-                  onClick={() => handleButtonClick(button, type)}
-                >
-                  {`${type} ${button}`}
-                </Button>
-              </Grid>
-            ))}
+            {buttons.map((button, index) => {
+              const isActive = activeButtons[tabNames[currentTab]][type][index]; // Index 사용
+              return (
+                <Grid item key={button} css={buttonContainerStyle}>
+                  <Button
+                    css={buttonStyle(isActive)}
+                    variant={isActive ? 'contained' : 'outlined'}
+                    color="primary"
+                    onClick={() => handleButtonClick(button, type)}
+                  >
+                    {`${type} ${button}`}
+                  </Button>
+                </Grid>
+              );
+            })}
           </Grid>
         </Collapse>
       </React.Fragment>
@@ -257,7 +267,13 @@ function IODialog({ open, onClose }) {
   };
 
   return (
-    <Dialog open={open} onClose={onClose} fullWidth maxWidth="md">
+    <Dialog
+      open={open}
+      onClose={onClose}
+      fullWidth
+      maxWidth="md"
+      disableScrollLock={true}
+    >
       <DialogTitle>{title}</DialogTitle>
       <div css={tabContainerContainerStyle}>
         <div css={tabContainerStyle}>

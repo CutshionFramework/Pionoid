@@ -1,5 +1,5 @@
 /** @jsxImportSource @emotion/react */
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { css } from '@emotion/react';
 import { faker } from '@faker-js/faker';
 import { useRecoilValue } from 'recoil';
@@ -18,7 +18,7 @@ import RobotOperationList from '../robot-operation-list';
 import AppOrderTimeline from '../app-order-timeline';
 import AppWidgetSummary from '../app-widget-summary';
 import RobotMovementList from '../robot-movement-list';
-import IODialog from '../digital_io_dialog';
+import IODialog from '../io_dialog';
 
 import { useTranslation } from 'react-i18next';
 import '../../../i18n.js';
@@ -253,7 +253,11 @@ export default function AppView() {
           </ButtonBase>
         </Grid>
 
-        <IODialog open={dialogOpen} onClose={() => setDialogOpen(false)} />
+        <IODialog
+          open={dialogOpen}
+          onClose={() => setDialogOpen(false)}
+          ioData={null}
+        />
 
         <Grid xs={14} sm={8} md={12}>
           <ButtonBase style={{ width: '100%' }} onClick={shutDownClicked}>

@@ -14,9 +14,13 @@ import {
   Box,
   Menu,
   MenuItem,
+  IconButton,
 } from '@mui/material';
 
+import SettingsIcon from '@mui/icons-material/Settings';
+
 import RunMovementFormDialog from './run-movement-form-dialog';
+import IODialog from './io_dialog';
 import ModifyFormDialog from './modify-form-dialog';
 import {
   deleteMove,
@@ -128,6 +132,10 @@ const RobotMovementList = ({ showList, toggleList }) => {
 
   const [draggedOverIndex, setDraggedOverIndex] = useState(null);
 
+  const [dialogOpen, setDialogOpen] = useState(false);
+
+  const [selectedIOData, setSelectedIOData] = useState(null);
+
   useEffect(() => {
     if (showList) {
       loadDataFromServer();
@@ -159,6 +167,7 @@ const RobotMovementList = ({ showList, toggleList }) => {
 
       const formattedData = Object.keys(response).map((key) => {
         const item = response[key];
+
         return {
           id: key,
           move_name: item.move_name || 'N/A',
@@ -168,6 +177,7 @@ const RobotMovementList = ({ showList, toggleList }) => {
           rx: item.RX || 0,
           ry: item.RY || 0,
           rz: item.RZ || 0,
+          io: item.IO || {}, // 파싱된 IO 데이터 추가
         };
       });
 
@@ -310,6 +320,11 @@ const RobotMovementList = ({ showList, toggleList }) => {
     }
   };
 
+  const handleIOClick = (io) => {
+    setSelectedIOData(io);
+    setDialogOpen(true);
+  };
+
   const { t } = useTranslation();
   return (
     <>
@@ -328,6 +343,7 @@ const RobotMovementList = ({ showList, toggleList }) => {
                 <TableCell>RX</TableCell>
                 <TableCell>RY</TableCell>
                 <TableCell>RZ</TableCell>
+                <TableCell>IO</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -351,6 +367,11 @@ const RobotMovementList = ({ showList, toggleList }) => {
                   <TableCell>{item.rx}</TableCell>
                   <TableCell>{item.ry}</TableCell>
                   <TableCell>{item.rz}</TableCell>
+                  <TableCell>
+                    <IconButton onClick={() => handleIOClick(item.io)}>
+                      <SettingsIcon />
+                    </IconButton>
+                  </TableCell>
                 </TableRow>
               ))}
             </TableBody>
@@ -390,6 +411,12 @@ const RobotMovementList = ({ showList, toggleList }) => {
           <MenuItem onClick={handleDelete}>{t('delete')}</MenuItem>
         </Menu>
       </div>
+
+      <IODialog
+        open={dialogOpen}
+        onClose={() => setDialogOpen(false)}
+        ioData={selectedIOData} // Pass the selected IO data here
+      />
     </>
   );
 };
