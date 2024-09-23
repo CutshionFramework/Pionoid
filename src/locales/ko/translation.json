@@ -95,9 +95,9 @@
 
   "================================ <run-movement-form-dialogue.jsx Translation>": "These are translation related with run-movement-form-dialogue.jsx ==================================",
   "run movements": "실행 동작들",
-  "enter how many times": "동작 횟수 입력",
-  "description about repetitions": "로봇이 움직임을 수행해야 하는 횟수를 입력하십시오. 이 동작은 그에 따라 반복됩니다.",
-  "number of repetitions": "반복 횟수",
-  "cancel": "취소",
+  "repetitions of robot movements": "로봇 동작 반복 수행",
+  "description about repetitions": "숫자를 입력하여, 로봇 동작의 반복 횟수를 조정할 수 있습니다.",
+  "placeholder": "숫자를 입력하세요.",
+  "cancel": "닫기",
   "start": "시작"
 }

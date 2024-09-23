@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
-import * as React from "react";
-import { css } from "@emotion/react";
-import "../../i18n.js";
+import * as React from 'react';
+import { css } from '@emotion/react';
+import '../../i18n.js';
 
 import {
   Alert,
@@ -14,10 +14,10 @@ import {
   DialogContent,
   DialogActions,
   DialogContentText,
-} from "@mui/material";
+} from '@mui/material';
 
-import { robotRunSaveMovements } from "../../apis/apis";
-import { useTranslation } from "react-i18next";
+import { robotRunSaveMovements } from '../../apis/apis';
+import { useTranslation } from 'react-i18next';
 
 const divStyles = css`
   border-radius: 15px;
@@ -50,9 +50,9 @@ const buttonStyles = css`
 
 export default function RunMovementFormDialog() {
   const [open, setOpen] = React.useState(false);
-  const [inputValue, setInputValue] = React.useState("");
+  const [inputValue, setInputValue] = React.useState('');
   const [snackbarOpen, setSnackbarOpen] = React.useState(false);
-  const [snackbarMessage, setSnackbarMessage] = React.useState("");
+  const [snackbarMessage, setSnackbarMessage] = React.useState('');
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -64,7 +64,7 @@ export default function RunMovementFormDialog() {
 
   const handleConfirm = async () => {
     if (!inputValue || inputValue <= 0) {
-      setSnackbarMessage("Please enter a valid positive number.");
+      setSnackbarMessage('Please enter a valid positive number.');
       setSnackbarOpen(true);
       return;
     }
@@ -72,9 +72,9 @@ export default function RunMovementFormDialog() {
     try {
       const response = await robotRunSaveMovements(inputValue);
       console.log(`${response}: ${inputValue} times move`);
-      setInputValue("");
+      setInputValue('');
     } catch (error) {
-      console.error("Failed to load data. : ", error);
+      console.error('Failed to load data. : ', error);
     }
   };
 
@@ -90,26 +90,20 @@ export default function RunMovementFormDialog() {
 
   return (
     <Stack css={divStyles}>
-      <Button
-        css={buttonStyles}
-        variant="outlined"
-        onClick={handleClickOpen}>
-        {t("run movements")}
+      <Button css={buttonStyles} variant="outlined" onClick={handleClickOpen}>
+        {t('run movements')}
       </Button>
-      <Dialog
-        open={open}
-        onClose={handleClose}
-        disableScrollLock={true}>
-        <DialogTitle>Enter How Many times</DialogTitle>
+      <Dialog open={open} onClose={handleClose} disableScrollLock={true}>
+        <DialogTitle>{t('repetitions of robot movements')}</DialogTitle>
         <DialogContent>
           <DialogContentText>
-            {t("description about repetitions")}
+            {t('description about repetitions')}
           </DialogContentText>
           <TextField
             autoFocus
             required
             margin="dense"
-            label={t("number of repetitions")}
+            label={t('placeholder')}
             type="number"
             fullWidth
             variant="standard"
@@ -118,8 +112,8 @@ export default function RunMovementFormDialog() {
           />
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose}>{t("cancel")}</Button>
-          <Button onClick={handleConfirm}>{t("start")}</Button>
+          <Button onClick={handleClose}>{t('cancel')}</Button>
+          <Button onClick={handleConfirm}>{t('start')}</Button>
         </DialogActions>
       </Dialog>
       <Snackbar
@@ -129,7 +123,7 @@ export default function RunMovementFormDialog() {
         <Alert
           onClose={handleSnackbarClose}
           severity="error"
-          sx={{ width: "100%" }}>
+          sx={{ width: '100%' }}>
           {snackbarMessage}
         </Alert>
       </Snackbar>

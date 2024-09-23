@@ -24,6 +24,7 @@ import { useTranslation } from 'react-i18next';
 import '../../../i18n.js';
 
 import { imageState, brandState } from '../../../recoilState';
+import { Height } from '@mui/icons-material';
 
 // ----------------------------------------------------------------------
 const imgGridStyles = css`
@@ -169,7 +170,7 @@ export default function AppView() {
         flexDirection: 'column',
         alignItems: 'center',
       }}>
-      <Typography variant="h4" sx={{ mb: 5 }}>
+      <Typography variant="h4" sx={{ mb: 5, textAlign: 'center' }}>
         {t('greeting')}
       </Typography>
 
@@ -183,7 +184,7 @@ export default function AppView() {
         container
         spacing={3}
         style={{ display: 'flex', justifyContent: 'center' }}>
-        <Grid css={inputGridStyles} xs={8} sm={9} md={8}>
+        <Grid css={inputGridStyles} xs={8} sm={9} md={9}>
           <TextField
             css={textFieldStyles}
             label={t('ip address')}
@@ -202,7 +203,7 @@ export default function AppView() {
             }}
           />
         </Grid>
-        <Grid css={inputGridStyles} xs={4} sm={3} md={4}>
+        <Grid css={inputGridStyles} xs={4} sm={3} md={3}>
           <Button
             css={saveButtonStyles}
             variant="contained"
@@ -213,11 +214,13 @@ export default function AppView() {
           </Button>
         </Grid>
 
-        <Grid xs={14} sm={8} md={6}>
-          <ButtonBase style={{ width: '100%' }} onClick={savePositionClicked}>
+        <Grid xs={6} sm={6} md={6}>
+          <ButtonBase
+            style={{ width: '100%', height: '100%' }}
+            onClick={savePositionClicked}>
             <AppWidgetSummary
               css={buttonStyles}
-              style={{ width: '100%' }}
+              style={{ width: '100%', height: '100%' }}
               title={t('save position')}
               total={2}
               color="primary"
@@ -231,13 +234,13 @@ export default function AppView() {
           </ButtonBase>
         </Grid>
 
-        <Grid xs={14} sm={8} md={6}>
+        <Grid xs={6} sm={6} md={6}>
           <ButtonBase
-            style={{ width: '100%' }}
+            style={{ width: '100%', height: '100%' }}
             onClick={() => handleDIOButtonClick('DO')}>
             <AppWidgetSummary
               css={buttonStyles}
-              style={{ width: '100%' }}
+              style={{ width: '100%', height: '100%' }}
               title="DO"
               total={3}
               color="primary"
@@ -251,13 +254,13 @@ export default function AppView() {
           </ButtonBase>
         </Grid>
 
-        <Grid xs={14} sm={8} md={6}>
+        <Grid xs={6} sm={6} md={6}>
           <ButtonBase
-            style={{ width: '100%' }}
+            style={{ width: '100%', height: '100%' }}
             onClick={() => handleDIOButtonClick('DI')}>
             <AppWidgetSummary
               css={buttonStyles}
-              style={{ width: '100%' }}
+              style={{ width: '100%', height: '100%' }}
               title="DI"
               total={4}
               color="primary"
@@ -277,11 +280,13 @@ export default function AppView() {
           dialogType={dialogType}
         />
 
-        <Grid xs={14} sm={8} md={6}>
-          <ButtonBase style={{ width: '100%' }} onClick={shutDownClicked}>
+        <Grid xs={6} sm={6} md={6}>
+          <ButtonBase
+            style={{ width: '100%', height: '100%' }}
+            onClick={shutDownClicked}>
             <AppWidgetSummary
               css={buttonStyles}
-              style={{ width: '100%' }}
+              style={{ width: '100%', height: '100%' }}
               title={t('shut down')}
               total={6}
               color="primary"
@@ -295,7 +300,7 @@ export default function AppView() {
           </ButtonBase>
         </Grid>
 
-        <Grid xs={10} md={4} lg={6}>
+        <Grid xs={12} sm={12} md={6} lg={6}>
           <AppTasks
             title={t('task')}
             list={[
