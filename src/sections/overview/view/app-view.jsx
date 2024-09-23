@@ -11,14 +11,14 @@ import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import ButtonBase from '@mui/material/ButtonBase';
 
-import { shutDown, savePosition, saveIpAddress } from '../../../apis/apis';
+import { shutDown, saveMove, saveIpAddress } from '../../../apis/apis';
 
 import AppTasks from '../app-tasks';
 import RobotOperationList from '../robot-operation-list';
 import AppOrderTimeline from '../app-order-timeline';
 import AppWidgetSummary from '../app-widget-summary';
 import RobotMovementList from '../robot-movement-list';
-import DigitalIODialog from '../digital_io_dialog';
+import IODialog from '../digital_io_dialog';
 
 import { useTranslation } from 'react-i18next';
 import '../../../i18n.js';
@@ -114,7 +114,6 @@ const formDialogStyles = css`
 export default function AppView() {
   const [ipAddress, setIpAddress] = useState('');
   const [showList, setShowList] = useState(false);
-  const [dialogType, setDialogType] = useState(null);
   const [dialogOpen, setDialogOpen] = useState(false);
   const currentImage = useRecoilValue(imageState);
   const currentBrand = useRecoilValue(brandState);
@@ -132,14 +131,13 @@ export default function AppView() {
     }
   };
 
-  const handleDIOButtonClick = (type) => {
-    setDialogType(type);
+  const handleIOButtonClick = () => {
     setDialogOpen(true);
   };
 
   const savePositionClicked = async () => {
     try {
-      const response = await savePosition();
+      const response = await saveMove();
       console.log('Data saved to server:', response);
     } catch (error) {
       console.error('Failed to load data. : ', error);
@@ -236,12 +234,12 @@ export default function AppView() {
 
         <Grid xs={6} sm={6} md={6}>
           <ButtonBase
-            style={{ width: '100%', height: '100%' }}
-            onClick={() => handleDIOButtonClick('DO')}>
+            style={{ width: '100%' }}
+            onClick={() => handleIOButtonClick()}>
             <AppWidgetSummary
               css={buttonStyles}
-              style={{ width: '100%', height: '100%' }}
-              title="DO"
+              style={{ width: '100%' }}
+              title="IO"
               total={3}
               color="primary"
               icon={
@@ -254,36 +252,10 @@ export default function AppView() {
           </ButtonBase>
         </Grid>
 
-        <Grid xs={6} sm={6} md={6}>
-          <ButtonBase
-            style={{ width: '100%', height: '100%' }}
-            onClick={() => handleDIOButtonClick('DI')}>
-            <AppWidgetSummary
-              css={buttonStyles}
-              style={{ width: '100%', height: '100%' }}
-              title="DI"
-              total={4}
-              color="primary"
-              icon={
-                <img
-                  alt="icon"
-                  src={`${process.env.PUBLIC_URL}/assets/icons/glass/ic_glass_message.png`}
-                />
-              }
-            />
-          </ButtonBase>
-        </Grid>
+        <IODialog open={dialogOpen} onClose={() => setDialogOpen(false)} />
 
-        <DigitalIODialog
-          open={dialogOpen}
-          onClose={() => setDialogOpen(false)}
-          dialogType={dialogType}
-        />
-
-        <Grid xs={6} sm={6} md={6}>
-          <ButtonBase
-            style={{ width: '100%', height: '100%' }}
-            onClick={shutDownClicked}>
+        <Grid xs={14} sm={8} md={12}>
+          <ButtonBase style={{ width: '100%' }} onClick={shutDownClicked}>
             <AppWidgetSummary
               css={buttonStyles}
               style={{ width: '100%', height: '100%' }}

@@ -2,10 +2,10 @@ import { robotAPI } from './axiosInstance';
 
 const BASE_URL = process.env.REACT_APP_API_URL;
 
-export const getRobotSessions = async () => {
+export const getRobotMoves = async () => {
   try {
     const endpoint = `${BASE_URL}`;
-    const params = `get_robot_sessions`;
+    const params = `get_moves`;
     const res = await robotAPI.get(endpoint, params);
     return res;
   } catch (error) {
@@ -39,11 +39,11 @@ export const saveIpAddress = async (ipAddress, robotType) => {
   }
 };
 
-export const savePosition = async () => {
+export const saveMove = async () => {
   try {
     const endpoint = `${BASE_URL}`;
-    const params = `save_robot_status`;
-    const res = await robotAPI.get(endpoint, params);
+    const params = `save_move`;
+    const res = await robotAPI.post(endpoint, params);
     return res;
   } catch (error) {
     console.error('Error saving position:', error);
@@ -51,11 +51,15 @@ export const savePosition = async () => {
   }
 };
 
-export const updatePosition = async (originalName, updatedItem) => {
+export const updateMove = async (originalName, updatedItem) => {
   try {
     const endpoint = `${BASE_URL}`;
-    const params = `update_robot_status/${encodeURIComponent(originalName)}`;
-    const res = await robotAPI.put(endpoint, params, updatedItem);
+    const params = `update_move`;
+    const data = {
+      originalName: originalName,
+      updatedItem: updatedItem,
+    };
+    const res = await robotAPI.put(endpoint, params, data);
     return res;
   } catch (error) {
     console.error('Error updating position:', error);
@@ -63,11 +67,14 @@ export const updatePosition = async (originalName, updatedItem) => {
   }
 };
 
-export const deletePosition = async (name) => {
+export const deleteMove = async (name) => {
   try {
     const endpoint = `${BASE_URL}`;
-    const params = `delete_robot_status/${encodeURIComponent(name)}`;
-    const res = await robotAPI.get(endpoint, params);
+    const params = `delete_move`;
+    const data = {
+      move_name: name,
+    };
+    const res = await robotAPI.delete(endpoint, params, data);
     return res;
   } catch (error) {
     console.error('Error deleting position:', error);
@@ -75,11 +82,45 @@ export const deletePosition = async (name) => {
   }
 };
 
-export const robotRunSaveMovements = async (times) => {
+export const copyMove = async (originalName) => {
   try {
     const endpoint = `${BASE_URL}`;
-    const params = `run_saved_movements/${times}`;
-    const res = await robotAPI.get(endpoint, params);
+    const params = `copy_move`;
+    const data = {
+      originalName: originalName,
+    };
+    const res = await robotAPI.post(endpoint, params, data);
+    return res;
+  } catch (error) {
+    console.error('Error saving position:', error);
+    throw error;
+  }
+};
+
+export const runAllMoves = async (times = 1) => {
+  try {
+    const endpoint = `${BASE_URL}`;
+    const params = `run_all_moves`;
+    const data = {
+      times: times,
+    };
+    const res = await robotAPI.post(endpoint, params, data);
+    return res;
+  } catch (error) {
+    console.error('Error running saved movements:', error);
+    throw error;
+  }
+};
+
+export const updateMoveOrder = async (moveName, newIndex) => {
+  try {
+    const endpoint = `${BASE_URL}`;
+    const params = `reorder_moves`;
+    const data = {
+      move_name: moveName,
+      new_index: newIndex,
+    };
+    const res = await robotAPI.post(endpoint, params, data);
     return res;
   } catch (error) {
     console.error('Error running saved movements:', error);
@@ -171,10 +212,24 @@ export const robotDisable = async () => {
   }
 };
 
-export const getDigitalOutputStatus = async () => {
+export const voiceCommand = async () => {
   try {
     const endpoint = `${BASE_URL}`;
-    const params = `digital_output_status`;
+    const params = `voice_command`;
+    const res = await robotAPI.post(endpoint, params);
+    return res;
+  } catch (error) {
+    console.error('Error saving position:', error);
+    throw error;
+  }
+};
+
+// ------------------------------------
+
+export const getIOStatus = async () => {
+  try {
+    const endpoint = `${BASE_URL}`;
+    const params = `get_io_status`;
     const res = await robotAPI.get(endpoint, params);
     return res;
   } catch (error) {
@@ -183,26 +238,20 @@ export const getDigitalOutputStatus = async () => {
   }
 };
 
-export const setDigitalOutput = async (index) => {
+export const setIO = async (tabName, type, index, value) => {
   try {
     const endpoint = `${BASE_URL}`;
-    const params = `use_digital_output/${index}`;
-    const res = await robotAPI.get(endpoint, params);
+    const params = `set_io_status`;
+    const data = {
+      io_type: tabName,
+      io_signal_type: type,
+      index: index,
+      value: value,
+    };
+    const res = await robotAPI.post(endpoint, params, data);
     return res;
   } catch (error) {
     console.error('Error using digital output:', error);
-    throw error;
-  }
-};
-
-export const setDigitalInput = async (index) => {
-  try {
-    const endpoint = `${BASE_URL}`;
-    const params = `use_digital_input/${index}`;
-    const res = await robotAPI.get(endpoint, params);
-    return res;
-  } catch (error) {
-    console.error('Error using digital input:', error);
     throw error;
   }
 };

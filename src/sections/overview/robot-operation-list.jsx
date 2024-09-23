@@ -23,6 +23,7 @@ import {
   robotDisable,
   robotPowerOn,
   robotPowerOff,
+  voiceCommand,
 } from '../../apis/apis';
 
 const menuListStyles = css`
@@ -130,6 +131,15 @@ export default function RobotOperationList() {
     }
   };
 
+  const handleVoiceCommand = async () => {
+    try {
+      const response = await voiceCommand(); // Call the voiceCommand API
+      console.log('Voice command executed:', response);
+    } catch (error) {
+      console.error('Failed to execute voice command: ', error);
+    }
+  };
+
   const { t } = useTranslation();
 
   return (
@@ -155,18 +165,19 @@ export default function RobotOperationList() {
             onClick={handleToggle}>
             {t('operation menu')}
           </Button>
-          <Button
-            style={{
-              backgroundColor: 'white',
-              width: '40px',
-              height: '57px',
-              fontSize: '20px',
-              boxShadow: '0 0 10px rgba(131, 169, 190, 0.6)',
-              borderRadius: '20px',
-              marginTop: '5px',
-              marginLeft: '10px',
-            }}>
-            <MicNoneOutlinedIcon style={{ color: 'gray' }} />
+          <Button>
+            <MicNoneOutlinedIcon
+              onClick={handleVoiceCommand}
+              style={{
+                height: '57px',
+                width: '57px',
+                padding: '0 15 0 15',
+                color: 'gray',
+                backgroundColor: 'white',
+                boxShadow: '0 0 10px rgba(131, 169, 190, 0.6)',
+                borderRadius: '20px',
+              }}
+            />
           </Button>
         </div>
         <Popper

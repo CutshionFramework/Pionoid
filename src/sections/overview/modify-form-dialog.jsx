@@ -24,7 +24,7 @@ const ModifyFormDialog = ({ open, onClose, onSave, item }) => {
   const handleSave = () => {
     const updatedItem = {
       ...formData,
-      originalName: item.name, // 기존 이름을 원본 이름으로 저장
+      originalName: item.move_name, // 기존 이름을 원본 이름으로 저장
     };
     onSave(updatedItem); // 수정된 아이템을 부모 컴포넌트에 전달
     onClose();
@@ -35,9 +35,9 @@ const ModifyFormDialog = ({ open, onClose, onSave, item }) => {
       <DialogTitle>Edit Item</DialogTitle>
       <DialogContent>
         <TextField
-          name="name"
+          name="move_name"
           label="Name"
-          value={formData.name || ''}
+          value={formData.move_name || ''}
           onChange={handleChange}
           fullWidth
           margin="normal"

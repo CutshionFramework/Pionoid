@@ -16,7 +16,7 @@ import {
   DialogContentText,
 } from '@mui/material';
 
-import { robotRunSaveMovements } from '../../apis/apis';
+import { runAllMoves } from '../../apis/apis';
 import { useTranslation } from 'react-i18next';
 
 const divStyles = css`
@@ -70,7 +70,7 @@ export default function RunMovementFormDialog() {
     }
     setOpen(false);
     try {
-      const response = await robotRunSaveMovements(inputValue);
+      const response = await runAllMoves(inputValue);
       console.log(`${response}: ${inputValue} times move`);
       setInputValue('');
     } catch (error) {

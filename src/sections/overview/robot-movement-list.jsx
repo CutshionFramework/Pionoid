@@ -19,9 +19,11 @@ import {
 import RunMovementFormDialog from './run-movement-form-dialog';
 import ModifyFormDialog from './modify-form-dialog';
 import {
-  deletePosition,
-  updatePosition,
-  getRobotSessions,
+  deleteMove,
+  updateMove,
+  copyMove,
+  getRobotMoves,
+  updateMoveOrder,
 } from '../../apis/apis';
 
 const listContainerStyles = css`
@@ -152,44 +154,58 @@ const RobotMovementList = ({ showList, toggleList }) => {
 
   const loadDataFromServer = async () => {
     try {
-      const response = await getRobotSessions();
-      setData(response);
+      const response = await getRobotMoves();
+      console.log(response);
+
+      const formattedData = Object.keys(response).map((key) => {
+        const item = response[key];
+        return {
+          id: key,
+          move_name: item.move_name || 'N/A',
+          x: item.x || 0,
+          y: item.y || 0,
+          z: item.z || 0,
+          rx: item.RX || 0,
+          ry: item.RY || 0,
+          rz: item.RZ || 0,
+        };
+      });
+
+      setData(formattedData);
+      console.log('formattedData: ', formattedData);
     } catch (error) {
       console.error('Failed to load data from server:', error);
     }
   };
 
-  // const handleCopyPosition = async () => {
-  //   try {
-  //     const response = await copyPosition();
-  //     console.log('Data copy to server:', response);
-  //   } catch (error) {
-  //     console.error('Failed to load data. : ', error);
-  //   }
-  // };
-
-  // const handleItemClick = (item) => {
-  //   onItemClick(item);
-  // };
-
   const handleRobotMovementListButtonClick = () => {
-    loadDataFromServer();
     toggleList();
   };
 
   const handleCopy = () => {
     if (contextMenu && contextMenu.item) {
+      const originalName = contextMenu.item.move_name;
       const copiedItem = { ...contextMenu.item };
-      copiedItem.name = `${copiedItem.name}_copy`;
+      copiedItem.move_name = `${copiedItem.move_name}_copy`;
 
       const updatedData = [...data, copiedItem];
+
       setData(updatedData);
-      // handleCopyPosition(updatedData);
-      // localStorage.setItem('positions', JSON.stringify(updatedData));
+
+      saveCopiedItemToServer(originalName);
     }
+
     setContextMenu(null);
   };
 
+  const saveCopiedItemToServer = async (originalName) => {
+    try {
+      await copyMove(originalName);
+      console.log('Copied item saved successfully');
+    } catch (error) {
+      console.error('Failed to save copied item to server:', error);
+    }
+  };
   const handleModify = () => {
     if (contextMenu && contextMenu.item) {
       setSelectedItem(contextMenu.item);
@@ -198,21 +214,20 @@ const RobotMovementList = ({ showList, toggleList }) => {
   };
 
   const handleSave = async (modifiedItem) => {
-    // const existingData = JSON.parse(localStorage.getItem('positions')) || [];
     const existingData = data;
 
     const updatedData = existingData.map((item) => {
-      if (item.name === modifiedItem.originalName) {
+      if (item.move_name === modifiedItem.originalName) {
         return { ...modifiedItem, originalName: undefined };
       }
       return item;
     });
 
-    // localStorage.setItem('positions', JSON.stringify(updatedData));
     setData(updatedData);
 
     try {
-      await updatePosition(modifiedItem.originalName, modifiedItem);
+      console.log('수정할 거 : ', modifiedItem.originalName, modifiedItem);
+      await updateMove(modifiedItem.originalName, modifiedItem);
       console.log('Position updated successfully');
     } catch (error) {
       console.error('Failed to update position:', error);
@@ -221,27 +236,20 @@ const RobotMovementList = ({ showList, toggleList }) => {
 
   const handleDelete = () => {
     if (contextMenu && contextMenu.item) {
-      deleteFromLocalStorage(contextMenu.item.name);
-      deleteFromServer(contextMenu.item.name);
+      const nameToDelete = contextMenu.item.move_name;
+      const filteredData = data.filter(
+        (item) => item.move_name !== nameToDelete
+      );
+      setData(filteredData);
+      deleteFromServer(nameToDelete);
     }
     setContextMenu(null);
-  };
-
-  const deleteFromLocalStorage = (nameToDelete) => {
-    // const existingData = JSON.parse(localStorage.getItem('positions')) || [];
-    const existingData = data;
-
-    const filteredData = existingData.filter(
-      (item) => item.name !== nameToDelete
-    );
-    // localStorage.setItem('positions', JSON.stringify(filteredData));
-    setData(filteredData);
   };
 
   const deleteFromServer = async (nameToDelete) => {
     try {
       console.log(nameToDelete);
-      const response = await deletePosition(nameToDelete);
+      const response = await deleteMove(nameToDelete);
       console.log(response);
     } catch (error) {
       console.error('Failed to delete session from server:', error);
@@ -287,9 +295,19 @@ const RobotMovementList = ({ showList, toggleList }) => {
     reorderedData.splice(dropIndex, 0, movedItem);
 
     setData(reorderedData);
-    // localStorage.setItem('positions', JSON.stringify(reorderedData));
+
+    sendReorderedDataToServer(movedItem.move_name, dropIndex);
 
     setDraggedOverIndex(null);
+  };
+
+  const sendReorderedDataToServer = async (moveName, newIndex) => {
+    try {
+      await updateMoveOrder(moveName, newIndex);
+      console.log(`Move name ${moveName} reordered to index ${newIndex}`);
+    } catch (error) {
+      console.error('Failed to update position order on server:', error);
+    }
   };
 
   const { t } = useTranslation();
@@ -315,7 +333,7 @@ const RobotMovementList = ({ showList, toggleList }) => {
             <TableBody>
               {data.map((item, index) => (
                 <TableRow
-                  key={item.name}
+                  key={`${item.id}-${index}`}
                   draggable
                   onDragStart={(e) => onDragStart(e, index)}
                   onDragOver={(e) => onDragOver(e, index)}
@@ -326,7 +344,7 @@ const RobotMovementList = ({ showList, toggleList }) => {
                     draggedOverIndex === index && hoveredStyle,
                   ]}
                 >
-                  <TableCell>{item.name}</TableCell>
+                  <TableCell>{item.move_name}</TableCell>
                   <TableCell>{item.x}</TableCell>
                   <TableCell>{item.y}</TableCell>
                   <TableCell>{item.z}</TableCell>
