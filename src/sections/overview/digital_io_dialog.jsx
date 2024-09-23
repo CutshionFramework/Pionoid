@@ -39,7 +39,7 @@ const buttonStyle = (isActive) => css`
 `;
 
 const dialogContentStyle = css`
-  min-height: 400px; /* Adjust as needed */
+  min-height: 400px;
 `;
 
 const tabContainerContainerStyle = css`
@@ -80,14 +80,11 @@ function IODialog({ open, onClose }) {
   });
   const [currentTab, setCurrentTab] = useState(0);
   const [openSections, setOpenSections] = useState({
-    DO: false,
-    DI: false,
-    AO: false,
-    AI: false,
-    extio: false,
-    out: false,
-    in: false,
+    Cabinet: { DO: false, DI: false, AO: false, AI: false },
+    Tool: { DO: false, DI: false, AI: false },
+    Extend: { extio: false, out: false, in: false },
   });
+
   const buttons = Array.from({ length: 16 }, (_, i) => i + 1); // 고정된 버튼 배열
   const tabNames = ['Cabinet', 'Tool', 'Extend'];
   const title = tabNames[currentTab];
@@ -162,7 +159,11 @@ function IODialog({ open, onClose }) {
   };
 
   const toggleSection = (type) => {
-    setOpenSections((prev) => ({ ...prev, [type]: !prev[type] }));
+    const tabName = tabNames[currentTab]; // 현재 탭 이름
+    setOpenSections((prev) => ({
+      ...prev,
+      [tabName]: { ...prev[tabName], [type]: !prev[tabName][type] },
+    }));
   };
 
   const renderButtons = (types) => {
@@ -174,7 +175,7 @@ function IODialog({ open, onClose }) {
             <IconButton onClick={() => toggleSection(type)}>
               <ExpandMoreIcon
                 style={{
-                  transform: openSections[type]
+                  transform: openSections[tabNames[currentTab]][type]
                     ? 'rotate(0deg)'
                     : 'rotate(180deg)',
                 }}
@@ -182,7 +183,11 @@ function IODialog({ open, onClose }) {
             </IconButton>
           </h3>
         </Grid>
-        <Collapse in={openSections[type]} timeout="auto" unmountOnExit>
+        <Collapse
+          in={openSections[tabNames[currentTab]][type]}
+          timeout="auto"
+          unmountOnExit
+        >
           <Grid container spacing={1}>
             {buttons.map((button) => (
               <Grid item key={button} css={buttonContainerStyle}>
@@ -221,7 +226,7 @@ function IODialog({ open, onClose }) {
             <IconButton onClick={() => toggleSection(type)}>
               <ExpandMoreIcon
                 style={{
-                  transform: openSections[type]
+                  transform: openSections[tabNames[currentTab]][type]
                     ? 'rotate(0deg)'
                     : 'rotate(180deg)',
                 }}
@@ -229,7 +234,11 @@ function IODialog({ open, onClose }) {
             </IconButton>
           </h3>
         </Grid>
-        <Collapse in={openSections[type]} timeout="auto" unmountOnExit>
+        <Collapse
+          in={openSections[tabNames[currentTab]][type]}
+          timeout="auto"
+          unmountOnExit
+        >
           <Grid container spacing={1}>
             {activeButtons[tabNames[currentTab]][type].map(
               (isActive, index) => (
