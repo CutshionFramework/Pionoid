@@ -24,7 +24,6 @@ import { useTranslation } from 'react-i18next';
 import '../../../i18n.js';
 
 import { imageState, brandState } from '../../../recoilState';
-import { Height } from '@mui/icons-material';
 
 // ----------------------------------------------------------------------
 const imgGridStyles = css`
@@ -51,6 +50,7 @@ const menuListStyles = css`
 `;
 
 const buttonStyles = css`
+  justify-content: center;
   transition: background-color 0.3s;
   &:hover {
     background-color: #f0f0f0;
@@ -234,11 +234,11 @@ export default function AppView() {
 
         <Grid xs={6} sm={6} md={6}>
           <ButtonBase
-            style={{ width: '100%' }}
+            style={{ width: '100%', height: '100%' }}
             onClick={() => handleIOButtonClick()}>
             <AppWidgetSummary
               css={buttonStyles}
-              style={{ width: '100%' }}
+              style={{ width: '100%', height: '100%' }}
               title="IO"
               total={3}
               color="primary"
@@ -254,7 +254,7 @@ export default function AppView() {
 
         <IODialog open={dialogOpen} onClose={() => setDialogOpen(false)} />
 
-        <Grid xs={14} sm={8} md={12}>
+        <Grid xs={14} sm={12} md={12}>
           <ButtonBase style={{ width: '100%' }} onClick={shutDownClicked}>
             <AppWidgetSummary
               css={buttonStyles}
