@@ -168,14 +168,16 @@ export default function RobotOperationList() {
           <Button
             style={{
               height: '57px',
-              weight: '57px',
+              width: '63px',
               marginTop: '5px',
+              marginLeft: '10px',
+              borderRadius: '20px',
             }}>
             <MicNoneOutlinedIcon
               onClick={handleVoiceCommand}
               style={{
                 height: '57px',
-                width: '57px',
+                width: '63px',
                 padding: '0 15 0 15',
                 color: 'gray',
                 backgroundColor: 'white',
