@@ -133,10 +133,36 @@ export default function RobotOperationList() {
 
   const handleVoiceCommand = async () => {
     try {
-      const response = await voiceCommand(); // Call the voiceCommand API
-      console.log('Voice command executed:', response);
+      // MediaRecorder를 사용하여 음성 녹음
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      const mediaRecorder = new MediaRecorder(stream);
+      const audioChunks = [];
+
+      mediaRecorder.ondataavailable = (event) => {
+        audioChunks.push(event.data);
+      };
+
+      // 녹음 시작
+      mediaRecorder.start();
+      console.log('녹음 중...');
+
+      // 일정 시간 후 녹음 중지 (여기서는 4초)
+      setTimeout(() => {
+        mediaRecorder.stop();
+        console.log('녹음 종료');
+      }, 4000);
+
+      mediaRecorder.onstop = async () => {
+        const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
+        const formData = new FormData();
+        formData.append('file', audioBlob, 'audio.wav');
+
+        // 서버에 오디오 파일 전송
+        const res = await voiceCommand(formData); // voiceCommand 함수 사용
+        console.log(res);
+      };
     } catch (error) {
-      console.error('Failed to execute voice command: ', error);
+      console.error('음성 녹음 오류:', error);
     }
   };
 

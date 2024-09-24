@@ -212,11 +212,12 @@ export const robotDisable = async () => {
   }
 };
 
-export const voiceCommand = async () => {
+export const voiceCommand = async (formData) => {
   try {
     const endpoint = `${BASE_URL}`;
     const params = `voice_command`;
-    const res = await robotAPI.post(endpoint, params);
+    // 'Content-Type'은 axios가 자동으로 설정하므로, 따로 설정할 필요 없음
+    const res = await robotAPI.post(endpoint, params, formData);
     return res;
   } catch (error) {
     console.error('Error saving position:', error);
