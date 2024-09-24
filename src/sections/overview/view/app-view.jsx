@@ -1,5 +1,5 @@
 /** @jsxImportSource @emotion/react */
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { css } from '@emotion/react';
 import { faker } from '@faker-js/faker';
 import { useRecoilValue } from 'recoil';
@@ -50,6 +50,7 @@ const menuListStyles = css`
 `;
 
 const buttonStyles = css`
+  justify-content: center;
   transition: background-color 0.3s;
   &:hover {
     background-color: #f0f0f0;
@@ -168,7 +169,7 @@ export default function AppView() {
         alignItems: 'center',
       }}
     >
-      <Typography variant="h4" sx={{ mb: 5 }}>
+      <Typography variant="h4" sx={{ mb: 5, textAlign: 'center' }}>
         {t('greeting')}
       </Typography>
 
@@ -183,7 +184,7 @@ export default function AppView() {
         spacing={3}
         style={{ display: 'flex', justifyContent: 'center' }}
       >
-        <Grid css={inputGridStyles} xs={8} sm={9} md={8}>
+        <Grid css={inputGridStyles} xs={8} sm={9} md={9}>
           <TextField
             css={textFieldStyles}
             label={t('ip address')}
@@ -202,7 +203,7 @@ export default function AppView() {
             }}
           />
         </Grid>
-        <Grid css={inputGridStyles} xs={4} sm={3} md={4}>
+        <Grid css={inputGridStyles} xs={4} sm={3} md={3}>
           <Button
             css={saveButtonStyles}
             variant="contained"
@@ -214,11 +215,14 @@ export default function AppView() {
           </Button>
         </Grid>
 
-        <Grid xs={14} sm={8} md={6}>
-          <ButtonBase style={{ width: '100%' }} onClick={savePositionClicked}>
+        <Grid xs={6} sm={6} md={6}>
+          <ButtonBase
+            style={{ width: '100%', height: '100%' }}
+            onClick={savePositionClicked}
+          >
             <AppWidgetSummary
               css={buttonStyles}
-              style={{ width: '100%' }}
+              style={{ width: '100%', height: '100%' }}
               title={t('save position')}
               total={2}
               color="primary"
@@ -232,14 +236,14 @@ export default function AppView() {
           </ButtonBase>
         </Grid>
 
-        <Grid xs={14} sm={8} md={6}>
+        <Grid xs={6} sm={6} md={6}>
           <ButtonBase
-            style={{ width: '100%' }}
+            style={{ width: '100%', height: '100%' }}
             onClick={() => handleIOButtonClick()}
           >
             <AppWidgetSummary
               css={buttonStyles}
-              style={{ width: '100%' }}
+              style={{ width: '100%', height: '100%' }}
               title="IO"
               total={3}
               color="primary"
@@ -259,11 +263,11 @@ export default function AppView() {
           ioData={null}
         />
 
-        <Grid xs={14} sm={8} md={12}>
+        <Grid xs={14} sm={12} md={12}>
           <ButtonBase style={{ width: '100%' }} onClick={shutDownClicked}>
             <AppWidgetSummary
               css={buttonStyles}
-              style={{ width: '100%' }}
+              style={{ width: '100%', height: '100%' }}
               title={t('shut down')}
               total={6}
               color="primary"
@@ -277,7 +281,7 @@ export default function AppView() {
           </ButtonBase>
         </Grid>
 
-        <Grid xs={10} md={4} lg={6}>
+        <Grid xs={12} sm={12} md={6} lg={6}>
           <AppTasks
             title={t('task')}
             list={[

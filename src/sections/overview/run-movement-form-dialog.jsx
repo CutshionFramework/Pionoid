@@ -94,7 +94,7 @@ export default function RunMovementFormDialog() {
         {t('run movements')}
       </Button>
       <Dialog open={open} onClose={handleClose} disableScrollLock={true}>
-        <DialogTitle>Enter How Many times</DialogTitle>
+        <DialogTitle>{t('repetitions of robot movements')}</DialogTitle>
         <DialogContent>
           <DialogContentText>
             {t('description about repetitions')}
@@ -103,7 +103,7 @@ export default function RunMovementFormDialog() {
             autoFocus
             required
             margin="dense"
-            label={t('number of repetitions')}
+            label={t('placeholder')}
             type="number"
             fullWidth
             variant="standard"
@@ -119,13 +119,11 @@ export default function RunMovementFormDialog() {
       <Snackbar
         open={snackbarOpen}
         autoHideDuration={3000}
-        onClose={handleSnackbarClose}
-      >
+        onClose={handleSnackbarClose}>
         <Alert
           onClose={handleSnackbarClose}
           severity="error"
-          sx={{ width: '100%' }}
-        >
+          sx={{ width: '100%' }}>
           {snackbarMessage}
         </Alert>
       </Snackbar>

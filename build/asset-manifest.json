@@ -1,10 +1,17 @@
 {
   "files": {
     "main.css": "/Pionoid/static/css/main.69053253.css",
+<<<<<<< HEAD
     "main.js": "/Pionoid/static/js/main.73b2b132.js",
     "static/js/881.9bfbbc5b.chunk.js": "/Pionoid/static/js/881.9bfbbc5b.chunk.js",
     "static/js/260.a50204dd.chunk.js": "/Pionoid/static/js/260.a50204dd.chunk.js",
     "static/js/734.8b9f1f73.chunk.js": "/Pionoid/static/js/734.8b9f1f73.chunk.js",
+=======
+    "main.js": "/Pionoid/static/js/main.942b51a0.js",
+    "static/js/352.1ea889ca.chunk.js": "/Pionoid/static/js/352.1ea889ca.chunk.js",
+    "static/js/260.a50204dd.chunk.js": "/Pionoid/static/js/260.a50204dd.chunk.js",
+    "static/js/209.f4b820a1.chunk.js": "/Pionoid/static/js/209.f4b820a1.chunk.js",
+>>>>>>> 155a15dafef8191cfec8cb3d1c40705260d6f083
     "static/js/366.3bada669.chunk.js": "/Pionoid/static/js/366.3bada669.chunk.js",
     "static/js/833.2e7297b3.chunk.js": "/Pionoid/static/js/833.2e7297b3.chunk.js",
     "static/js/971.5bb83a13.chunk.js": "/Pionoid/static/js/971.5bb83a13.chunk.js",
@@ -12,16 +19,28 @@
     "static/js/71.e4840433.chunk.js": "/Pionoid/static/js/71.e4840433.chunk.js",
     "static/js/600.bbddcc6e.chunk.js": "/Pionoid/static/js/600.bbddcc6e.chunk.js",
     "static/js/467.90eab0fb.chunk.js": "/Pionoid/static/js/467.90eab0fb.chunk.js",
+<<<<<<< HEAD
     "static/js/675.32efb9dc.chunk.js": "/Pionoid/static/js/675.32efb9dc.chunk.js",
     "static/js/475.4d2e77bd.chunk.js": "/Pionoid/static/js/475.4d2e77bd.chunk.js",
+=======
+    "static/js/790.3d45d8f8.chunk.js": "/Pionoid/static/js/790.3d45d8f8.chunk.js",
+    "static/js/868.8ec9496d.chunk.js": "/Pionoid/static/js/868.8ec9496d.chunk.js",
+>>>>>>> 155a15dafef8191cfec8cb3d1c40705260d6f083
     "static/js/458.2b9f6191.chunk.js": "/Pionoid/static/js/458.2b9f6191.chunk.js",
     "static/js/77.e17f2c9c.chunk.js": "/Pionoid/static/js/77.e17f2c9c.chunk.js",
     "index.html": "/Pionoid/index.html",
     "main.69053253.css.map": "/Pionoid/static/css/main.69053253.css.map",
+<<<<<<< HEAD
     "main.73b2b132.js.map": "/Pionoid/static/js/main.73b2b132.js.map",
     "881.9bfbbc5b.chunk.js.map": "/Pionoid/static/js/881.9bfbbc5b.chunk.js.map",
     "260.a50204dd.chunk.js.map": "/Pionoid/static/js/260.a50204dd.chunk.js.map",
     "734.8b9f1f73.chunk.js.map": "/Pionoid/static/js/734.8b9f1f73.chunk.js.map",
+=======
+    "main.942b51a0.js.map": "/Pionoid/static/js/main.942b51a0.js.map",
+    "352.1ea889ca.chunk.js.map": "/Pionoid/static/js/352.1ea889ca.chunk.js.map",
+    "260.a50204dd.chunk.js.map": "/Pionoid/static/js/260.a50204dd.chunk.js.map",
+    "209.f4b820a1.chunk.js.map": "/Pionoid/static/js/209.f4b820a1.chunk.js.map",
+>>>>>>> 155a15dafef8191cfec8cb3d1c40705260d6f083
     "366.3bada669.chunk.js.map": "/Pionoid/static/js/366.3bada669.chunk.js.map",
     "833.2e7297b3.chunk.js.map": "/Pionoid/static/js/833.2e7297b3.chunk.js.map",
     "971.5bb83a13.chunk.js.map": "/Pionoid/static/js/971.5bb83a13.chunk.js.map",
@@ -29,13 +48,22 @@
     "71.e4840433.chunk.js.map": "/Pionoid/static/js/71.e4840433.chunk.js.map",
     "600.bbddcc6e.chunk.js.map": "/Pionoid/static/js/600.bbddcc6e.chunk.js.map",
     "467.90eab0fb.chunk.js.map": "/Pionoid/static/js/467.90eab0fb.chunk.js.map",
+<<<<<<< HEAD
     "675.32efb9dc.chunk.js.map": "/Pionoid/static/js/675.32efb9dc.chunk.js.map",
     "475.4d2e77bd.chunk.js.map": "/Pionoid/static/js/475.4d2e77bd.chunk.js.map",
+=======
+    "790.3d45d8f8.chunk.js.map": "/Pionoid/static/js/790.3d45d8f8.chunk.js.map",
+    "868.8ec9496d.chunk.js.map": "/Pionoid/static/js/868.8ec9496d.chunk.js.map",
+>>>>>>> 155a15dafef8191cfec8cb3d1c40705260d6f083
     "458.2b9f6191.chunk.js.map": "/Pionoid/static/js/458.2b9f6191.chunk.js.map",
     "77.e17f2c9c.chunk.js.map": "/Pionoid/static/js/77.e17f2c9c.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.69053253.css",
+<<<<<<< HEAD
     "static/js/main.73b2b132.js"
+=======
+    "static/js/main.942b51a0.js"
+>>>>>>> 155a15dafef8191cfec8cb3d1c40705260d6f083
   ]
 }

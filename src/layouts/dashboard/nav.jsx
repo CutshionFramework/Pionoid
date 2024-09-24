@@ -25,7 +25,7 @@ import navConfig from './config-navigation';
 import '../../i18n.js';
 import { useTranslation } from 'react-i18next';
 import { imageState, brandState } from '../../recoilState';
-import { ListItemIcon, MenuItem, MenuList } from '@mui/material';
+import { MenuItem, MenuList } from '@mui/material';
 
 // ----------------------------------------------------------------------
 
@@ -272,6 +272,32 @@ export default function Nav({ openNav, onCloseNav }) {
             </Box>
             <Box sx={{ fontWeight: 'bold', marginLeft: '20px' }}>
               Universal Robot
+            </Box>
+          </MenuItem>
+          <MenuItem
+            onClick={() =>
+              handleImageButtonClick(
+                `${process.env.PUBLIC_URL}/assets/images/aubo_robot_arm.png`
+              )
+            }
+          >
+            <Box
+              sx={{
+                display: 'flex',
+                justifyContent: 'start',
+              }}
+            >
+              <img
+                style={{
+                  width: '17px',
+                  height: '17px',
+                }}
+                src={`${process.env.PUBLIC_URL}/assets/aubo_logo.png`}
+                alt=""
+              />
+            </Box>
+            <Box sx={{ fontWeight: 'bold', marginLeft: '20px' }}>
+              Aubo robot
             </Box>
           </MenuItem>
         </MenuList>

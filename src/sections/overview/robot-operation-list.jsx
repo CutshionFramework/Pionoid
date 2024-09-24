@@ -188,16 +188,22 @@ export default function RobotOperationList() {
             aria-controls={open ? 'composition-menu' : undefined}
             aria-expanded={open ? 'true' : undefined}
             aria-haspopup="true"
-            onClick={handleToggle}
-          >
+            onClick={handleToggle}>
             {t('operation menu')}
           </Button>
-          <Button>
+          <Button
+            style={{
+              height: '57px',
+              width: '63px',
+              marginTop: '5px',
+              marginLeft: '10px',
+              borderRadius: '20px',
+            }}>
             <MicNoneOutlinedIcon
               onClick={handleVoiceCommand}
               style={{
                 height: '57px',
-                width: '57px',
+                width: '63px',
                 padding: '0 15 0 15',
                 color: 'gray',
                 backgroundColor: 'white',
@@ -218,16 +224,14 @@ export default function RobotOperationList() {
             width: anchorRef.current
               ? anchorRef.current.offsetWidth
               : undefined,
-          }}
-        >
+          }}>
           {({ TransitionProps, placement }) => (
             <Grow
               {...TransitionProps}
               style={{
                 transformOrigin:
                   placement === 'bottom-start' ? 'left top' : 'left bottom',
-              }}
-            >
+              }}>
               <Paper>
                 <ClickAwayListener onClickAway={handleClose}>
                   <MenuList
@@ -235,8 +239,7 @@ export default function RobotOperationList() {
                     autoFocusItem={open}
                     id="composition-menu"
                     aria-labelledby="composition-button"
-                    onKeyDown={handleListKeyDown}
-                  >
+                    onKeyDown={handleListKeyDown}>
                     <MenuItem css={menuItemStyles} onClick={robotLoginClicked}>
                       {t('login')}
                     </MenuItem>
@@ -245,14 +248,12 @@ export default function RobotOperationList() {
                     </MenuItem>
                     <MenuItem
                       css={menuItemStyles}
-                      onClick={robotPowerOnClicked}
-                    >
+                      onClick={robotPowerOnClicked}>
                       {t('power on')}
                     </MenuItem>
                     <MenuItem
                       css={menuItemStyles}
-                      onClick={robotPowerOffClicked}
-                    >
+                      onClick={robotPowerOffClicked}>
                       {t('power off')}
                     </MenuItem>
                     <MenuItem css={menuItemStyles} onClick={robotEnableClicked}>
@@ -260,8 +261,7 @@ export default function RobotOperationList() {
                     </MenuItem>
                     <MenuItem
                       css={menuItemStyles}
-                      onClick={robotDisableClicked}
-                    >
+                      onClick={robotDisableClicked}>
                       {t('disable')}
                     </MenuItem>
                   </MenuList>
