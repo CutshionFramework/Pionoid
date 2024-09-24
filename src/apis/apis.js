@@ -6,7 +6,10 @@ export const getRobotMoves = async () => {
   try {
     const endpoint = `${BASE_URL}`;
     const params = `get_moves`;
-    const res = await robotAPI.get(endpoint, params);
+
+    const timestamp = new Date().getTime();
+    const query = `t=${timestamp}`;
+    const res = await robotAPI.get(endpoint, params, query);
     return res;
   } catch (error) {
     console.error('Error saving position:', error);
