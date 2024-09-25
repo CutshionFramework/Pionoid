@@ -20,6 +20,7 @@ class AxiosInstance {
 
     const headers = {
       Authorization: `Bearer ${this.getToken()}`,
+      'ngrok-skip-browser-warning': '69420',
     };
 
     // Check if data is FormData

@@ -2,14 +2,25 @@ import { robotAPI } from './axiosInstance';
 
 const BASE_URL = process.env.REACT_APP_API_URL;
 
+// export const getRobotMoves = async () => {
+//   try {
+//     const endpoint = `${BASE_URL}`;
+//     const params = `get_moves`;
+
+//     const timestamp = new Date().getTime();
+//     const query = `t=${timestamp}`;
+//     const res = await robotAPI.get(endpoint, params, query);
+//     return res;
+//   } catch (error) {
+//     console.error('Error saving position:', error);
+//     throw error;
+//   }
+// };
 export const getRobotMoves = async () => {
   try {
     const endpoint = `${BASE_URL}`;
     const params = `get_moves`;
-
-    const timestamp = new Date().getTime();
-    const query = `t=${timestamp}`;
-    const res = await robotAPI.get(endpoint, params, query);
+    const res = await robotAPI.get(endpoint, params);
     return res;
   } catch (error) {
     console.error('Error saving position:', error);
@@ -22,7 +33,6 @@ export const saveIpAddress = async (ipAddress, robotType) => {
     const endpoint = `${BASE_URL}`;
     const params = `set_ip`;
 
-    // IP와 로봇 타입을 데이터로 전송
     const data = {
       ip: ipAddress,
       robot_type: robotType,
@@ -30,7 +40,6 @@ export const saveIpAddress = async (ipAddress, robotType) => {
 
     const res = await robotAPI.post(endpoint, params, data);
 
-    // 서버로부터 받은 토큰을 로컬 스토리지에 저장
     if (res.token) {
       localStorage.setItem('token', res.token);
     }
