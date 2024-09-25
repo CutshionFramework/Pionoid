@@ -4,6 +4,8 @@ import { css } from '@emotion/react';
 import { useTranslation } from 'react-i18next';
 import '../../i18n.js';
 import MicNoneOutlinedIcon from '@mui/icons-material/MicNoneOutlined';
+import { useRecoilValue } from 'recoil';
+import { langState } from '../../recoilState.js';
 
 import {
   Grow,
@@ -39,6 +41,7 @@ const menuItemStyles = css`
 export default function RobotOperationList() {
   const [open, setOpen] = React.useState(false);
   const anchorRef = React.useRef(null);
+  const language = useRecoilValue(langState);
 
   const handleToggle = () => {
     setOpen((prevOpen) => !prevOpen);
@@ -133,7 +136,6 @@ export default function RobotOperationList() {
 
   const handleVoiceCommand = async () => {
     try {
-      // MediaRecorder를 사용하여 음성 녹음
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
       const mediaRecorder = new MediaRecorder(stream);
       const audioChunks = [];
@@ -142,11 +144,9 @@ export default function RobotOperationList() {
         audioChunks.push(event.data);
       };
 
-      // 녹음 시작
       mediaRecorder.start();
       console.log('녹음 중...');
 
-      // 일정 시간 후 녹음 중지 (여기서는 4초)
       setTimeout(() => {
         mediaRecorder.stop();
         console.log('녹음 종료');
@@ -156,9 +156,9 @@ export default function RobotOperationList() {
         const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
         const formData = new FormData();
         formData.append('file', audioBlob, 'audio.wav');
+        formData.append('language', language);
 
-        // 서버에 오디오 파일 전송
-        const res = await voiceCommand(formData); // voiceCommand 함수 사용
+        const res = await voiceCommand(formData);
         console.log(res);
       };
     } catch (error) {
@@ -188,7 +188,8 @@ export default function RobotOperationList() {
             aria-controls={open ? 'composition-menu' : undefined}
             aria-expanded={open ? 'true' : undefined}
             aria-haspopup="true"
-            onClick={handleToggle}>
+            onClick={handleToggle}
+          >
             {t('operation menu')}
           </Button>
           <Button
@@ -198,7 +199,8 @@ export default function RobotOperationList() {
               marginTop: '5px',
               marginLeft: '10px',
               borderRadius: '20px',
-            }}>
+            }}
+          >
             <MicNoneOutlinedIcon
               onClick={handleVoiceCommand}
               style={{
@@ -224,14 +226,16 @@ export default function RobotOperationList() {
             width: anchorRef.current
               ? anchorRef.current.offsetWidth
               : undefined,
-          }}>
+          }}
+        >
           {({ TransitionProps, placement }) => (
             <Grow
               {...TransitionProps}
               style={{
                 transformOrigin:
                   placement === 'bottom-start' ? 'left top' : 'left bottom',
-              }}>
+              }}
+            >
               <Paper>
                 <ClickAwayListener onClickAway={handleClose}>
                   <MenuList
@@ -239,7 +243,8 @@ export default function RobotOperationList() {
                     autoFocusItem={open}
                     id="composition-menu"
                     aria-labelledby="composition-button"
-                    onKeyDown={handleListKeyDown}>
+                    onKeyDown={handleListKeyDown}
+                  >
                     <MenuItem css={menuItemStyles} onClick={robotLoginClicked}>
                       {t('login')}
                     </MenuItem>
@@ -248,12 +253,14 @@ export default function RobotOperationList() {
                     </MenuItem>
                     <MenuItem
                       css={menuItemStyles}
-                      onClick={robotPowerOnClicked}>
+                      onClick={robotPowerOnClicked}
+                    >
                       {t('power on')}
                     </MenuItem>
                     <MenuItem
                       css={menuItemStyles}
-                      onClick={robotPowerOffClicked}>
+                      onClick={robotPowerOffClicked}
+                    >
                       {t('power off')}
                     </MenuItem>
                     <MenuItem css={menuItemStyles} onClick={robotEnableClicked}>
@@ -261,7 +268,8 @@ export default function RobotOperationList() {
                     </MenuItem>
                     <MenuItem
                       css={menuItemStyles}
-                      onClick={robotDisableClicked}>
+                      onClick={robotDisableClicked}
+                    >
                       {t('disable')}
                     </MenuItem>
                   </MenuList>

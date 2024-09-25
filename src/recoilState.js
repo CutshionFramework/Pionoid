@@ -10,3 +10,8 @@ export const brandState = atom({
   key: 'brandState',
   default: `JakaRobot`,
 });
+
+export const langState = atom({
+  key: 'langState',
+  default: 'en',
+});
