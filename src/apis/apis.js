@@ -2,20 +2,6 @@ import { robotAPI } from './axiosInstance';
 
 const BASE_URL = process.env.REACT_APP_API_URL;
 
-// export const getRobotMoves = async () => {
-//   try {
-//     const endpoint = `${BASE_URL}`;
-//     const params = `get_moves`;
-
-//     const timestamp = new Date().getTime();
-//     const query = `t=${timestamp}`;
-//     const res = await robotAPI.get(endpoint, params, query);
-//     return res;
-//   } catch (error) {
-//     console.error('Error saving position:', error);
-//     throw error;
-//   }
-// };
 export const getRobotMoves = async () => {
   try {
     const endpoint = `${BASE_URL}`;
