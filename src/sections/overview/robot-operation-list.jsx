@@ -1,5 +1,5 @@
 /** @jsxImportSource @emotion/react */
-import * as React from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { css } from '@emotion/react';
 import { useTranslation } from 'react-i18next';
 import '../../i18n.js';
@@ -38,10 +38,63 @@ const menuItemStyles = css`
   color: rgb(135, 140, 146);
 `;
 
+const buttonStyles = css`
+  color: white;
+  background-color: rgb(178, 204, 255);
+  width: 200px;
+  height: 57px;
+  font-size: 20px;
+  box-shadow: 0 0 10px rgba(131, 169, 190, 0.6);
+  border-radius: 20px;
+  margin-top: 5px;
+`;
+
+const micButtonStyles = css`
+  height: 57px;
+  width: 63px;
+  margin-top: 5px;
+  margin-left: 10px;
+  border-radius: 20px;
+`;
+
+const iconStyles = (isRecording) => css`
+  color: white;
+  background-color: rgb(178, 204, 255);
+  width: 63px;
+  height: 57px;
+  padding: 0 15px 0 15px;
+  font-size: 20px;
+  box-shadow: ${isRecording
+    ? '0 0 15px rgba(255, 0, 0, 0.4)'
+    : '0 0 10px rgba(131, 169, 190, 0.6)'};
+  border-radius: 20px;
+  animation: ${isRecording ? 'pulse 2s infinite' : 'none'};
+`;
+
+const popperStyles = (anchorRef) => css`
+  width: ${anchorRef.current ? `${anchorRef.current.offsetWidth}px` : 'auto'};
+`;
+
+const growStyles = (placement) => css`
+  transform-origin: ${placement === 'bottom-start'
+    ? 'left top'
+    : 'left bottom'};
+`;
+
 export default function RobotOperationList() {
-  const [open, setOpen] = React.useState(false);
-  const anchorRef = React.useRef(null);
+  const [open, setOpen] = useState(false);
+  const [isRecording, setIsRecording] = useState(false);
+  const anchorRef = useRef(null);
+  const prevOpen = useRef(open);
   const language = useRecoilValue(langState);
+
+  useEffect(() => {
+    if (prevOpen.current === true && open === false) {
+      anchorRef.current.focus();
+    }
+
+    prevOpen.current = open;
+  }, [open]);
 
   const handleToggle = () => {
     setOpen((prevOpen) => !prevOpen);
@@ -63,16 +116,6 @@ export default function RobotOperationList() {
       setOpen(false);
     }
   };
-
-  // return focus to the button when we transitioned from !open -> open
-  const prevOpen = React.useRef(open);
-  React.useEffect(() => {
-    if (prevOpen.current === true && open === false) {
-      anchorRef.current.focus();
-    }
-
-    prevOpen.current = open;
-  }, [open]);
 
   const robotLoginClicked = async () => {
     setOpen(false);
@@ -145,6 +188,7 @@ export default function RobotOperationList() {
       };
 
       mediaRecorder.start();
+      setIsRecording(true);
       console.log('녹음 중...');
 
       setTimeout(() => {
@@ -153,6 +197,7 @@ export default function RobotOperationList() {
       }, 4000);
 
       mediaRecorder.onstop = async () => {
+        setIsRecording(false);
         const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
         const formData = new FormData();
         formData.append('file', audioBlob, 'audio.wav');
@@ -163,6 +208,7 @@ export default function RobotOperationList() {
       };
     } catch (error) {
       console.error('음성 녹음 오류:', error);
+      setIsRecording(false);
     }
   };
 
@@ -173,16 +219,7 @@ export default function RobotOperationList() {
       <div>
         <div style={{ display: 'flex', justifyContent: 'center' }}>
           <Button
-            style={{
-              color: 'white',
-              backgroundColor: 'rgb(178,204,255)',
-              width: '200px',
-              height: '57px',
-              fontSize: '20px',
-              boxShadow: '0 0 10px rgba(131, 169, 190, 0.6)',
-              borderRadius: '20px',
-              marginTop: '5px',
-            }}
+            css={buttonStyles}
             ref={anchorRef}
             id="composition-button"
             aria-controls={open ? 'composition-menu' : undefined}
@@ -192,26 +229,10 @@ export default function RobotOperationList() {
           >
             {t('operation menu')}
           </Button>
-          <Button
-            style={{
-              height: '57px',
-              width: '63px',
-              marginTop: '5px',
-              marginLeft: '10px',
-              borderRadius: '20px',
-            }}
-          >
+          <Button css={micButtonStyles}>
             <MicNoneOutlinedIcon
               onClick={handleVoiceCommand}
-              style={{
-                height: '57px',
-                width: '63px',
-                padding: '0 15 0 15',
-                color: 'gray',
-                backgroundColor: 'white',
-                boxShadow: '0 0 10px rgba(131, 169, 190, 0.6)',
-                borderRadius: '20px',
-              }}
+              css={iconStyles(isRecording)}
             />
           </Button>
         </div>
@@ -222,20 +243,10 @@ export default function RobotOperationList() {
           placement="bottom-start"
           transition
           disablePortal={false}
-          style={{
-            width: anchorRef.current
-              ? anchorRef.current.offsetWidth
-              : undefined,
-          }}
+          css={popperStyles(anchorRef)}
         >
           {({ TransitionProps, placement }) => (
-            <Grow
-              {...TransitionProps}
-              style={{
-                transformOrigin:
-                  placement === 'bottom-start' ? 'left top' : 'left bottom',
-              }}
-            >
+            <Grow {...TransitionProps} css={growStyles(placement)}>
               <Paper>
                 <ClickAwayListener onClickAway={handleClose}>
                   <MenuList
