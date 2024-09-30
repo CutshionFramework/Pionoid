@@ -94,9 +94,9 @@
 
   "================================ <run-movement-form-dialogue.jsx Translation>": "These are translation related with run-movement-form-dialogue.jsx ==================================",
   "run movements": "run movements",
-  "enter how many times": "Enter how many times",
-  "description about repetitions": "Please enter the number of times the robot should perform the movement. This action will be repeatedaccordingly.",
-  "number of repetitions": "Number of Repetitions",
+  "repetitions of robot movements": "Repetitions of robot movements",
+  "description about repetitions": "You can adjust the number of repetitions of the robot's movements by entering the number.",
+  "placeholder": "Enter the number",
   "cancel": "Cancel",
   "start": "Start"
 }

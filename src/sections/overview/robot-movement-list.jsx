@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
-import { css } from "@emotion/react";
-import { useState, useEffect } from "react";
-import { useTranslation } from "react-i18next";
+import { css } from '@emotion/react';
+import { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   Table,
   TableBody,
@@ -14,12 +14,21 @@ import {
   Box,
   Menu,
   MenuItem,
-} from "@mui/material";
+  IconButton,
+} from '@mui/material';
 
-import RunMovementFormDialog from "./run-movement-form-dialog";
-import ModifyFormDialog from "./modify-form-dialog";
-import { deletePosition, updatePosition } from "../../apis/apis";
-import "../../i18n";
+import SettingsIcon from '@mui/icons-material/Settings';
+
+import RunMovementFormDialog from './run-movement-form-dialog';
+import IODialog from './io_dialog';
+import ModifyFormDialog from './modify-form-dialog';
+import {
+  deleteMove,
+  updateMove,
+  copyMove,
+  getRobotMoves,
+  updateMoveOrder,
+} from '../../apis/apis';
 
 const listContainerStyles = css`
   position: fixed;
@@ -116,23 +125,20 @@ const defaultStyle = css`
   }
 `;
 
-const RobotMovementList = ({ showList, toggleList, onItemClick }) => {
+const RobotMovementList = ({ showList, toggleList }) => {
   const [data, setData] = useState([]);
   const [selectedItem, setSelectedItem] = useState(null);
   const [contextMenu, setContextMenu] = useState(null);
 
-  const [draggedOverIndex, setDraggedOverIndex] = useState(null); // 드래그 중인 요소가 현재 위치한 인덱스
+  const [draggedOverIndex, setDraggedOverIndex] = useState(null);
 
-  const loadDataFromLocalStorage = () => {
-    const storedData = localStorage.getItem("positions");
-    if (storedData) {
-      setData(JSON.parse(storedData));
-    }
-  };
+  const [dialogOpen, setDialogOpen] = useState(false);
+
+  const [selectedIOData, setSelectedIOData] = useState(null);
 
   useEffect(() => {
     if (showList) {
-      loadDataFromLocalStorage();
+      loadDataFromServer();
     }
   }, [showList]);
 
@@ -140,41 +146,76 @@ const RobotMovementList = ({ showList, toggleList, onItemClick }) => {
     if (contextMenu) {
       const scrollbarWidth =
         window.innerWidth - document.documentElement.clientWidth;
-      document.body.style.overflow = "auto";
+      document.body.style.overflow = 'auto';
       document.body.style.paddingRight = `${scrollbarWidth}px`;
-      document.querySelector("header").style.paddingRight =
+      document.querySelector('header').style.paddingRight =
         `${scrollbarWidth}px`;
     } else {
-      document.body.style.overflow = "auto";
-      document.body.style.paddingRight = "";
+      document.body.style.overflow = 'auto';
+      document.body.style.paddingRight = '';
     }
     return () => {
-      document.body.style.overflow = "auto";
-      document.body.style.paddingRight = "";
+      document.body.style.overflow = 'auto';
+      document.body.style.paddingRight = '';
     };
   }, [contextMenu]);
 
-  const handleItemClick = (item) => {
-    onItemClick(item);
+  const loadDataFromServer = async () => {
+    try {
+      const response = await getRobotMoves();
+      console.log(response);
+
+      const formattedData = Object.keys(response).map((key) => {
+        const item = response[key];
+
+        return {
+          id: key,
+          move_name: item.move_name || 'N/A',
+          x: item.x || 0,
+          y: item.y || 0,
+          z: item.z || 0,
+          rx: item.RX || 0,
+          ry: item.RY || 0,
+          rz: item.RZ || 0,
+          io: item.IO || {}, // 파싱된 IO 데이터 추가
+        };
+      });
+
+      setData(formattedData);
+      console.log('formattedData: ', formattedData);
+    } catch (error) {
+      console.error('Failed to load data from server:', error);
+    }
   };
 
   const handleRobotMovementListButtonClick = () => {
-    loadDataFromLocalStorage();
     toggleList();
   };
 
   const handleCopy = () => {
     if (contextMenu && contextMenu.item) {
+      const originalName = contextMenu.item.move_name;
       const copiedItem = { ...contextMenu.item };
-      copiedItem.name = `${copiedItem.name}_copy`;
+      copiedItem.move_name = `${copiedItem.move_name}_copy`;
 
       const updatedData = [...data, copiedItem];
+
       setData(updatedData);
-      localStorage.setItem("positions", JSON.stringify(updatedData));
+
+      saveCopiedItemToServer(originalName);
     }
+
     setContextMenu(null);
   };
 
+  const saveCopiedItemToServer = async (originalName) => {
+    try {
+      await copyMove(originalName);
+      console.log('Copied item saved successfully');
+    } catch (error) {
+      console.error('Failed to save copied item to server:', error);
+    }
+  };
   const handleModify = () => {
     if (contextMenu && contextMenu.item) {
       setSelectedItem(contextMenu.item);
@@ -183,52 +224,45 @@ const RobotMovementList = ({ showList, toggleList, onItemClick }) => {
   };
 
   const handleSave = async (modifiedItem) => {
-    const existingData =
-      JSON.parse(localStorage.getItem("positions")) || [];
+    const existingData = data;
 
     const updatedData = existingData.map((item) => {
-      if (item.name === modifiedItem.originalName) {
+      if (item.move_name === modifiedItem.originalName) {
         return { ...modifiedItem, originalName: undefined };
       }
       return item;
     });
 
-    localStorage.setItem("positions", JSON.stringify(updatedData));
     setData(updatedData);
 
     try {
-      await updatePosition(modifiedItem.originalName, modifiedItem);
-      console.log("Position updated successfully");
+      console.log('수정할 거 : ', modifiedItem.originalName, modifiedItem);
+      await updateMove(modifiedItem.originalName, modifiedItem);
+      console.log('Position updated successfully');
     } catch (error) {
-      console.error("Failed to update position:", error);
+      console.error('Failed to update position:', error);
     }
   };
 
   const handleDelete = () => {
     if (contextMenu && contextMenu.item) {
-      deleteFromLocalStorage(contextMenu.item.name);
-      deleteFromServer(contextMenu.item.name);
+      const nameToDelete = contextMenu.item.move_name;
+      const filteredData = data.filter(
+        (item) => item.move_name !== nameToDelete
+      );
+      setData(filteredData);
+      deleteFromServer(nameToDelete);
     }
     setContextMenu(null);
-  };
-
-  const deleteFromLocalStorage = (nameToDelete) => {
-    const existingData =
-      JSON.parse(localStorage.getItem("positions")) || [];
-    const filteredData = existingData.filter(
-      (item) => item.name !== nameToDelete
-    );
-    localStorage.setItem("positions", JSON.stringify(filteredData));
-    setData(filteredData);
   };
 
   const deleteFromServer = async (nameToDelete) => {
     try {
       console.log(nameToDelete);
-      const response = await deletePosition(nameToDelete);
+      const response = await deleteMove(nameToDelete);
       console.log(response);
     } catch (error) {
-      console.error("Failed to delete session from server:", error);
+      console.error('Failed to delete session from server:', error);
     }
   };
 
@@ -250,20 +284,20 @@ const RobotMovementList = ({ showList, toggleList, onItemClick }) => {
   };
 
   const onDragStart = (e, index) => {
-    e.dataTransfer.setData("text/plain", index);
-    e.dataTransfer.effectAllowed = "move";
+    e.dataTransfer.setData('text/plain', index);
+    e.dataTransfer.effectAllowed = 'move';
   };
 
   const onDragOver = (e, index) => {
     e.preventDefault();
-    e.dataTransfer.dropEffect = "move";
+    e.dataTransfer.dropEffect = 'move';
 
     setDraggedOverIndex(index);
   };
 
   const onDrop = (e, dropIndex) => {
     e.preventDefault();
-    const dragIndex = e.dataTransfer.getData("text/plain");
+    const dragIndex = e.dataTransfer.getData('text/plain');
     if (dragIndex === undefined) return;
 
     const reorderedData = Array.from(data);
@@ -271,17 +305,33 @@ const RobotMovementList = ({ showList, toggleList, onItemClick }) => {
     reorderedData.splice(dropIndex, 0, movedItem);
 
     setData(reorderedData);
-    localStorage.setItem("positions", JSON.stringify(reorderedData));
+
+    sendReorderedDataToServer(movedItem.move_name, dropIndex);
 
     setDraggedOverIndex(null);
+  };
+
+  const sendReorderedDataToServer = async (moveName, newIndex) => {
+    try {
+      await updateMoveOrder(moveName, newIndex);
+      console.log(`Move name ${moveName} reordered to index ${newIndex}`);
+    } catch (error) {
+      console.error('Failed to update position order on server:', error);
+    }
+  };
+
+  const handleIOClick = (io) => {
+    setSelectedIOData(io);
+    setDialogOpen(true);
   };
 
   const { t } = useTranslation();
   return (
     <>
       <div
-        className={`list-container ${showList ? "show" : ""}`}
-        css={listContainerStyles}>
+        className={`list-container ${showList ? 'show' : ''}`}
+        css={listContainerStyles}
+      >
         <TableContainer component={Paper}>
           <Table css={tableStyles} aria-label="robot movement table">
             <TableHead>
@@ -293,31 +343,35 @@ const RobotMovementList = ({ showList, toggleList, onItemClick }) => {
                 <TableCell>RX</TableCell>
                 <TableCell>RY</TableCell>
                 <TableCell>RZ</TableCell>
+                <TableCell>IO</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
               {data.map((item, index) => (
                 <TableRow
-                  key={item.name}
+                  key={`${item.id}-${index}`}
                   draggable
                   onDragStart={(e) => onDragStart(e, index)}
                   onDragOver={(e) => onDragOver(e, index)}
                   onDrop={(e) => onDrop(e, index)}
-                  onClick={() => handleItemClick(item.name)}
-                  onContextMenu={(event) =>
-                    handleContextMenu(event, item)
-                  }
+                  onContextMenu={(event) => handleContextMenu(event, item)}
                   css={[
                     defaultStyle,
                     draggedOverIndex === index && hoveredStyle,
-                  ]}>
-                  <TableCell>{item.name}</TableCell>
+                  ]}
+                >
+                  <TableCell>{item.move_name}</TableCell>
                   <TableCell>{item.x}</TableCell>
                   <TableCell>{item.y}</TableCell>
                   <TableCell>{item.z}</TableCell>
                   <TableCell>{item.rx}</TableCell>
                   <TableCell>{item.ry}</TableCell>
                   <TableCell>{item.rz}</TableCell>
+                  <TableCell>
+                    <IconButton onClick={() => handleIOClick(item.io)}>
+                      <SettingsIcon />
+                    </IconButton>
+                  </TableCell>
                 </TableRow>
               ))}
             </TableBody>
@@ -335,11 +389,12 @@ const RobotMovementList = ({ showList, toggleList, onItemClick }) => {
           />
         </Box>
       </div>
-      <div style={{ display: "flex", justifyContent: "center" }}>
+      <div style={{ display: 'flex', justifyContent: 'center' }}>
         <Button
           variant="contained"
           css={buttonStyles}
-          onClick={handleRobotMovementListButtonClick}></Button>
+          onClick={handleRobotMovementListButtonClick}
+        ></Button>
         <Menu
           keepMounted
           open={contextMenu !== null}
@@ -349,12 +404,19 @@ const RobotMovementList = ({ showList, toggleList, onItemClick }) => {
             contextMenu !== null
               ? { top: contextMenu.mouseY, left: contextMenu.mouseX }
               : undefined
-          }>
-          <MenuItem onClick={handleCopy}>{t("copy")}</MenuItem>
-          <MenuItem onClick={handleModify}>{t("modify")}</MenuItem>
-          <MenuItem onClick={handleDelete}>{t("delete")}</MenuItem>
+          }
+        >
+          <MenuItem onClick={handleCopy}>{t('copy')}</MenuItem>
+          <MenuItem onClick={handleModify}>{t('modify')}</MenuItem>
+          <MenuItem onClick={handleDelete}>{t('delete')}</MenuItem>
         </Menu>
       </div>
+
+      <IODialog
+        open={dialogOpen}
+        onClose={() => setDialogOpen(false)}
+        ioData={selectedIOData} // Pass the selected IO data here
+      />
     </>
   );
 };

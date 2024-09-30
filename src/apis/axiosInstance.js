@@ -5,18 +5,27 @@ class AxiosInstance {
     this.baseUrl = baseUrl;
     this.instance = axios.create({
       baseURL: this.baseUrl,
-      headers: {
-        'Content-Type': 'text/plain',
-      },
       withCredentials: true,
     });
+  }
+
+  getToken() {
+    return localStorage.getItem('token');
   }
 
   async request(endpoint, method, params = '', query = null, data = null) {
     const apiUrl = params
       ? `${endpoint}/${params}${query ? `?${query}` : ''}`
       : endpoint;
-    const headers = { 'Content-Type': 'text/plain' };
+
+    const headers = {
+      Authorization: `Bearer ${this.getToken()}`,
+    };
+
+    // Check if data is FormData
+    if (!(data instanceof FormData)) {
+      headers['Content-Type'] = 'application/json';
+    }
 
     try {
       const response = await this.instance.request({
