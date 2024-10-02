@@ -119,11 +119,13 @@ export default function RunMovementFormDialog() {
       <Snackbar
         open={snackbarOpen}
         autoHideDuration={3000}
-        onClose={handleSnackbarClose}>
+        onClose={handleSnackbarClose}
+      >
         <Alert
           onClose={handleSnackbarClose}
           severity="error"
-          sx={{ width: '100%' }}>
+          sx={{ width: '100%' }}
+        >
           {snackbarMessage}
         </Alert>
       </Snackbar>
