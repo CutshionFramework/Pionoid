@@ -105,7 +105,7 @@ function IODialog({ open, onClose, ioData }) {
     Extend: { extio: false, out: false, in: false },
   });
 
-  const buttons = Array.from({ length: 16 }, (_, i) => i + 1); // 고정된 버튼 배열
+  // const buttons = Array.from({ length: 16 }, (_, i) => i + 1); // 고정된 버튼 배열
   const tabNames = ['Cabinet', 'Tool', 'Extend'];
   const title = tabNames[currentTab];
 
@@ -135,8 +135,8 @@ function IODialog({ open, onClose, ioData }) {
     updatedButtons.Cabinet = {
       DO: data.CABINET.dout[0].slice(0, 16).map((val) => val === 1),
       DI: data.CABINET.din[0].slice(0, 16).map((val) => val === 1),
-      AO: data.CABINET.aout[0].slice(0, 16).map((val) => val === 1),
-      AI: data.CABINET.ain[0].slice(0, 16).map((val) => val === 1),
+      AO: data.CABINET.aout[0].slice(0, 2).map((val) => val === 1),
+      AI: data.CABINET.ain[0].slice(0, 2).map((val) => val === 1),
     };
     updatedButtons.Tool = {
       DO: data.TOOL.tio_dout[0].slice(0, 2).map((val) => val === 1),
@@ -184,47 +184,62 @@ function IODialog({ open, onClose, ioData }) {
   };
 
   const renderButtons = (types) => {
-    return types.map((type) => (
-      <React.Fragment key={type}>
-        <Grid item xs={12}>
-          <h3>
-            {type}
-            <IconButton onClick={() => toggleSection(type)}>
-              <ExpandMoreIcon
-                style={{
-                  transform: openSections[tabNames[currentTab]][type]
-                    ? 'rotate(0deg)'
-                    : 'rotate(180deg)',
-                }}
-              />
-            </IconButton>
-          </h3>
-        </Grid>
-        <Collapse
-          in={openSections[tabNames[currentTab]][type]}
-          timeout="auto"
-          unmountOnExit
-        >
-          <Grid container spacing={1}>
-            {buttons.map((button, index) => {
-              const isActive = activeButtons[tabNames[currentTab]][type][index]; // Index 사용
-              return (
-                <Grid item key={button} css={buttonContainerStyle}>
-                  <Button
-                    css={buttonStyle(isActive)}
-                    variant={isActive ? 'contained' : 'outlined'}
-                    color="primary"
-                    onClick={() => handleButtonClick(button, type)}
-                  >
-                    {`${type} ${button}`}
-                  </Button>
-                </Grid>
-              );
-            })}
+    return types.map((type) => {
+      let buttonCount = 0;
+
+      if (title === 'Cabinet') {
+        buttonCount = type === 'DO' ? 16 : type === 'AO' ? 2 : 0;
+      } else if (title === 'Tool') {
+        buttonCount = type === 'DO' ? 2 : 0; // Tool: DO 2개
+      } else if (title === 'Extend') {
+        buttonCount = type === 'out' ? 8 : type === 'extio' ? 1 : 0;
+      }
+
+      const buttons = Array.from({ length: buttonCount }, (_, i) => i + 1);
+
+      return (
+        <React.Fragment key={type}>
+          <Grid item xs={12}>
+            <h3>
+              {type}
+              <IconButton onClick={() => toggleSection(type)}>
+                <ExpandMoreIcon
+                  style={{
+                    transform: openSections[tabNames[currentTab]][type]
+                      ? 'rotate(0deg)'
+                      : 'rotate(180deg)',
+                  }}
+                />
+              </IconButton>
+            </h3>
           </Grid>
-        </Collapse>
-      </React.Fragment>
-    ));
+          <Collapse
+            in={openSections[tabNames[currentTab]][type]}
+            timeout="auto"
+            unmountOnExit
+          >
+            <Grid container spacing={1}>
+              {buttons.map((button, index) => {
+                const isActive =
+                  activeButtons[tabNames[currentTab]][type][index];
+                return (
+                  <Grid item key={button} css={buttonContainerStyle}>
+                    <Button
+                      css={buttonStyle(isActive)}
+                      variant={isActive ? 'contained' : 'outlined'}
+                      color="primary"
+                      onClick={() => handleButtonClick(button, type)}
+                    >
+                      {`${type} ${button}`}
+                    </Button>
+                  </Grid>
+                );
+              })}
+            </Grid>
+          </Collapse>
+        </React.Fragment>
+      );
+    });
   };
 
   const renderStatus = (types) => {

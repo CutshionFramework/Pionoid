@@ -277,7 +277,8 @@ export default function Nav({ openNav, onCloseNav }) {
           <MenuItem
             onClick={() =>
               handleImageButtonClick(
-                `${process.env.PUBLIC_URL}/assets/images/aubo_robot_arm.png`
+                `${process.env.PUBLIC_URL}/assets/images/aubo_robot_arm.png`,
+                `AuboRobot`
               )
             }
           >
