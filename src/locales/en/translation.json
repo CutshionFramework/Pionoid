@@ -1,7 +1,7 @@
 {
   "================================ <app-view.jsx Translation>": "These are translation related with app-view.jsx ==================================",
 
-  "greeting": "Hi, This is a robot application, pionoid!👋",
+  "greeting": "Hi, This is a robot application development platform, pionoid!👋",
   "save ip": "save IP Address",
   "ip address": "IP Address",
   "save position": "Save position",
@@ -84,7 +84,7 @@
   },
   "need help": "Need help?",
   "email us at": "Email us at",
-  "user name": "User",
+  "user name": "Development platform",
 
   "================================ <robot-movement-list.jsx Translation>": "These are translation related with robot-movement-list.jsx ==================================",
   "robot movement list": "Robot Movement List",

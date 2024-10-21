@@ -9,18 +9,18 @@ import Box from '@mui/material/Box';
 import List from '@mui/material/List';
 import Badge from '@mui/material/Badge';
 import Button from '@mui/material/Button';
-import Avatar from '@mui/material/Avatar';
+// import Avatar from '@mui/material/Avatar';
 import Divider from '@mui/material/Divider';
 import Tooltip from '@mui/material/Tooltip';
 import Popover from '@mui/material/Popover';
 import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
-import ListItemText from '@mui/material/ListItemText';
+// import ListItemText from '@mui/material/ListItemText';
 import ListSubheader from '@mui/material/ListSubheader';
-import ListItemAvatar from '@mui/material/ListItemAvatar';
-import ListItemButton from '@mui/material/ListItemButton';
+// import ListItemAvatar from '@mui/material/ListItemAvatar';
+// import ListItemButton from '@mui/material/ListItemButton';
 
-import { fToNow } from '../../../utils/format-time';
+// import { fToNow } from '../../../utils/format-time';
 
 import Iconify from '../../../components/iconify';
 import Scrollbar from '../../../components/scrollbar';
@@ -123,8 +123,7 @@ export default function NotificationsPopover() {
             ml: 0.75,
             width: 360,
           },
-        }}
-      >
+        }}>
         <Box sx={{ display: 'flex', alignItems: 'center', py: 2, px: 2.5 }}>
           <Box sx={{ flexGrow: 1 }}>
             <Typography variant="subtitle1">{t('notifications')}</Typography>
@@ -150,12 +149,10 @@ export default function NotificationsPopover() {
             subheader={
               <ListSubheader
                 disableSticky
-                sx={{ py: 1, px: 2.5, typography: 'overline' }}
-              >
+                sx={{ py: 1, px: 2.5, typography: 'overline' }}>
                 {t('new')}
               </ListSubheader>
-            }
-          >
+            }>
             {notifications.slice(0, 2).map((notification) => (
               <NotificationItem
                 key={notification.id}
@@ -169,12 +166,10 @@ export default function NotificationsPopover() {
             subheader={
               <ListSubheader
                 disableSticky
-                sx={{ py: 1, px: 2.5, typography: 'overline' }}
-              >
+                sx={{ py: 1, px: 2.5, typography: 'overline' }}>
                 {t('before that')}
               </ListSubheader>
-            }
-          >
+            }>
             {notifications.slice(2, 5).map((notification) => (
               <NotificationItem
                 key={notification.id}
@@ -211,116 +206,112 @@ NotificationItem.propTypes = {
 };
 
 function NotificationItem({ notification }) {
-  const { t } = useTranslation();
-  const { avatar, title } = renderContent(notification, t);
-
-  return (
-    <ListItemButton
-      sx={{
-        py: 1.5,
-        px: 2.5,
-        mt: '1px',
-        ...(notification.isUnRead && {
-          bgcolor: 'action.selected',
-        }),
-      }}
-    >
-      <ListItemAvatar>
-        <Avatar sx={{ bgcolor: 'background.neutral' }}>{avatar}</Avatar>
-      </ListItemAvatar>
-      <ListItemText
-        primary={title}
-        secondary={
-          <Typography
-            variant="caption"
-            sx={{
-              mt: 0.5,
-              display: 'flex',
-              alignItems: 'center',
-              color: 'text.disabled',
-            }}
-          >
-            <Iconify
-              icon="eva:clock-outline"
-              sx={{ mr: 0.5, width: 16, height: 16 }}
-            />
-            {fToNow(notification.createdAt)}
-          </Typography>
-        }
-      />
-    </ListItemButton>
-  );
+  // const { t } = useTranslation();
+  // const { avatar, title } = renderContent(notification, t);
+  // return (
+  //   <ListItemButton
+  //     sx={{
+  //       py: 1.5,
+  //       px: 2.5,
+  //       mt: '1px',
+  //       ...(notification.isUnRead && {
+  //         bgcolor: 'action.selected',
+  //       }),
+  //     }}>
+  //     <ListItemAvatar>
+  //        <Avatar sx={{ bgcolor: 'background.neutral' }}>{avatar}</Avatar>
+  //     </ListItemAvatar>
+  //     <ListItemText
+  //       //primary={title}
+  //       secondary={
+  //         <Typography
+  //           variant="caption"
+  //           sx={{
+  //             mt: 0.5,
+  //             display: 'flex',
+  //             alignItems: 'center',
+  //             color: 'text.disabled',
+  //           }}>
+  //           <Iconify
+  //             icon="eva:clock-outline"
+  //             sx={{ mr: 0.5, width: 16, height: 16 }}
+  //           />
+  //           {fToNow(notification.createdAt)}
+  //         </Typography>
+  //       }
+  //     />
+  //   </ListItemButton>
+  // );
 }
 
 // ----------------------------------------------------------------------
 
-function renderContent(notification, t) {
-  const { type } = notification;
+// function renderContent(notification, t) {
+//   const { type } = notification;
 
-  const translatedTitle = t(`${type}.title`);
-  const translatedDescription = t(`${type}.description`);
+//   const translatedTitle = t(`${type}.title`);
+//   const translatedDescription = t(`${type}.description`);
 
-  const titleComponent = (
-    <Typography variant="subtitle2">
-      {translatedTitle}
-      <Typography
-        component="span"
-        variant="body2"
-        sx={{ color: 'text.secondary' }}
-      >
-        &nbsp; {translatedDescription}
-      </Typography>
-    </Typography>
-  );
+//   const titleComponent = (
+//     <Typography variant="subtitle2">
+//       {translatedTitle}
+//       <Typography
+//         component="span"
+//         variant="body2"
+//         sx={{ color: 'text.secondary' }}>
+//         &nbsp; {translatedDescription}
+//       </Typography>
+//     </Typography>
+//   );
 
-  if (type === 'order_placed') {
-    return {
-      avatar: (
-        <img
-          alt={translatedTitle}
-          src={`${process.env.PUBLIC_URL}/assets/icons/ic_notification_package.svg`}
-        />
-      ),
-      title: titleComponent,
-    };
-  }
-  if (type === 'order_shipped') {
-    return {
-      avatar: (
-        <img
-          alt={translatedTitle}
-          src={`${process.env.PUBLIC_URL}/assets/icons/ic_notification_shipping.svg`}
-        />
-      ),
-      title: titleComponent,
-    };
-  }
-  if (type === 'mail') {
-    return {
-      avatar: (
-        <img
-          alt={translatedTitle}
-          src={`${process.env.PUBLIC_URL}/assets/icons/ic_notification_mail.svg`}
-        />
-      ),
-      title: titleComponent,
-    };
-  }
-  if (type === 'chat_message') {
-    return {
-      avatar: (
-        <img
-          alt={translatedTitle}
-          src={`${process.env.PUBLIC_URL}/assets/icons/ic_notification_chat.svg`}
-        />
-      ),
-      title: titleComponent,
-    };
-  }
-  return {
-    avatar: notification.avatar ? (
-      <img alt={translatedTitle} src={notification.avatar} />
-    ) : null,
-    title: titleComponent,
-  };
-}
+//   if (type === 'order_placed') {
+//     return {
+//       avatar: (
+//         <img
+//           alt={translatedTitle}
+//           src={`${process.env.PUBLIC_URL}/assets/icons/ic_notification_package.svg`}
+//         />
+//       ),
+//       title: titleComponent,
+//     };
+//   }
+//   if (type === 'order_shipped') {
+//     return {
+//       avatar: (
+//         <img
+//           alt={translatedTitle}
+//           src={`${process.env.PUBLIC_URL}/assets/icons/ic_notification_shipping.svg`}
+//         />
+//       ),
+//       title: titleComponent,
+//     };
+//   }
+//   if (type === 'mail') {
+//     return {
+//       avatar: (
+//         <img
+//           alt={translatedTitle}
+//           src={`${process.env.PUBLIC_URL}/assets/icons/ic_notification_mail.svg`}
+//         />
+//       ),
+//       title: titleComponent,
+//     };
+//   }
+//   if (type === 'chat_message') {
+//     return {
+//       avatar: (
+//         <img
+//           alt={translatedTitle}
+//           src={`${process.env.PUBLIC_URL}/assets/icons/ic_notification_chat.svg`}
+//         />
+//       ),
+//       title: titleComponent,
+//     };
+//   }
+//   return {
+//     avatar: notification.avatar ? (
+//       <img alt={translatedTitle} src={notification.avatar} />
+//     ) : null,
+//     title: titleComponent,
+//   };
+// }
