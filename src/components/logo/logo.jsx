@@ -6,35 +6,40 @@ import Link from '@mui/material/Link';
 
 import { RouterLink } from '../../routes/components';
 
-const logoImagePath = `${process.env.PUBLIC_URL}/assets/logo.svg`;
+const logoImagePath = `${process.env.PUBLIC_URL}/assets/pionoid-logo.png`;
 
-const Logo = forwardRef(({ disabledLink = false, sx, ...other }, ref) => {
-  const logo = (
-    <Box
-      ref={ref}
-      component="img"
-      src={logoImagePath}
-      sx={{
-        width: 90,
-        height: 40,
-        display: 'inline-flex',
-        ...sx,
-      }}
-      {...other}
-      alt="Logo"
-    />
-  );
+const Logo = forwardRef(
+  ({ disabledLink = false, sx, ...other }, ref) => {
+    const logo = (
+      <Box
+        ref={ref}
+        component="img"
+        src={logoImagePath}
+        sx={{
+          width: 200,
+          height: 50,
+          display: 'inline-flex',
+          ...sx,
+        }}
+        {...other}
+        alt="Logo"
+      />
+    );
 
-  if (disabledLink) {
-    return logo;
+    if (disabledLink) {
+      return logo;
+    }
+
+    return (
+      <Link
+        component={RouterLink}
+        href="/"
+        sx={{ display: 'contents' }}>
+        {logo}
+      </Link>
+    );
   }
-
-  return (
-    <Link component={RouterLink} href="/" sx={{ display: 'contents' }}>
-      {logo}
-    </Link>
-  );
-});
+);
 
 Logo.propTypes = {
   disabledLink: PropTypes.bool,
